@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { ModalWindowComponent } from 'src/app/shared/components/modal-window/modal-window.component';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-sign-in',
@@ -8,5 +8,26 @@ import { ModalWindowComponent } from 'src/app/shared/components/modal-window/mod
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignInComponent {
-  @ViewChild('modal') modal!: ModalWindowComponent;
+  public isOkLoading = false;
+
+  public registerForm = new FormGroup({
+    firstName: new FormControl('', [Validators.required]),
+    lastName: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+    agree: new FormControl(true, [Validators.requiredTrue]),
+  });
+
+  submitForm(): void {
+    if (this.registerForm.valid) {
+      console.log(this.registerForm.value);
+    } else {
+      Object.values(this.registerForm.controls).forEach((control) => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+  }
 }

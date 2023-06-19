@@ -1,4 +1,54 @@
 <button nz-button nzType="primary" (click)="modal.showModal()">Sign In</button>
-<app-modal-window title="Sign In" [async]="true" #modal>
-  <h1>Sign In form</h1>
+<app-modal-window title="Sign In" #modal>
+  <form nz-form [nzLayout]="'vertical'" [formGroup]="registerForm" (ngSubmit)="submitForm()">
+    <nz-form-item>
+      <nz-form-label>First name</nz-form-label>
+      <nz-form-control nzErrorTip="Please input your first name!">
+        <nz-input-group>
+          <input type="text" nz-input formControlName="firstName" placeholder="First Name" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label>Last Name</nz-form-label>
+      <nz-form-control nzErrorTip="Please input your last name!">
+        <nz-input-group>
+          <input type="text" nz-input formControlName="lastName" placeholder="Last Name" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label>Email</nz-form-label>
+      <nz-form-control nzErrorTip="Please input your email!">
+        <nz-input-group nzPrefixIcon="user">
+          <input type="text" nz-input formControlName="email" placeholder="Email" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label>Password</nz-form-label>
+      <nz-form-control nzErrorTip="Please input your Password!">
+        <nz-input-group nzPrefixIcon="lock">
+          <input type="password" nz-input formControlName="password" placeholder="Password" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+
+    <nz-form-item nz-row class="register-area">
+      <nz-form-control nzErrorTip="You should agree!" [nzSpan]="14" [nzOffset]="6">
+        <label nz-checkbox formControlName="agree">
+          <span>
+            I have read the
+            <a>agreement</a>
+          </span>
+        </label>
+      </nz-form-control>
+    </nz-form-item>
+
+    <button nz-button nzBlock [nzType]="'primary'" [nzLoading]="isOkLoading">Log in</button>
+  </form>
 </app-modal-window>
