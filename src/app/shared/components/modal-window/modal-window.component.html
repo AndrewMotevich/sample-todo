@@ -2,6 +2,6 @@
   <ng-content *nzModalContent></ng-content>
   <div *nzModalFooter>
     <button nz-button nzType="default" (click)="handleCancel()">Cancel</button>
-    <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isOkLoading">Login</button>
+    <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isOkLoading">{{title}}</button>
   </div>
 </nz-modal>
