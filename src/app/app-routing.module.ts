@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { MainPageComponent } from './todo/pages/main-page/main-page.component';
 import { NotFoundPageComponent } from './todo/pages/not-found-page/not-found-page.component';
 
 const routes: Routes = [
-  { path: '', component: MainPageComponent },
+  { path: '', loadChildren: () => import('./todo/pages/main-page/main-page.module').then((m) => m.MainPageModule) },
   {
     path: 'about',
     loadChildren: () => import('./todo/pages/about-page/about-page.module').then((m) => m.AboutPageModule),
