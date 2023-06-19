@@ -1,4 +1,5 @@
 <button nz-button nzType="primary" (click)="modal.showModal()">Login</button>
-<app-modal-window title="Login" [async]="true" #modal>
+<app-modal-window title="Login" [async]="true" [callback]="todos" #modal>
   <h1>Login form</h1>
+  <button nz-button nzType="primary" (click)="getTodoCollection()">Get colection</button>
 </app-modal-window>

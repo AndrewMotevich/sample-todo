@@ -35,7 +35,7 @@ export class ModalWindowComponent {
     if (this.async) {
       this.isOkLoading = true;
       (this.callback as <T>() => Observable<T>)().subscribe({
-        complete: () => {
+        next: () => {
           this.isOkLoading = false;
           this.isVisible = false;
           this.detectionStrategy.detectChanges();
