@@ -25,6 +25,9 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/path-to-mixin"]
+            },
             "outputPath": "dist/sample-todo",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -40,7 +43,19 @@
                 "output": "/assets/"
               }
             ],
-            "styles": ["src/styles.less", "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"],
+            "styles": [
+              "src/styles.less",
+              {
+                "input": "src/styles/default.less",
+                "bundleName": "default",
+                "inject": false
+              },
+              {
+                "input": "src/styles/dark.less",
+                "bundleName": "dark",
+                "inject": false
+              }
+            ],
             "scripts": []
           },
           "configurations": {
