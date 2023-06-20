@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { LoginService } from 'src/app/auth/services/login.service';
 
 @Component({
   selector: 'app-header',
@@ -6,4 +7,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./header.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent {}
+export class HeaderComponent {
+  constructor(private loginService: LoginService) {}
+  getUser() {
+    this.loginService.getUser();
+  }
+  signOut() {
+    this.loginService.signOut();
+  }
+}
