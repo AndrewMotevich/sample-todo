@@ -1,0 +1,15 @@
+<h4>Description:</h4>
+<p nz-typography nzEditable [(nzContent)]="todo.description"></p>
+
+<h4>Creation date:</h4>
+<p>{{todo.start | date:"short"}}</p>
+<ng-template [ngIf]="todo.end !== null">
+  <h4>Completion date:</h4>
+  <p>{{todo.end | date:"short"}}</p>
+</ng-template>
+<button nz-button nzType="primary" [disabled]="true">
+  Edit
+</button>
+<button nz-button nzType="link" nzShape="circle">
+  <span nz-icon nzType="delete" nzTheme="outline"></span>
+</button>

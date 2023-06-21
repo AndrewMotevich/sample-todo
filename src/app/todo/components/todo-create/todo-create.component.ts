@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { TodoItemType } from '../../models/todo-item.model';
+import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ModalWindowComponent } from 'src/app/shared/components/modal-window/modal-window.component';
+import { FirestoreService } from 'src/app/shared/services/firestore.service';
 
 @Component({
   selector: 'app-todo-create',
@@ -8,5 +10,29 @@ import { TodoItemType } from '../../models/todo-item.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoCreateComponent {
-  @Input() todo!: TodoItemType;
+  @ViewChild('modal') modal!: ModalWindowComponent;
+  @Input() title = 'New Todo';
+
+  createTodoForm = new FormGroup({
+    description: new FormControl<string>('', { nonNullable: true, validators: [Validators.maxLength(255)] }),
+  });
+
+  constructor(private firestoreService: FirestoreService) {}
+
+  public openModal(): void {
+    this.modal.showModal();
+  }
+
+  public submitForm(): void {
+    if (this.createTodoForm.valid) {
+      console.log(this.createTodoForm.value, this.title);
+    } else {
+      Object.values(this.createTodoForm.controls).forEach((control) => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+  }
 }

@@ -1,1 +1,20 @@
-<p>{{todo.description}}</p>
+<app-modal-window title="New Todo" #modal>
+  <form nz-form [formGroup]="createTodoForm" (ngSubmit)="submitForm()">
+
+    <nz-form-label>
+      <h4>Title:</h4>
+    </nz-form-label>
+    <h3 nz-typography nzEditable [(nzContent)]="title">Title</h3>
+
+    <nz-form-control nzErrorTip="Please input description">
+      <nz-form-label>
+        <h4>Description:</h4>
+      </nz-form-label>
+      <nz-textarea-count [nzMaxCharacterCount]="255">
+        <textarea formControlName="description" nz-input [nzAutosize]="{ minRows: 3, maxRows: 5 }"></textarea>
+      </nz-textarea-count>
+    </nz-form-control>
+
+    <button nz-button nzBlock [nzType]="'primary'">Create Todo</button>
+  </form>
+</app-modal-window>
