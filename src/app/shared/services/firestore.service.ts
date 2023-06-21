@@ -79,8 +79,26 @@ export class FirestoreService {
     return this.doneObserver;
   }
 
+  public editTodo(collectionName: CollectionNameType, newTodo: TodoItemType) {
+    return deleteDoc(
+      doc(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}/`, newTodo.id || '')
+    ).then(() =>
+      addDoc(collection(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}`), newTodo).then(
+        () => {
+          this.notification.create('success', 'Edit operation', `Todo was successfully edited!`);
+        },
+        (err: Error) => {
+          this.notification.create('error', 'Edit operation', err.message);
+        }
+      )
+    );
+  }
+
   public addTodo(collectionName: CollectionNameType, newTodo: TodoItemType) {
-    return addDoc(collection(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}`), newTodo).then(
+    return addDoc(
+      collection(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}`),
+      newTodo
+    ).then(
       () => {
         this.notification.create('success', 'Create operation', `Todo was successfully created!`);
       },
@@ -118,7 +136,17 @@ export class FirestoreService {
     currentContainerId: CollectionNameType,
     item: TodoItemType
   ) {
-    this.deleteTodo(previousContainerId, item.id || '');
-    this.addTodo(currentContainerId, item);
+    const dragItem = item;
+    if (item.end && (currentContainerId === 'todo' || currentContainerId === 'inProgress')) {
+      dragItem.end = null;
+    } else if (currentContainerId === 'done') {
+      dragItem.end = Date.now();
+    }
+    Promise.all([
+      deleteDoc(
+        doc(this.firestore, `users/${this.userEmail}/${previousContainerId}:${this.userEmail}/`, dragItem.id || '')
+      ),
+      addDoc(collection(this.firestore, `users/${this.userEmail}/${currentContainerId}:${this.userEmail}`), dragItem),
+    ]);
   }
 }

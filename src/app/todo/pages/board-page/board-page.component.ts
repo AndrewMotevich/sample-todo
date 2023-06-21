@@ -24,6 +24,7 @@ export class BoardPageComponent {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   drop(event: CdkDragDrop<any>): void {
     if (event.previousContainer === event.container) {
       return;

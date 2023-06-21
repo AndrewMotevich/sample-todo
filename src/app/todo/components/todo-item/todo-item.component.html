@@ -2,7 +2,7 @@
   <p>{{todoItem.description}}</p>
 </nz-card>
 <app-modal-window [title]="todoItem.title" #modal>
-  <app-todo-details [todo]="todoItem"></app-todo-details>
+  <app-todo-details [todo]="todoItem" [collectionName]="collectionName"></app-todo-details>
 </app-modal-window>
 <ng-template #deleteIcon>
   <button nz-button nzType="default" nzShape="circle" (click)="deleteItem($event, todoItem.id || '')">

@@ -22,6 +22,8 @@ export class LoginService {
         if (user?.email) {
           this.userEmail.next(user?.email || '');
           this.router.navigate(['/board']);
+        } else if (user === null) {
+          this.router.navigate(['/']);
         }
       },
       (err) => {
@@ -38,6 +40,5 @@ export class LoginService {
     signOut(this.auth).catch((err: Error) => {
       this.notification.create('error', 'Sign Out', err.message);
     });
-    this.router.navigate(['/']);
   }
 }
