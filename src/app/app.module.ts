@@ -13,6 +13,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconsProviderModule } from './icons-provider.module';
 import { CoreModule } from './core/core.module';
 
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { environment } from 'src/environments/environment';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+
 registerLocaleData(en);
 
 @NgModule({
@@ -25,6 +29,8 @@ registerLocaleData(en);
     BrowserAnimationsModule,
     IconsProviderModule,
     CoreModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideFirestore(() => getFirestore()),
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent],

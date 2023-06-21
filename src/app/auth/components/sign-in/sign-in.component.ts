@@ -1,5 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild, inject } from '@angular/core';
+import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FirestoreService } from 'src/app/shared/services/firestore.service';
+import { UserType } from '../../models/user.model';
+import { ModalWindowComponent } from 'src/app/shared/components/modal-window/modal-window.component';
 
 @Component({
   selector: 'app-sign-in',
@@ -8,19 +12,28 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignInComponent {
-  public isOkLoading = false;
+  @ViewChild('modal', { static: true }) modal!: ModalWindowComponent;
 
+  private auth = inject(Auth);
+  private user!: UserType;
+
+  public isOkLoading = false;
   public registerForm = new FormGroup({
-    firstName: new FormControl('', [Validators.required]),
-    lastName: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-    agree: new FormControl(true, [Validators.requiredTrue]),
+    firstName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    lastName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
+    password: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(8)] }),
+    agree: new FormControl(true, { validators: [Validators.requiredTrue] }),
   });
 
-  submitForm(): void {
+  constructor(private changeDetection: ChangeDetectorRef, private firestoreService: FirestoreService) {}
+
+  public submitForm(): void {
     if (this.registerForm.valid) {
-      console.log(this.registerForm.value);
+      this.collectUserData();
+      const { email, password } = this.user;
+      // signIn
+      this.signUp(email, password);
     } else {
       Object.values(this.registerForm.controls).forEach((control) => {
         if (control.invalid) {
@@ -29,5 +42,38 @@ export class SignInComponent {
         }
       });
     }
+  }
+
+  private collectUserData(): void {
+    if (this.registerForm.valid) {
+      this.user = {
+        firstName: this.registerForm.controls.firstName.value,
+        lastName: this.registerForm.controls.lastName.value,
+        email: this.registerForm.controls.email.value,
+        password: this.registerForm.controls.password.value,
+      };
+    }
+  }
+
+  // registration
+  signUp(email: string, password: string): void {
+    this.isOkLoading = true;
+    createUserWithEmailAndPassword(this.auth, email, password)
+      .then(() => {
+        return this.firestoreService.setStartUserCollection(this.user);
+      })
+      .then(
+        () => {
+          this.isOkLoading = false;
+          this.changeDetection.detectChanges();
+          this.modal.handleCancel();
+        },
+        (err) => {
+          // TODO: add user error notification
+          console.log(err);
+          this.isOkLoading = false;
+          this.changeDetection.detectChanges();
+        }
+      );
   }
 }

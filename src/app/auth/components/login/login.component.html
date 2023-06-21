@@ -1,4 +1,5 @@
 <button nz-button nzType="primary" (click)="modal.showModal()">Login</button>
+
 <app-modal-window title="Login" #modal>
   <form nz-form [formGroup]="loginForm" (ngSubmit)="submitForm()">
     <nz-form-item>
@@ -8,6 +9,7 @@
         </nz-input-group>
       </nz-form-control>
     </nz-form-item>
+
     <nz-form-item>
       <nz-form-control nzErrorTip="Please input your Password!">
         <nz-input-group nzPrefixIcon="lock">
@@ -15,6 +17,7 @@
         </nz-input-group>
       </nz-form-control>
     </nz-form-item>
+
     <div nz-row>
       <div nz-col [nzSpan]="12">
         <label nz-checkbox formControlName="remember">
@@ -25,6 +28,7 @@
         <a>Forgot password</a>
       </div>
     </div>
+
     <button nz-button nzBlock [nzType]="'primary'" [nzLoading]="isOkLoading">Log in</button>
   </form>
 </app-modal-window>
