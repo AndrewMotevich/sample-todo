@@ -1,6 +1,7 @@
 export type TodoType = {
+  id?: string;
   title: string;
   description: string;
-  start: Date;
-  end: Date | null;
+  start: number;
+  end: number | null;
 };

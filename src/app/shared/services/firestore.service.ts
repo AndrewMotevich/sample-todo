@@ -2,15 +2,17 @@ import { Injectable, inject } from '@angular/core';
 import {
   Firestore,
   collection,
-  collectionData,
   doc,
   deleteDoc,
+  collectionSnapshots,
   addDoc,
-  updateDoc,
   setDoc,
+  collectionGroup,
 } from '@angular/fire/firestore';
 import { LoginService } from './login.service';
 import { UserType } from 'src/app/auth/models/user.model';
+import { BehaviorSubject } from 'rxjs';
+import { TodoType } from 'src/app/todo/models/todo.model';
 
 const startTodos = {
   todo: { title: 'New TODO', description: 'Add new todo', start: Date.now(), end: null },
@@ -22,38 +24,59 @@ const startTodos = {
   providedIn: 'root',
 })
 export class FirestoreService {
+  private userEmail!: string;
   private firestore = inject(Firestore);
+  private todoObserver = new BehaviorSubject<TodoType[]>([]);
+  private inProgressObserver = new BehaviorSubject<TodoType[]>([]);
+  private doneObserver = new BehaviorSubject<TodoType[]>([]);
 
-  constructor(private loginService: LoginService) {}
-
-  public getUserCollection() {
-    if (this.loginService.getUser()) {
-      const userEmail = this.loginService.getUser()?.email || '';
-      const userTodoCollection = collection(this.firestore, `users/${userEmail}/todo`);
-      collectionData(userTodoCollection).subscribe((res) => {
-        console.log(res);
+  constructor(private loginService: LoginService) {
+    this.loginService.userEmail.subscribe(() => {
+      this.userEmail = this.loginService.getUser()?.email || '';
+      // subscribe on todoCollection
+      collectionSnapshots(collectionGroup(this.firestore, `todo:${this.userEmail}`)).subscribe((res) => {
+        return this.todoObserver.next(res.map((elem) => ({ ...(elem.data() as TodoType), id: elem.id })));
       });
-      const userInProgressCollection = collection(this.firestore, `users/${userEmail}/inProgress`);
-      collectionData(userInProgressCollection).subscribe((res) => {
-        console.log(res);
+      // subscribe on inProgressCollection
+      collectionSnapshots(collectionGroup(this.firestore, `inProgress:${this.userEmail}`)).subscribe((res) => {
+        return this.inProgressObserver.next(res.map((elem) => ({ ...(elem.data() as TodoType), id: elem.id })));
       });
-      const userDoneCollection = collection(this.firestore, `users/${userEmail}/done`);
-      collectionData(userDoneCollection).subscribe((res) => {
-        console.log(res);
+      // subscribe on doneCollection
+      collectionSnapshots(collectionGroup(this.firestore, `done:${this.userEmail}`)).subscribe((res) => {
+        return this.doneObserver.next(res.map((elem) => ({ ...(elem.data() as TodoType), id: elem.id })));
       });
-    } else {
-      // TODO: add user friendly error notification
-      console.log('Error with authorization');
-    }
+    });
   }
 
-  setStartUserCollection(user: UserType) {
+  public getTodoCollection() {
+    return this.todoObserver;
+  }
+
+  public getInProgressCollection() {
+    return this.inProgressObserver;
+  }
+
+  public getDoneCollection() {
+    return this.doneObserver;
+  }
+
+  public addTodo() {
+    // TODO:
+    addDoc(collection(this.firestore, ''), {});
+  }
+
+  public deleteTodo(id: string) {
+    // TODO:
+    deleteDoc(doc(this.firestore, ''));
+  }
+
+  public setStartUserCollection(user: UserType): void {
     if (this.loginService.getUser()) {
       const { firstName, lastName, email } = user;
       setDoc(doc(this.firestore, 'users', email), { firstName, lastName });
-      addDoc(collection(this.firestore, `users/${email}/todo`), startTodos.todo);
-      addDoc(collection(this.firestore, `users/${email}/inProgress`), startTodos.inProgress);
-      addDoc(collection(this.firestore, `users/${email}/done`), startTodos.done);
+      addDoc(collection(this.firestore, `users/${email}/todo:${email}`), startTodos.todo);
+      addDoc(collection(this.firestore, `users/${email}/inProgress:${email}`), startTodos.inProgress);
+      addDoc(collection(this.firestore, `users/${email}/done:${email}`), startTodos.done);
     } else {
       // TODO: add user friendly error notification
       console.log('Error with authorization');

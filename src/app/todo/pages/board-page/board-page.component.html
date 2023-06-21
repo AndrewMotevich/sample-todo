@@ -1,1 +1,23 @@
-<p>board-page works!</p>
+<div class="board-wrapper">
+  <div class="board-colons-todo">
+    <h2>Todo</h2>
+    <ng-container *ngFor="let item of todo | async">
+      <app-todo-item [title]="item.title" [description]="item.description" [start]="item.start"
+        [end]="item.end"></app-todo-item>
+    </ng-container>
+  </div>
+  <div class="board-colons-inProgress">
+    <h2>In Progress</h2>
+    <ng-container *ngFor="let item of inProgress | async">
+      <app-todo-item [title]="item.title" [description]="item.description" [start]="item.start"
+        [end]="item.end"></app-todo-item>
+    </ng-container>
+  </div>
+  <div class="board-colons-done">
+    <h2>Done</h2>
+    <ng-container *ngFor="let item of done | async">
+      <app-todo-item [title]="item.title" [description]="item.description" [start]="item.start"
+        [end]="item.end"></app-todo-item>
+    </ng-container>
+  </div>
+</div>

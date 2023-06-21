@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { LoginService } from 'src/app/shared/services/login.service';
+import { ThemeService } from 'src/app/theme.service';
 
 @Component({
   selector: 'app-header',
@@ -8,11 +9,17 @@ import { LoginService } from 'src/app/shared/services/login.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  constructor(private loginService: LoginService) {}
-  getUser() {
+  constructor(private loginService: LoginService, private themeService: ThemeService) {}
+
+  public getUser(): void {
     this.loginService.getUser();
   }
-  signOut() {
+
+  public signOut(): void {
     this.loginService.signOut();
+  }
+
+  public switchTheme(): void {
+    this.themeService.toggleTheme();
   }
 }
