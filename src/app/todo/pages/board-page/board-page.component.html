@@ -14,22 +14,29 @@
 </nz-input-group>
 
 <div class="board-wrapper">
-  <div class="board-colons-todo">
+
+  <div cdkDropList id="todo" #todoList="cdkDropList" [cdkDropListData]="todo | async"
+    [cdkDropListConnectedTo]="[doneList]" class="board-colons-todo" (cdkDropListDropped)="drop($event)">
     <h2>Todo</h2>
     <ng-container *ngFor="let item of todo | async">
-      <app-todo-item [title]="item.title" [todoItem]="item"></app-todo-item>
+      <app-todo-item cdkDrag [title]="item.title" [todoItem]="item"></app-todo-item>
     </ng-container>
   </div>
-  <div class="board-colons-inProgress">
+
+  <div cdkDropList id="inProgress" #inProgressList="cdkDropList" [cdkDropListData]="inProgress | async"
+    [cdkDropListConnectedTo]="[doneList, todoList]" class="board-colons-inProgress" (cdkDropListDropped)="drop($event)">
     <h2>In Progress</h2>
     <ng-container *ngFor="let item of inProgress | async">
-      <app-todo-item [title]="item.title" [todoItem]="item"></app-todo-item>
+      <app-todo-item cdkDrag [title]="item.title" [todoItem]="item"></app-todo-item>
     </ng-container>
   </div>
-  <div class="board-colons-done">
+
+  <div cdkDropList id="done" #doneList="cdkDropList" [cdkDropListData]="done | async"
+    [cdkDropListConnectedTo]="[todoList, inProgressList]" class="example-list" class="board-colons-done"
+    (cdkDropListDropped)="drop($event)">
     <h2>Done</h2>
     <ng-container *ngFor="let item of done | async">
-      <app-todo-item [title]="item.title" [todoItem]="item"></app-todo-item>
+      <app-todo-item cdkDrag [title]="item.title" [todoItem]="item"></app-todo-item>
     </ng-container>
   </div>
 </div>

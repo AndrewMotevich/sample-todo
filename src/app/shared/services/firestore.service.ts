@@ -80,7 +80,7 @@ export class FirestoreService {
   }
 
   public addTodo(collectionName: CollectionNameType, newTodo: TodoItemType) {
-    addDoc(collection(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}`), newTodo).then(
+    return addDoc(collection(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}`), newTodo).then(
       () => {
         this.notification.create('success', 'Create operation', `Todo was successfully created!`);
       },
@@ -91,7 +91,7 @@ export class FirestoreService {
   }
 
   public deleteTodo(collectionName: CollectionNameType, id: string) {
-    deleteDoc(doc(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}/`, id)).then(
+    return deleteDoc(doc(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}/`, id)).then(
       () => {
         this.notification.create('success', 'Delete operation', `Todo was successfully deleted!`);
       },
@@ -111,5 +111,14 @@ export class FirestoreService {
     } else {
       this.notification.create('error', 'Authorization', 'Failed with authorization, try to reload or relogin!');
     }
+  }
+
+  public runDragAndDrop(
+    previousContainerId: CollectionNameType,
+    currentContainerId: CollectionNameType,
+    item: TodoItemType
+  ) {
+    this.deleteTodo(previousContainerId, item.id || '');
+    this.addTodo(currentContainerId, item);
   }
 }
