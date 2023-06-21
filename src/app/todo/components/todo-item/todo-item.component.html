@@ -1,5 +1,8 @@
-<nz-card [nzTitle]="title">
-  <p>{{description}}</p>
-  <p>{{start | date:'short'}}</p>
-  <p>{{end && end | date:'short'}}</p>
+<nz-card [nzHoverable]="true" [nzTitle]="todoItem.title" (click)="modal.showModal()">
+  <p>{{todoItem.description}}</p>
+  <p>{{todoItem.start | date:'short'}}</p>
+  <p>{{todoItem.end && todoItem.end | date:'short'}}</p>
 </nz-card>
+<app-modal-window [title]="todoItem.title" #modal>
+  <app-todo-create [todo]="todoItem"></app-todo-create>
+</app-modal-window>

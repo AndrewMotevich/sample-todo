@@ -13,6 +13,7 @@ import { LoginService } from './login.service';
 import { UserType } from 'src/app/auth/models/user.model';
 import { BehaviorSubject } from 'rxjs';
 import { TodoType } from 'src/app/todo/models/todo.model';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 const startTodos = {
   todo: { title: 'New TODO', description: 'Add new todo', start: Date.now(), end: null },
@@ -30,21 +31,36 @@ export class FirestoreService {
   private inProgressObserver = new BehaviorSubject<TodoType[]>([]);
   private doneObserver = new BehaviorSubject<TodoType[]>([]);
 
-  constructor(private loginService: LoginService) {
+  constructor(private loginService: LoginService, private notification: NzNotificationService) {
     this.loginService.userEmail.subscribe(() => {
       this.userEmail = this.loginService.getUser()?.email || '';
       // subscribe on todoCollection
-      collectionSnapshots(collectionGroup(this.firestore, `todo:${this.userEmail}`)).subscribe((res) => {
-        return this.todoObserver.next(res.map((elem) => ({ ...(elem.data() as TodoType), id: elem.id })));
-      });
+      collectionSnapshots(collectionGroup(this.firestore, `todo:${this.userEmail}`)).subscribe(
+        (res) => {
+          return this.todoObserver.next(res.map((elem) => ({ ...(elem.data() as TodoType), id: elem.id })));
+        },
+        (err) => {
+          this.notification.create('error', 'Todo Collection Observer', err.message);
+        }
+      );
       // subscribe on inProgressCollection
-      collectionSnapshots(collectionGroup(this.firestore, `inProgress:${this.userEmail}`)).subscribe((res) => {
-        return this.inProgressObserver.next(res.map((elem) => ({ ...(elem.data() as TodoType), id: elem.id })));
-      });
+      collectionSnapshots(collectionGroup(this.firestore, `inProgress:${this.userEmail}`)).subscribe(
+        (res) => {
+          return this.inProgressObserver.next(res.map((elem) => ({ ...(elem.data() as TodoType), id: elem.id })));
+        },
+        (err) => {
+          this.notification.create('error', 'In Progress Collection Observer', err.message);
+        }
+      );
       // subscribe on doneCollection
-      collectionSnapshots(collectionGroup(this.firestore, `done:${this.userEmail}`)).subscribe((res) => {
-        return this.doneObserver.next(res.map((elem) => ({ ...(elem.data() as TodoType), id: elem.id })));
-      });
+      collectionSnapshots(collectionGroup(this.firestore, `done:${this.userEmail}`)).subscribe(
+        (res) => {
+          return this.doneObserver.next(res.map((elem) => ({ ...(elem.data() as TodoType), id: elem.id })));
+        },
+        (err) => {
+          this.notification.create('error', 'Done Collection Observer', err.message);
+        }
+      );
     });
   }
 
@@ -78,8 +94,7 @@ export class FirestoreService {
       addDoc(collection(this.firestore, `users/${email}/inProgress:${email}`), startTodos.inProgress);
       addDoc(collection(this.firestore, `users/${email}/done:${email}`), startTodos.done);
     } else {
-      // TODO: add user friendly error notification
-      console.log('Error with authorization');
+      this.notification.create('error', 'Authorization', 'Failed with authorization, try to reload or relogin!');
     }
   }
 }

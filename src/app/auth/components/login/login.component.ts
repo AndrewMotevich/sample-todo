@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
+import { ModalWindowComponent } from 'src/app/shared/components/modal-window/modal-window.component';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
   selector: 'app-login',
@@ -9,6 +11,8 @@ import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
+  @ViewChild('modal', { static: true }) modal!: ModalWindowComponent;
+
   private auth = inject(Auth);
 
   public isOkLoading = false;
@@ -18,7 +22,7 @@ export class LoginComponent {
     remember: new FormControl<boolean>(true, [Validators.required]),
   });
 
-  constructor(private changeDetection: ChangeDetectorRef) {}
+  constructor(private changeDetection: ChangeDetectorRef, private notification: NzNotificationService) {}
 
   submitForm(): void {
     if (this.loginForm.valid) {
@@ -43,10 +47,11 @@ export class LoginComponent {
       () => {
         this.isOkLoading = false;
         this.changeDetection.detectChanges();
+        this.modal.handleCancel();
+        this.notification.create('success', 'Authentication', 'Successfully logged in');
       },
-      (err) => {
-        // TODO: add user error notification
-        console.log(err);
+      (err: Error) => {
+        this.notification.create('error', 'Authentication', err.message);
         this.isOkLoading = false;
         this.changeDetection.detectChanges();
       }

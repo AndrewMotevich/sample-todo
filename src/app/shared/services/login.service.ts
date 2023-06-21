@@ -4,6 +4,8 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
 import { User } from '@angular/fire/auth';
 import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Injectable({
   providedIn: 'root',
@@ -13,10 +15,16 @@ export class LoginService {
   private auth = getAuth(this.app);
   public userEmail = new BehaviorSubject<string>('');
 
-  constructor() {
-    onAuthStateChanged(this.auth, (user) => {
-      this.userEmail.next(user?.email || '');
-    });
+  constructor(private router: Router, private notification: NzNotificationService) {
+    onAuthStateChanged(
+      this.auth,
+      (user) => {
+        this.userEmail.next(user?.email || '');
+      },
+      (err) => {
+        this.notification.create('error', 'Auth Observer', err.message);
+      }
+    );
   }
 
   public getUser(): User | null {
@@ -24,6 +32,9 @@ export class LoginService {
   }
 
   public signOut(): void {
-    signOut(this.auth);
+    signOut(this.auth).catch((err: Error) => {
+      this.notification.create('error', 'Sign Out', err.message);
+    });
+    this.router.navigate(['/']);
   }
 }

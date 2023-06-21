@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { UserType } from '../../models/user.model';
 import { ModalWindowComponent } from 'src/app/shared/components/modal-window/modal-window.component';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
   selector: 'app-sign-in',
@@ -26,7 +27,11 @@ export class SignInComponent {
     agree: new FormControl(true, { validators: [Validators.requiredTrue] }),
   });
 
-  constructor(private changeDetection: ChangeDetectorRef, private firestoreService: FirestoreService) {}
+  constructor(
+    private changeDetection: ChangeDetectorRef,
+    private firestoreService: FirestoreService,
+    private notification: NzNotificationService
+  ) {}
 
   public submitForm(): void {
     if (this.registerForm.valid) {
@@ -67,10 +72,10 @@ export class SignInComponent {
           this.isOkLoading = false;
           this.changeDetection.detectChanges();
           this.modal.handleCancel();
+          this.notification.create('success', 'Registration', 'Successfully register');
         },
-        (err) => {
-          // TODO: add user error notification
-          console.log(err);
+        (err: Error) => {
+          this.notification.create('error', 'Registration', err.message);
           this.isOkLoading = false;
           this.changeDetection.detectChanges();
         }
