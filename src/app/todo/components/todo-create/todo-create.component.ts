@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { TodoType } from '../../models/todo.model';
+import { TodoItemType } from '../../models/todo-item.model';
 
 @Component({
   selector: 'app-todo-create',
@@ -8,5 +8,5 @@ import { TodoType } from '../../models/todo.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoCreateComponent {
-  @Input() todo!: TodoType;
+  @Input() todo!: TodoItemType;
 }

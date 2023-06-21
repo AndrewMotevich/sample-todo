@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
-import { TodoType } from '../../models/todo.model';
+import { TodoItemType } from '../../models/todo-item.model';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -10,9 +10,9 @@ import { Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardPageComponent {
-  public todo: Observable<TodoType[]> = this.firestoreService.getTodoCollection();
-  public inProgress: Observable<TodoType[]> = this.firestoreService.getInProgressCollection();
-  public done: Observable<TodoType[]> = this.firestoreService.getDoneCollection();
+  public todo: Observable<TodoItemType[]> = this.firestoreService.getTodoCollection();
+  public inProgress: Observable<TodoItemType[]> = this.firestoreService.getInProgressCollection();
+  public done: Observable<TodoItemType[]> = this.firestoreService.getDoneCollection();
 
   constructor(private firestoreService: FirestoreService) {}
 }

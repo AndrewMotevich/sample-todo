@@ -12,8 +12,9 @@ import {
 import { LoginService } from './login.service';
 import { UserType } from 'src/app/auth/models/user.model';
 import { BehaviorSubject } from 'rxjs';
-import { TodoType } from 'src/app/todo/models/todo.model';
+import { TodoItemType } from 'src/app/todo/models/todo-item.model';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { CollectionNameType } from '../models/colection-name.model';
 
 const startTodos = {
   todo: { title: 'New TODO', description: 'Add new todo', start: Date.now(), end: null },
@@ -27,9 +28,10 @@ const startTodos = {
 export class FirestoreService {
   private userEmail!: string;
   private firestore = inject(Firestore);
-  private todoObserver = new BehaviorSubject<TodoType[]>([]);
-  private inProgressObserver = new BehaviorSubject<TodoType[]>([]);
-  private doneObserver = new BehaviorSubject<TodoType[]>([]);
+  // observables
+  private todoObserver = new BehaviorSubject<TodoItemType[]>([]);
+  private inProgressObserver = new BehaviorSubject<TodoItemType[]>([]);
+  private doneObserver = new BehaviorSubject<TodoItemType[]>([]);
 
   constructor(private loginService: LoginService, private notification: NzNotificationService) {
     this.loginService.userEmail.subscribe(() => {
@@ -37,7 +39,7 @@ export class FirestoreService {
       // subscribe on todoCollection
       collectionSnapshots(collectionGroup(this.firestore, `todo:${this.userEmail}`)).subscribe(
         (res) => {
-          return this.todoObserver.next(res.map((elem) => ({ ...(elem.data() as TodoType), id: elem.id })));
+          return this.todoObserver.next(res.map((elem) => ({ ...(elem.data() as TodoItemType), id: elem.id })));
         },
         (err) => {
           this.notification.create('error', 'Todo Collection Observer', err.message);
@@ -46,7 +48,7 @@ export class FirestoreService {
       // subscribe on inProgressCollection
       collectionSnapshots(collectionGroup(this.firestore, `inProgress:${this.userEmail}`)).subscribe(
         (res) => {
-          return this.inProgressObserver.next(res.map((elem) => ({ ...(elem.data() as TodoType), id: elem.id })));
+          return this.inProgressObserver.next(res.map((elem) => ({ ...(elem.data() as TodoItemType), id: elem.id })));
         },
         (err) => {
           this.notification.create('error', 'In Progress Collection Observer', err.message);
@@ -55,7 +57,7 @@ export class FirestoreService {
       // subscribe on doneCollection
       collectionSnapshots(collectionGroup(this.firestore, `done:${this.userEmail}`)).subscribe(
         (res) => {
-          return this.doneObserver.next(res.map((elem) => ({ ...(elem.data() as TodoType), id: elem.id })));
+          return this.doneObserver.next(res.map((elem) => ({ ...(elem.data() as TodoItemType), id: elem.id })));
         },
         (err) => {
           this.notification.create('error', 'Done Collection Observer', err.message);
@@ -76,7 +78,7 @@ export class FirestoreService {
     return this.doneObserver;
   }
 
-  public addTodo() {
+  public addTodo(collectionName: CollectionNameType) {
     // TODO:
     addDoc(collection(this.firestore, ''), {});
   }
