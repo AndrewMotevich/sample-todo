@@ -29,6 +29,7 @@ export class FirestoreService {
   private userEmail!: string;
   private firestore = inject(Firestore);
   // observables
+  public boardMainInputValue = new BehaviorSubject<string | null>(null);
   private todoObserver = new BehaviorSubject<TodoItemType[]>([]);
   private inProgressObserver = new BehaviorSubject<TodoItemType[]>([]);
   private doneObserver = new BehaviorSubject<TodoItemType[]>([]);
@@ -79,12 +80,25 @@ export class FirestoreService {
   }
 
   public addTodo(collectionName: CollectionNameType, newTodo: TodoItemType) {
-    addDoc(collection(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}`), newTodo);
+    addDoc(collection(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}`), newTodo).then(
+      () => {
+        this.notification.create('success', 'Create operation', `Todo was successfully created!`);
+      },
+      (err: Error) => {
+        this.notification.create('error', 'Create operation', err.message);
+      }
+    );
   }
 
-  public deleteTodo(id: string) {
-    // TODO:
-    // deleteDoc(doc(this.firestore, ''));
+  public deleteTodo(collectionName: CollectionNameType, id: string) {
+    deleteDoc(doc(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}/`, id)).then(
+      () => {
+        this.notification.create('success', 'Delete operation', `Todo was successfully deleted!`);
+      },
+      (err: Error) => {
+        this.notification.create('error', 'Delete operation', err.message);
+      }
+    );
   }
 
   public setStartUserCollection(user: UserType): void {

@@ -10,11 +10,15 @@ import { Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardPageComponent {
-  public inputValue: string | null = null;
+  public inputValue!: string | null;
 
   public todo: Observable<TodoItemType[]> = this.firestoreService.getTodoCollection();
   public inProgress: Observable<TodoItemType[]> = this.firestoreService.getInProgressCollection();
   public done: Observable<TodoItemType[]> = this.firestoreService.getDoneCollection();
 
-  constructor(private firestoreService: FirestoreService) {}
+  constructor(private firestoreService: FirestoreService) {
+    this.firestoreService.boardMainInputValue.subscribe((res) => {
+      this.inputValue = res;
+    });
+  }
 }

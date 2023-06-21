@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ViewChild, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalWindowComponent } from 'src/app/shared/components/modal-window/modal-window.component';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
@@ -32,6 +32,7 @@ export class TodoCreateComponent {
         end: null,
       });
       this.modal.handleCancel();
+      this.firestoreService.boardMainInputValue.next(null);
     } else {
       Object.values(this.createTodoForm.controls).forEach((control) => {
         if (control.invalid) {
