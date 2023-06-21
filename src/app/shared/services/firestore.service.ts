@@ -78,14 +78,13 @@ export class FirestoreService {
     return this.doneObserver;
   }
 
-  public addTodo(collectionName: CollectionNameType) {
-    // TODO:
-    addDoc(collection(this.firestore, ''), {});
+  public addTodo(collectionName: CollectionNameType, newTodo: TodoItemType) {
+    addDoc(collection(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}`), newTodo);
   }
 
   public deleteTodo(id: string) {
     // TODO:
-    deleteDoc(doc(this.firestore, ''));
+    // deleteDoc(doc(this.firestore, ''));
   }
 
   public setStartUserCollection(user: UserType): void {

@@ -25,7 +25,13 @@ export class TodoCreateComponent {
 
   public submitForm(): void {
     if (this.createTodoForm.valid) {
-      console.log(this.createTodoForm.value, this.title);
+      this.firestoreService.addTodo('todo', {
+        title: this.title,
+        description: this.createTodoForm.controls.description.value,
+        start: Date.now(),
+        end: null,
+      });
+      this.modal.handleCancel();
     } else {
       Object.values(this.createTodoForm.controls).forEach((control) => {
         if (control.invalid) {

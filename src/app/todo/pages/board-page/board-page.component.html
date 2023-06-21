@@ -1,8 +1,8 @@
 <nz-input-group nzSize="large" [nzPrefix]="inputValue ? inputAddButton: inputPlusIcon" [nzSuffix]="inputClearTpl">
   <input type="text" nz-input [(ngModel)]="inputValue" placeholder="Add new Todo"
-    (keyup.enter)="createTodoModal.openModal()" />
+    (keyup.enter)="createTodoModal.openModal(); inputValue = null" />
   <ng-template #inputAddButton>
-    <button nz-button nzType="primary" (click)="createTodoModal.openModal()">Add</button>
+    <button nz-button nzType="primary" (click)="createTodoModal.openModal(); inputValue = null">Add</button>
   </ng-template>
   <ng-template #inputPlusIcon>
     <span nz-icon nzType="plus" nzTheme="outline"></span>
