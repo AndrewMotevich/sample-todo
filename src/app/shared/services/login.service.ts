@@ -19,7 +19,10 @@ export class LoginService {
     onAuthStateChanged(
       this.auth,
       (user) => {
-        this.userEmail.next(user?.email || '');
+        if (user?.email) {
+          this.userEmail.next(user?.email || '');
+          this.router.navigate(['/board']);
+        }
       },
       (err) => {
         this.notification.create('error', 'Auth Observer', err.message);

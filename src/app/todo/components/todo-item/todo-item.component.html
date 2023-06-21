@@ -5,7 +5,7 @@
   <app-todo-details [todo]="todoItem"></app-todo-details>
 </app-modal-window>
 <ng-template #deleteIcon>
-  <button nz-button nzType="default" nzShape="circle" (click)="deleteItem($event, 'todo', todoItem.id || '')">
+  <button nz-button nzType="default" nzShape="circle" (click)="deleteItem($event, todoItem.id || '')">
     <span nz-icon nzType="delete" nzTheme="outline"></span>
   </button>
 </ng-template>

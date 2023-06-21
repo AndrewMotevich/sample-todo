@@ -11,11 +11,12 @@ import { CollectionNameType } from 'src/app/shared/models/colection-name.model';
 })
 export class TodoItemComponent {
   @Input() todoItem!: TodoItemType;
+  @Input() collectionName!: CollectionNameType;
 
   constructor(private firestoreService: FirestoreService) {}
 
-  public deleteItem(event: Event, collectionName: CollectionNameType, id: string) {
+  public deleteItem(event: Event, id: string) {
     event.stopPropagation();
-    this.firestoreService.deleteTodo(collectionName, id);
+    this.firestoreService.deleteTodo(this.collectionName, id);
   }
 }
