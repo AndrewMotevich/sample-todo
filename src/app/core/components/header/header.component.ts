@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { LoginService } from 'src/app/shared/services/login.service';
 import { ThemeService } from 'src/app/theme.service';
 
@@ -9,7 +10,13 @@ import { ThemeService } from 'src/app/theme.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  constructor(private loginService: LoginService, private themeService: ThemeService) {}
+  userName$ = this.firestoreService.getUserName();
+
+  constructor(
+    private loginService: LoginService,
+    private themeService: ThemeService,
+    private firestoreService: FirestoreService
+  ) {}
 
   public getUser(): void {
     this.loginService.getUser();

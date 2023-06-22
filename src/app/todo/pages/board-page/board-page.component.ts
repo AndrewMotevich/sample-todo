@@ -13,6 +13,9 @@ import { CollectionNameType } from 'src/app/shared/models/colection-name.model';
 })
 export class BoardPageComponent {
   public inputValue!: string | null;
+  public checkAllTodo = false;
+  public checkAllInProgress = false;
+  public checkAllDone = false;
 
   public todo: Observable<TodoItemType[]> = this.firestoreService.getTodoCollection();
   public inProgress: Observable<TodoItemType[]> = this.firestoreService.getInProgressCollection();

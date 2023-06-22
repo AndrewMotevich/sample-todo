@@ -7,6 +7,9 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 import { BoardPageRoutingModule } from './board-page-routing.module';
 import { BoardPageComponent } from './board-page.component';
@@ -29,6 +32,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     NzIconModule,
     NzFormModule,
     NzTypographyModule,
+    NzDividerModule,
+    NzCheckboxModule,
+    NzDropDownModule,
     BoardPageRoutingModule,
     ModalWindowComponent,
     DragDropModule,

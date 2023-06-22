@@ -3,6 +3,7 @@ import {
   Firestore,
   collection,
   doc,
+  getDoc,
   deleteDoc,
   collectionSnapshots,
   addDoc,
@@ -33,6 +34,10 @@ export class FirestoreService {
   private todoObserver = new BehaviorSubject<TodoItemType[]>([]);
   private inProgressObserver = new BehaviorSubject<TodoItemType[]>([]);
   private doneObserver = new BehaviorSubject<TodoItemType[]>([]);
+  private userName = new BehaviorSubject<Pick<UserType, 'firstName' | 'lastName'>>({
+    firstName: 'User',
+    lastName: 'User',
+  });
 
   constructor(private loginService: LoginService, private notification: NzNotificationService) {
     this.loginService.userEmail.subscribe(() => {
@@ -40,6 +45,9 @@ export class FirestoreService {
       // subscribe on todoCollection
       collectionSnapshots(collectionGroup(this.firestore, `todo:${this.userEmail}`)).subscribe(
         (res) => {
+          getDoc(doc(this.firestore, 'users', this.userEmail)).then((res) => {
+            this.userName.next(res.data() as Pick<UserType, 'firstName' | 'lastName'>);
+          });
           return this.todoObserver.next(res.map((elem) => ({ ...(elem.data() as TodoItemType), id: elem.id })));
         },
         (err) => {
@@ -142,11 +150,15 @@ export class FirestoreService {
     } else if (currentContainerId === 'done') {
       dragItem.end = Date.now();
     }
-    Promise.all([
+    return Promise.all([
       deleteDoc(
         doc(this.firestore, `users/${this.userEmail}/${previousContainerId}:${this.userEmail}/`, dragItem.id || '')
       ),
       addDoc(collection(this.firestore, `users/${this.userEmail}/${currentContainerId}:${this.userEmail}`), dragItem),
     ]);
+  }
+
+  getUserName() {
+    return this.userName;
   }
 }
