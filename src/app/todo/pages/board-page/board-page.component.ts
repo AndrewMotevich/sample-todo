@@ -13,7 +13,6 @@ import { FilterInfoObject } from '../../models/filter-todo.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardPageComponent {
-  public isLoading = false;
   public inputValue!: string | null;
   public checkAllTodo = false;
   public checkAllInProgress = false;
@@ -61,16 +60,43 @@ export class BoardPageComponent {
     });
   }
 
-  //TODO: add move selected method
-  moveSelectedItems(collectionName: CollectionNameType) {
-    switch (collectionName) {
-      case 'todo':
-        break;
-      case 'inProgress':
-        break;
-      case 'done':
-        break;
-    }
+  moveSelectedItems(currentCollectionName: CollectionNameType, previousCollectionName: CollectionNameType) {
+    console.log(currentCollectionName, previousCollectionName);
+    // switch (previousCollectionName) {
+    //   case 'todo':
+    //     this.checkTodoCollection.forEach(async (collectionItem) => {
+    //       if (collectionItem.checked) {
+    //         let item: TodoItemType;
+    //         this.todo.subscribe(async (todos) => {
+    //           item = todos.filter((elem) => elem.id === collectionItem.id)[0];
+    //           await this.firestoreService.runDragAndDrop(previousCollectionName, currentCollectionName, item);
+    //         });
+    //       }
+    //     });
+    //     break;
+    //   case 'inProgress':
+    //     this.checkInProgressCollection.forEach((collectionItem) => {
+    //       if (collectionItem.checked) {
+    //         let item: TodoItemType;
+    //         this.inProgress.subscribe(async (todos) => {
+    //           item = todos.filter((elem) => elem.id === collectionItem.id)[0];
+    //           await this.firestoreService.runDragAndDrop(previousCollectionName, currentCollectionName, item);
+    //         });
+    //       }
+    //     });
+    //     break;
+    //   case 'done':
+    //     this.checkDoneCollection.forEach((collectionItem) => {
+    //       if (collectionItem.checked) {
+    //         let item: TodoItemType;
+    //         this.done.subscribe(async (todos) => {
+    //           item = todos.filter((elem) => elem.id === collectionItem.id)[0];
+    //           await this.firestoreService.runDragAndDrop(previousCollectionName, currentCollectionName, item);
+    //         });
+    //       }
+    //     });
+    //     break;
+    // }
   }
 
   deleteSelectedItems(collectionName: CollectionNameType) {
@@ -168,7 +194,7 @@ export class BoardPageComponent {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  drop(event: CdkDragDrop<any>): void {
+  drop(event: CdkDragDrop<any>) {
     if (event.previousContainer === event.container) {
       return;
     }

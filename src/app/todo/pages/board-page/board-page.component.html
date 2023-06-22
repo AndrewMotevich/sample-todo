@@ -88,7 +88,7 @@
     </h2>
     <ng-container *ngFor="let item of done | async | sortTodo:sortAllDone.order:sortAllDone.filter; let i = index">
       <app-todo-item collectionName="done" cdkDrag [title]="item.title" [todoItem]="item">
-        <label nz-checkbox [(ngModel)]="checkDoneCollection[i].checked"
+        <label nz-checkbox [(ngModel)]="this.checkDoneCollection[i].checked"
           (nzCheckedChange)="checkTodo('done', i)"></label>
       </app-todo-item>
     </ng-container>
@@ -98,24 +98,24 @@
 
 <nz-dropdown-menu #todoMenu="nzDropdownMenu">
   <ul nz-menu nzSelectable>
-    <li nz-menu-item nzIcon="user">Selected to InProgress</li>
-    <li nz-menu-item>Selected to Done</li>
+    <li nz-menu-item (click)="moveSelectedItems('inProgress', 'todo')">Selected to InProgress</li>
+    <li nz-menu-item (click)="moveSelectedItems('done', 'todo')">Selected to Done</li>
     <li nz-menu-item (click)="deleteSelectedItems('todo')">Delete selected</li>
   </ul>
 </nz-dropdown-menu>
 
 <nz-dropdown-menu #inProgressMenu="nzDropdownMenu">
   <ul nz-menu nzSelectable>
-    <li nz-menu-item>Selected to Todo</li>
-    <li nz-menu-item>Selected to Done</li>
+    <li nz-menu-item (click)="moveSelectedItems('todo', 'inProgress')">Selected to Todo</li>
+    <li nz-menu-item (click)="moveSelectedItems('done', 'inProgress')">Selected to Done</li>
     <li nz-menu-item (click)="deleteSelectedItems('inProgress')">Delete selected</li>
   </ul>
 </nz-dropdown-menu>
 
 <nz-dropdown-menu #doneMenu="nzDropdownMenu">
   <ul nz-menu nzSelectable>
-    <li nz-menu-item>Selected to Todo</li>
-    <li nz-menu-item>Selected to InProgress</li>
+    <li nz-menu-item (click)="moveSelectedItems('todo', 'done')">Selected to Todo</li>
+    <li nz-menu-item (click)="moveSelectedItems('inProgress', 'done')">Selected to InProgress</li>
     <li nz-menu-item (click)="deleteSelectedItems('done')">Delete selected</li>
   </ul>
 </nz-dropdown-menu>
