@@ -20,10 +20,14 @@ export class LoginService {
       this.auth,
       (user) => {
         if (user?.email) {
-          this.userEmail.next(user?.email || '');
-          this.router.navigate(['/board']);
+          if (this.router.url === '/') {
+            this.userEmail.next(user?.email || '');
+            this.router.navigate(['/board']);
+          }
         } else if (user === null) {
-          this.router.navigate(['/']);
+          if (this.router.url === '/') {
+            this.router.navigate(['/']);
+          }
         }
       },
       (err) => {

@@ -45,7 +45,7 @@ export class FirestoreService {
       // subscribe on todoCollection
       collectionSnapshots(collectionGroup(this.firestore, `todo:${this.userEmail}`)).subscribe(
         (res) => {
-          getDoc(doc(this.firestore, 'users', this.userEmail)).then((res) => {
+          getDoc(doc(this.firestore, 'users', this.userEmail || 'admin@gmail.com')).then((res) => {
             this.userName.next(res.data() as Pick<UserType, 'firstName' | 'lastName'>);
           });
           return this.todoObserver.next(res.map((elem) => ({ ...(elem.data() as TodoItemType), id: elem.id })));

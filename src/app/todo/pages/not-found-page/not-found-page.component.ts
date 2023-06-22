@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { interval, take } from 'rxjs';
 
 @Component({
   selector: 'app-not-found-page',
@@ -6,4 +8,18 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./not-found-page.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NotFoundPageComponent {}
+export class NotFoundPageComponent {
+  public intervalNumber = 5;
+  public interval = interval(1000).pipe(take(5));
+
+  constructor(private changeDetection: ChangeDetectorRef, private router: Router) {
+    this.interval.subscribe(() => {
+      if (this.intervalNumber === 1) {
+        this.router.navigate(['/']);
+      } else {
+        this.intervalNumber -= 1;
+        this.changeDetection.detectChanges();
+      }
+    });
+  }
+}
