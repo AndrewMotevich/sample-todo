@@ -10,6 +10,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 import { BoardPageRoutingModule } from './board-page-routing.module';
 import { BoardPageComponent } from './board-page.component';
@@ -23,7 +24,14 @@ import { ColorDatePipe } from '../../pipes/color-date.pipe';
 import { SortTodoPipe } from '../../pipes/sort-todo.pipe';
 
 @NgModule({
-  declarations: [BoardPageComponent, TodoItemComponent, TodoCreateComponent, TodoDetailsComponent, ColorDatePipe, SortTodoPipe],
+  declarations: [
+    BoardPageComponent,
+    TodoItemComponent,
+    TodoCreateComponent,
+    TodoDetailsComponent,
+    ColorDatePipe,
+    SortTodoPipe,
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -37,6 +45,7 @@ import { SortTodoPipe } from '../../pipes/sort-todo.pipe';
     NzDividerModule,
     NzCheckboxModule,
     NzDropDownModule,
+    NzSpinModule,
     BoardPageRoutingModule,
     ModalWindowComponent,
     DragDropModule,

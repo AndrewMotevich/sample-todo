@@ -13,6 +13,7 @@ import { FilterInfoObject } from '../../models/filter-todo.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardPageComponent {
+  public isLoading = false;
   public inputValue!: string | null;
   public checkAllTodo = false;
   public checkAllInProgress = false;
@@ -60,7 +61,48 @@ export class BoardPageComponent {
     });
   }
 
-  selectAll(collectionName: CollectionNameType) {
+  //TODO: add move selected method
+  moveSelectedItems(collectionName: CollectionNameType) {
+    switch (collectionName) {
+      case 'todo':
+        break;
+      case 'inProgress':
+        break;
+      case 'done':
+        break;
+    }
+  }
+
+  deleteSelectedItems(collectionName: CollectionNameType) {
+    switch (collectionName) {
+      case 'todo':
+        this.checkTodoCollection.forEach((elem) => {
+          if (elem.checked) {
+            this.firestoreService.deleteTodo('todo', elem.id);
+          }
+          this.checkAllTodo = false;
+        });
+        break;
+      case 'inProgress':
+        this.checkInProgressCollection.forEach((elem) => {
+          if (elem.checked) {
+            this.firestoreService.deleteTodo('inProgress', elem.id);
+          }
+          this.checkAllInProgress = false;
+        });
+        break;
+      case 'done':
+        this.checkDoneCollection.forEach((elem) => {
+          if (elem.checked) {
+            this.firestoreService.deleteTodo('done', elem.id);
+          }
+          this.checkAllDone = false;
+        });
+        break;
+    }
+  }
+
+  selectAllItems(collectionName: CollectionNameType) {
     switch (collectionName) {
       case 'todo':
         if (this.checkAllTodo) this.checkTodoCollection.forEach((elem) => (elem.checked = true));
