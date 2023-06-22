@@ -20,8 +20,9 @@
     <h2>
       <span>
         Todo
-        <button nz-button nzType="text" nzShape="circle">
-          <span nz-icon nzType="sort-ascending" nzTheme="outline"></span>
+        <button nz-button nzType="text" nzShape="circle" (click)="changeFilterOrder('todo')">
+          <span nz-icon [nzType]="(sortAllTodo.order === 'ascend') ? 'sort-ascending' : 'sort-descending'"
+            nzTheme="outline"></span>
         </button>
       </span>
       <div>
@@ -31,7 +32,7 @@
         </button>
       </div>
     </h2>
-    <ng-container *ngFor="let item of todo | async">
+    <ng-container *ngFor="let item of todo | async | sortTodo:sortAllTodo.order:sortAllTodo.filter">
       <app-todo-item collectionName="todo" cdkDrag [title]="item.title" [todoItem]="item"></app-todo-item>
     </ng-container>
   </div>
@@ -42,8 +43,9 @@
     <h2>
       <span>
         In Progress
-        <button nz-button nzType="text" nzShape="circle">
-          <span nz-icon nzType="sort-ascending" nzTheme="outline"></span>
+        <button nz-button nzType="text" nzShape="circle" (click)="changeFilterOrder('inProgress')">
+          <span nz-icon [nzType]="(sortAllInProgress.order === 'ascend') ? 'sort-ascending' : 'sort-descending'"
+            nzTheme="outline"></span>
         </button>
       </span>
       <div>
@@ -53,7 +55,7 @@
         </button>
       </div>
     </h2>
-    <ng-container *ngFor="let item of inProgress | async">
+    <ng-container *ngFor="let item of inProgress | async | sortTodo:sortAllInProgress.order:sortAllInProgress.filter">
       <app-todo-item collectionName="inProgress" cdkDrag [title]="item.title" [todoItem]="item"></app-todo-item>
     </ng-container>
   </div>
@@ -65,8 +67,9 @@
     <h2>
       <span>
         Done
-        <button nz-button nzType="text" nzShape="circle">
-          <span nz-icon nzType="sort-ascending" nzTheme="outline"></span>
+        <button nz-button nzType="text" nzShape="circle" (click)="changeFilterOrder('done')">
+          <span nz-icon [nzType]="(sortAllDone.order === 'ascend') ? 'sort-ascending' : 'sort-descending'"
+            nzTheme="outline"></span>
         </button>
       </span>
       <div>
@@ -76,7 +79,7 @@
         </button>
       </div>
     </h2>
-    <ng-container *ngFor="let item of done | async">
+    <ng-container *ngFor="let item of done | async | sortTodo:sortAllDone.order:sortAllDone.filter">
       <app-todo-item collectionName="done" cdkDrag [title]="item.title" [todoItem]="item"></app-todo-item>
     </ng-container>
   </div>

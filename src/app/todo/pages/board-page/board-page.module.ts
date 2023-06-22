@@ -20,9 +20,10 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TodoDetailsComponent } from '../../components/todo-details/todo-details.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ColorDatePipe } from '../../pipes/color-date.pipe';
+import { SortTodoPipe } from '../../pipes/sort-todo.pipe';
 
 @NgModule({
-  declarations: [BoardPageComponent, TodoItemComponent, TodoCreateComponent, TodoDetailsComponent, ColorDatePipe],
+  declarations: [BoardPageComponent, TodoItemComponent, TodoCreateComponent, TodoDetailsComponent, ColorDatePipe, SortTodoPipe],
   imports: [
     CommonModule,
     FormsModule,
