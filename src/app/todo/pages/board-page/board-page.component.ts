@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { TodoItemType } from '../../models/todo-item.model';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { CollectionNameType } from 'src/app/shared/models/colection-name.model';
 import { FilterInfoObject } from '../../models/filter-todo.model';
 
@@ -18,18 +18,77 @@ export class BoardPageComponent {
   public checkAllInProgress = false;
   public checkAllDone = false;
 
+  public checkTodoCollection: { id: string; checked: boolean }[] = [];
+  public checkInProgressCollection: { id: string; checked: boolean }[] = [];
+  public checkDoneCollection: { id: string; checked: boolean }[] = [];
+
   public sortAllTodo: FilterInfoObject = { filter: 'title', order: 'ascend' };
   public sortAllInProgress: FilterInfoObject = { filter: 'title', order: 'ascend' };
   public sortAllDone: FilterInfoObject = { filter: 'title', order: 'ascend' };
 
-  public todo: Observable<TodoItemType[]> = this.firestoreService.getTodoCollection().pipe();
-  public inProgress: Observable<TodoItemType[]> = this.firestoreService.getInProgressCollection();
-  public done: Observable<TodoItemType[]> = this.firestoreService.getDoneCollection();
+  public todo: Observable<TodoItemType[]> = this.firestoreService.getTodoCollection().pipe(
+    tap((x) => {
+      this.checkTodoCollection = [];
+      x.forEach((elem) => {
+        this.checkTodoCollection.push({ id: elem.id || '', checked: false });
+      });
+      return x;
+    })
+  );
+  public inProgress: Observable<TodoItemType[]> = this.firestoreService.getInProgressCollection().pipe(
+    tap((x) => {
+      this.checkInProgressCollection = [];
+      x.forEach((elem) => {
+        this.checkInProgressCollection.push({ id: elem.id || '', checked: false });
+      });
+      return x;
+    })
+  );
+  public done: Observable<TodoItemType[]> = this.firestoreService.getDoneCollection().pipe(
+    tap((x) => {
+      this.checkDoneCollection = [];
+      x.forEach((elem) => {
+        this.checkDoneCollection.push({ id: elem.id || '', checked: false });
+      });
+      return x;
+    })
+  );
 
   constructor(private firestoreService: FirestoreService) {
     this.firestoreService.boardMainInputValue.subscribe((res) => {
       this.inputValue = res;
     });
+  }
+
+  selectAll(collectionName: CollectionNameType) {
+    switch (collectionName) {
+      case 'todo':
+        if (this.checkAllTodo) this.checkTodoCollection.forEach((elem) => (elem.checked = true));
+        else this.checkTodoCollection.forEach((elem) => (elem.checked = false));
+        break;
+      case 'inProgress':
+        if (this.checkAllInProgress) this.checkInProgressCollection.forEach((elem) => (elem.checked = true));
+        else this.checkInProgressCollection.forEach((elem) => (elem.checked = false));
+        break;
+      case 'done':
+        if (this.checkAllDone) this.checkDoneCollection.forEach((elem) => (elem.checked = true));
+        else this.checkDoneCollection.forEach((elem) => (elem.checked = false));
+        break;
+    }
+  }
+
+  checkTodo(collectionName: CollectionNameType, index: number) {
+    switch (collectionName) {
+      case 'todo':
+        !this.checkTodoCollection[index].checked;
+        break;
+      case 'inProgress':
+        !this.checkInProgressCollection[index].checked;
+        break;
+      case 'done':
+        !this.checkDoneCollection[index].checked;
+        break;
+    }
   }
 
   changeFilterOrder(collectionName: CollectionNameType): void {

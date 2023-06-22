@@ -14,7 +14,6 @@
 </nz-input-group>
 
 <div class="board-wrapper">
-
   <div cdkDropList id="todo" #todoList="cdkDropList" [cdkDropListData]="todo | async"
     [cdkDropListConnectedTo]="[doneList, inProgressList]" class="board-colons-todo" (cdkDropListDropped)="drop($event)">
     <h2>
@@ -26,14 +25,17 @@
         </button>
       </span>
       <div>
-        <label nz-checkbox [(ngModel)]="checkAllTodo">Select all</label>
+        <label nz-checkbox [(ngModel)]="checkAllTodo" (nzCheckedChange)="selectAll('todo')">Select all</label>
         <button nz-button nzType="text" nzShape="circle" nz-dropdown [nzDropdownMenu]="todoMenu">
           <span nz-icon nzType="menu"></span>
         </button>
       </div>
     </h2>
-    <ng-container *ngFor="let item of todo | async | sortTodo:sortAllTodo.order:sortAllTodo.filter">
-      <app-todo-item collectionName="todo" cdkDrag [title]="item.title" [todoItem]="item"></app-todo-item>
+    <ng-container *ngFor="let item of todo | async | sortTodo:sortAllTodo.order:sortAllTodo.filter; let i = index">
+      <app-todo-item collectionName="todo" cdkDrag [title]="item.title" [todoItem]="item">
+        <label nz-checkbox [(ngModel)]="checkTodoCollection[i].checked"
+          (nzCheckedChange)="checkTodo('todo', i)"></label>
+      </app-todo-item>
     </ng-container>
   </div>
   <nz-divider></nz-divider>
@@ -49,14 +51,19 @@
         </button>
       </span>
       <div>
-        <label nz-checkbox [(ngModel)]="checkAllInProgress">Select all</label>
+        <label nz-checkbox [(ngModel)]="checkAllInProgress" (nzCheckedChange)="selectAll('inProgress')">Select
+          all</label>
         <button nz-button nzType="text" nzShape="circle" nz-dropdown [nzDropdownMenu]="inProgressMenu">
           <span nz-icon nzType="menu"></span>
         </button>
       </div>
     </h2>
-    <ng-container *ngFor="let item of inProgress | async | sortTodo:sortAllInProgress.order:sortAllInProgress.filter">
-      <app-todo-item collectionName="inProgress" cdkDrag [title]="item.title" [todoItem]="item"></app-todo-item>
+    <ng-container
+      *ngFor="let item of inProgress | async | sortTodo:sortAllInProgress.order:sortAllInProgress.filter; let i = index">
+      <app-todo-item collectionName="inProgress" cdkDrag [title]="item.title" [todoItem]="item">
+        <label nz-checkbox [(ngModel)]="checkInProgressCollection[i].checked"
+          (nzCheckedChange)="checkTodo('inProgress', i)"></label>
+      </app-todo-item>
     </ng-container>
   </div>
   <nz-divider></nz-divider>
@@ -73,14 +80,17 @@
         </button>
       </span>
       <div>
-        <label nz-checkbox [(ngModel)]="checkAllDone">Select all</label>
+        <label nz-checkbox [(ngModel)]="checkAllDone" (nzCheckedChange)="selectAll('done')">Select all</label>
         <button nz-button nzType="text" nzShape="circle" nz-dropdown [nzDropdownMenu]="doneMenu">
           <span nz-icon nzType="menu"></span>
         </button>
       </div>
     </h2>
-    <ng-container *ngFor="let item of done | async | sortTodo:sortAllDone.order:sortAllDone.filter">
-      <app-todo-item collectionName="done" cdkDrag [title]="item.title" [todoItem]="item"></app-todo-item>
+    <ng-container *ngFor="let item of done | async | sortTodo:sortAllDone.order:sortAllDone.filter; let i = index">
+      <app-todo-item collectionName="done" cdkDrag [title]="item.title" [todoItem]="item">
+        <label nz-checkbox [(ngModel)]="checkDoneCollection[i].checked"
+          (nzCheckedChange)="checkTodo('done', i)"></label>
+      </app-todo-item>
     </ng-container>
   </div>
   <nz-divider></nz-divider>
