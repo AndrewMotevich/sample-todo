@@ -1,11 +1,17 @@
-<nz-card [nzHoverable]="true" [nzTitle]="todoItem.title" [nzExtra]="deleteIcon" (click)="modal.showModal()">
-  <p>{{todoItem.description}}</p>
-</nz-card>
+<div class="todo-card">
+  <nz-card [ngClass]="{'todo': collectionName === 'todo',
+    'inProgress': collectionName === 'inProgress',
+    'done': collectionName === 'done'}" [nzHoverable]="true" [nzTitle]="todoItem.title" [nzExtra]="deleteIcon"
+    (click)="modal.showModal()">
+    <p>{{todoItem.description}}</p>
+  </nz-card>
+  <div [class]="'card-footer '+ (todoItem.start | colorDate)"></div>
+</div>
 <app-modal-window [title]="todoItem.title" #modal>
   <app-todo-details [todo]="todoItem" [collectionName]="collectionName"></app-todo-details>
 </app-modal-window>
 <ng-template #deleteIcon>
-  <button nz-button nzType="default" nzShape="circle" (click)="deleteItem($event, todoItem.id || '')">
+  <button nz-button nzType="text" nzShape="circle" (click)="deleteItem($event, todoItem.id || '')">
     <span nz-icon nzType="delete" nzTheme="outline"></span>
   </button>
 </ng-template>

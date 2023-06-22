@@ -19,9 +19,10 @@ import { ModalWindowComponent } from 'src/app/shared/components/modal-window/mod
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TodoDetailsComponent } from '../../components/todo-details/todo-details.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ColorDatePipe } from '../../pipes/color-date.pipe';
 
 @NgModule({
-  declarations: [BoardPageComponent, TodoItemComponent, TodoCreateComponent, TodoDetailsComponent],
+  declarations: [BoardPageComponent, TodoItemComponent, TodoCreateComponent, TodoDetailsComponent, ColorDatePipe],
   imports: [
     CommonModule,
     FormsModule,
