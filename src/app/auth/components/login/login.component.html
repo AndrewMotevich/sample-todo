@@ -18,17 +18,17 @@
       </nz-form-control>
     </nz-form-item>
 
-    <div nz-row>
-      <div nz-col [nzSpan]="12">
+    <div class="row">
+      <div>
         <label nz-checkbox formControlName="remember">
           <span>Remember me</span>
         </label>
       </div>
-      <div nz-col [nzSpan]="12">
-        <a>Forgot password</a>
+      <div>
+        <a href="mailto:motevich@gmail.com">Forgot password</a>
       </div>
     </div>
 
-    <button nz-button nzBlock [nzType]="'primary'" [nzLoading]="isOkLoading">Log in</button>
+    <button nz-button nzBlock class="margin" [nzType]="'primary'" [nzLoading]="isOkLoading">Log in</button>
   </form>
 </app-modal-window>

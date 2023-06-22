@@ -15,7 +15,7 @@ export class NotFoundPageComponent {
   constructor(private changeDetection: ChangeDetectorRef, private router: Router) {
     this.interval.subscribe(() => {
       if (this.intervalNumber === 1) {
-        this.router.navigate(['/']);
+        this.router.navigate(['/board']);
       } else {
         this.intervalNumber -= 1;
         this.changeDetection.detectChanges();

@@ -25,9 +25,7 @@ export class LoginService {
             this.router.navigate(['/board']);
           }
         } else if (user === null) {
-          if (this.router.url === '/') {
-            this.router.navigate(['/']);
-          }
+          this.router.navigate(['/']);
         }
       },
       (err) => {
