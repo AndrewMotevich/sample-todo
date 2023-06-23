@@ -25,7 +25,8 @@
         </button>
       </span>
       <div>
-        <label nz-checkbox [(ngModel)]="checkAllTodo" (nzCheckedChange)="todoAction('selectAll','todo')">Select
+        <label nz-checkbox [appSelectAll]="checkAllTodo" collectionName="todo" [(ngModel)]="checkAllTodo"
+          (nzCheckedChange)="todoAction('selectAll','todo')">Select
           all</label>
         <button nz-button nzType="text" nzShape="circle" nz-dropdown [nzDropdownMenu]="todoMenu">
           <span nz-icon nzType="menu"></span>
@@ -51,7 +52,7 @@
         </button>
       </span>
       <div>
-        <label nz-checkbox [(ngModel)]="checkAllInProgress"
+        <label nz-checkbox [appSelectAll]="checkAllInProgress" collectionName="todo" [(ngModel)]="checkAllInProgress"
           (nzCheckedChange)="todoAction('selectAll','inProgress')">Select
           all</label>
         <button nz-button nzType="text" nzShape="circle" nz-dropdown [nzDropdownMenu]="inProgressMenu">
@@ -80,7 +81,8 @@
         </button>
       </span>
       <div>
-        <label nz-checkbox [(ngModel)]="checkAllDone" (nzCheckedChange)="todoAction('selectAll','done')">Select
+        <label nz-checkbox [appSelectAll]="checkAllDone" collectionName="done" [(ngModel)]="checkAllDone"
+          (nzCheckedChange)="todoAction('selectAll','done')">Select
           all</label>
         <button nz-button nzType="text" nzShape="circle" nz-dropdown [nzDropdownMenu]="doneMenu">
           <span nz-icon nzType="menu"></span>

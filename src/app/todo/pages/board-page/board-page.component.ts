@@ -121,12 +121,6 @@ export class BoardPageComponent {
     }
   }
 
-  unselectAllCheck(collectionName: CollectionNameType) {
-    collectionName === 'todo' && (this.checkAllTodo = false);
-    collectionName === 'inProgress' && (this.checkAllInProgress = false);
-    collectionName === 'done' && (this.checkAllDone = false);
-  }
-
   changeFilterOrder(collectionName: CollectionNameType): void {
     switch (collectionName) {
       case 'done':

@@ -24,6 +24,7 @@ import { ColorDatePipe } from '../../pipes/color-date.pipe';
 import { SortTodoPipe } from '../../pipes/sort-todo.pipe';
 import { TodoItemColorDirective } from '../../directives/todo-item-color.directive';
 import { SelectTodoItemDirective } from '../../directives/select-todo-item.directive';
+import { SelectAllTodoDirective } from '../../directives/select-all-todo.directive';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { SelectTodoItemDirective } from '../../directives/select-todo-item.direc
     SortTodoPipe,
     TodoItemColorDirective,
     SelectTodoItemDirective,
+    SelectAllTodoDirective,
   ],
   imports: [
     CommonModule,

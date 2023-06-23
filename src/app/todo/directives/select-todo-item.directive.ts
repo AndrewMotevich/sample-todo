@@ -15,10 +15,10 @@ export class SelectTodoItemDirective {
   selectItem() {
     if (this.appSelectTodoItem.selected) {
       this.appSelectTodoItem.selected = false;
-      this.elem.nativeElement.style.outline = 'none';
+      this.elem.nativeElement.classList.remove('outline');
     } else {
       this.appSelectTodoItem.selected = true;
-      this.elem.nativeElement.style.outline = 'thick double #32a1ce';
+      this.elem.nativeElement.classList.add('outline');
     }
   }
 }
