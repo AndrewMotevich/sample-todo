@@ -2,9 +2,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { TodoItemType } from '../../models/todo-item.model';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { CollectionNameType } from 'src/app/shared/models/colection-name.model';
-import { FilterInfoObject } from '../../models/filter-todo.model';
+import { FilterInfoObject, FilterType } from '../../models/filter-todo.model';
+import { ActionsTodoType } from '../../models/action-todo.model';
 
 @Component({
   selector: 'app-board-page',
@@ -18,41 +19,13 @@ export class BoardPageComponent {
   public checkAllInProgress = false;
   public checkAllDone = false;
 
-  public checkTodoCollection: { id: string; checked: boolean }[] = [];
-  public checkInProgressCollection: { id: string; checked: boolean }[] = [];
-  public checkDoneCollection: { id: string; checked: boolean }[] = [];
-
   public sortAllTodo: FilterInfoObject = { filter: 'title', order: 'ascend' };
   public sortAllInProgress: FilterInfoObject = { filter: 'title', order: 'ascend' };
   public sortAllDone: FilterInfoObject = { filter: 'title', order: 'ascend' };
 
-  public todo: Observable<TodoItemType[]> = this.firestoreService.getTodoCollection().pipe(
-    tap((x) => {
-      this.checkTodoCollection = [];
-      x.forEach((elem) => {
-        this.checkTodoCollection.push({ id: elem.id || '', checked: false });
-      });
-      return x;
-    })
-  );
-  public inProgress: Observable<TodoItemType[]> = this.firestoreService.getInProgressCollection().pipe(
-    tap((x) => {
-      this.checkInProgressCollection = [];
-      x.forEach((elem) => {
-        this.checkInProgressCollection.push({ id: elem.id || '', checked: false });
-      });
-      return x;
-    })
-  );
-  public done: Observable<TodoItemType[]> = this.firestoreService.getDoneCollection().pipe(
-    tap((x) => {
-      this.checkDoneCollection = [];
-      x.forEach((elem) => {
-        this.checkDoneCollection.push({ id: elem.id || '', checked: false });
-      });
-      return x;
-    })
-  );
+  public todo: Observable<TodoItemType[]> = this.firestoreService.getTodoCollection();
+  public inProgress: Observable<TodoItemType[]> = this.firestoreService.getInProgressCollection();
+  public done: Observable<TodoItemType[]> = this.firestoreService.getDoneCollection();
 
   constructor(private firestoreService: FirestoreService) {
     this.firestoreService.boardMainInputValue.subscribe((res) => {
@@ -60,101 +33,36 @@ export class BoardPageComponent {
     });
   }
 
-  moveSelectedItems(currentCollectionName: CollectionNameType, previousCollectionName: CollectionNameType) {
-    console.log(currentCollectionName, previousCollectionName);
-    // switch (previousCollectionName) {
-    //   case 'todo':
-    //     this.checkTodoCollection.forEach(async (collectionItem) => {
-    //       if (collectionItem.checked) {
-    //         let item: TodoItemType;
-    //         this.todo.subscribe(async (todos) => {
-    //           item = todos.filter((elem) => elem.id === collectionItem.id)[0];
-    //           await this.firestoreService.runDragAndDrop(previousCollectionName, currentCollectionName, item);
-    //         });
-    //       }
-    //     });
-    //     break;
-    //   case 'inProgress':
-    //     this.checkInProgressCollection.forEach((collectionItem) => {
-    //       if (collectionItem.checked) {
-    //         let item: TodoItemType;
-    //         this.inProgress.subscribe(async (todos) => {
-    //           item = todos.filter((elem) => elem.id === collectionItem.id)[0];
-    //           await this.firestoreService.runDragAndDrop(previousCollectionName, currentCollectionName, item);
-    //         });
-    //       }
-    //     });
-    //     break;
-    //   case 'done':
-    //     this.checkDoneCollection.forEach((collectionItem) => {
-    //       if (collectionItem.checked) {
-    //         let item: TodoItemType;
-    //         this.done.subscribe(async (todos) => {
-    //           item = todos.filter((elem) => elem.id === collectionItem.id)[0];
-    //           await this.firestoreService.runDragAndDrop(previousCollectionName, currentCollectionName, item);
-    //         });
-    //       }
-    //     });
-    //     break;
-    // }
-  }
-
-  deleteSelectedItems(collectionName: CollectionNameType) {
+  todoAction(
+    action: ActionsTodoType,
+    collectionName: CollectionNameType,
+    moveToCollectionName: CollectionNameType = 'todo'
+  ) {
     switch (collectionName) {
       case 'todo':
-        this.checkTodoCollection.forEach((elem) => {
-          if (elem.checked) {
-            this.firestoreService.deleteTodo('todo', elem.id);
-          }
-          this.checkAllTodo = false;
-        });
+        this.todo.subscribe((res) => {
+          action === 'selectAll' && res.forEach((todo) => (todo.checked = this.checkAllTodo));
+          action === 'moveSelected' && console.log('move', moveToCollectionName);
+          action === 'deleteSelected' && console.log('delete');
+        }).unsubscribe;
         break;
       case 'inProgress':
-        this.checkInProgressCollection.forEach((elem) => {
-          if (elem.checked) {
-            this.firestoreService.deleteTodo('inProgress', elem.id);
-          }
-          this.checkAllInProgress = false;
-        });
+        this.inProgress
+          .subscribe((res) => {
+            action === 'selectAll' && res.forEach((todo) => (todo.checked = this.checkAllInProgress));
+            action === 'moveSelected' && console.log('move', moveToCollectionName);
+            action === 'deleteSelected' && console.log('delete');
+          })
+          .unsubscribe();
         break;
       case 'done':
-        this.checkDoneCollection.forEach((elem) => {
-          if (elem.checked) {
-            this.firestoreService.deleteTodo('done', elem.id);
-          }
-          this.checkAllDone = false;
-        });
-        break;
-    }
-  }
-
-  selectAllItems(collectionName: CollectionNameType) {
-    switch (collectionName) {
-      case 'todo':
-        if (this.checkAllTodo) this.checkTodoCollection.forEach((elem) => (elem.checked = true));
-        else this.checkTodoCollection.forEach((elem) => (elem.checked = false));
-        break;
-      case 'inProgress':
-        if (this.checkAllInProgress) this.checkInProgressCollection.forEach((elem) => (elem.checked = true));
-        else this.checkInProgressCollection.forEach((elem) => (elem.checked = false));
-        break;
-      case 'done':
-        if (this.checkAllDone) this.checkDoneCollection.forEach((elem) => (elem.checked = true));
-        else this.checkDoneCollection.forEach((elem) => (elem.checked = false));
-        break;
-    }
-  }
-
-  checkTodo(collectionName: CollectionNameType, index: number) {
-    switch (collectionName) {
-      case 'todo':
-        !this.checkTodoCollection[index].checked;
-        break;
-      case 'inProgress':
-        !this.checkInProgressCollection[index].checked;
-        break;
-      case 'done':
-        !this.checkDoneCollection[index].checked;
+        this.done
+          .subscribe((res) => {
+            action === 'selectAll' && res.forEach((todo) => (todo.checked = this.checkAllDone));
+            action === 'moveSelected' && console.log('move', moveToCollectionName);
+            action === 'deleteSelected' && console.log('delete');
+          })
+          .unsubscribe();
         break;
     }
   }
@@ -176,21 +84,10 @@ export class BoardPageComponent {
     }
   }
 
-  changeFilter(collectionName: CollectionNameType): void {
-    switch (collectionName) {
-      case 'done':
-        if (this.sortAllDone.filter === 'date') this.sortAllDone.filter = 'title';
-        else this.sortAllDone.filter = 'date';
-        break;
-      case 'inProgress':
-        if (this.sortAllInProgress.filter === 'date') this.sortAllInProgress.filter = 'title';
-        else this.sortAllInProgress.filter = 'date';
-        break;
-      case 'todo':
-        if (this.sortAllTodo.filter === 'date') this.sortAllTodo.filter = 'title';
-        else this.sortAllTodo.filter = 'date';
-        break;
-    }
+  changeFilter(filter: FilterType): void {
+    this.sortAllDone.filter = filter;
+    this.sortAllInProgress.filter = filter;
+    this.sortAllTodo.filter = filter;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

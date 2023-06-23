@@ -48,7 +48,9 @@ export class FirestoreService {
           getDoc(doc(this.firestore, 'users', this.userEmail || 'admin@gmail.com')).then((res) => {
             this.userName.next(res.data() as Pick<UserType, 'firstName' | 'lastName'>);
           });
-          return this.todoObserver.next(res.map((elem) => ({ ...(elem.data() as TodoItemType), id: elem.id })));
+          return this.todoObserver.next(
+            res.map((elem) => ({ ...(elem.data() as TodoItemType), id: elem.id, checked: false }))
+          );
         },
         (err) => {
           this.notification.create('error', 'Todo Collection Observer', err.message);
@@ -57,7 +59,9 @@ export class FirestoreService {
       // subscribe on inProgressCollection
       collectionSnapshots(collectionGroup(this.firestore, `inProgress:${this.userEmail}`)).subscribe(
         (res) => {
-          return this.inProgressObserver.next(res.map((elem) => ({ ...(elem.data() as TodoItemType), id: elem.id })));
+          return this.inProgressObserver.next(
+            res.map((elem) => ({ ...(elem.data() as TodoItemType), id: elem.id, checked: false }))
+          );
         },
         (err) => {
           this.notification.create('error', 'In Progress Collection Observer', err.message);
@@ -66,7 +70,9 @@ export class FirestoreService {
       // subscribe on doneCollection
       collectionSnapshots(collectionGroup(this.firestore, `done:${this.userEmail}`)).subscribe(
         (res) => {
-          return this.doneObserver.next(res.map((elem) => ({ ...(elem.data() as TodoItemType), id: elem.id })));
+          return this.doneObserver.next(
+            res.map((elem) => ({ ...(elem.data() as TodoItemType), id: elem.id, checked: false }))
+          );
         },
         (err) => {
           this.notification.create('error', 'Done Collection Observer', err.message);

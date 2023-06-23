@@ -4,4 +4,5 @@ export type TodoItemType = {
   description: string;
   start: number;
   end: number | null;
+  checked?: boolean;
 };
