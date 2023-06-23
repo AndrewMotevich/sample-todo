@@ -49,10 +49,14 @@ export class BoardPageComponent {
                   this.firestoreService.runDragAndDrop(collectionName, moveToCollectionName, res[i]);
                 }
               }
+              this.checkAllTodo = false;
+              this.todoAction('selectAll', collectionName);
             })();
           action === 'deleteSelected' &&
             res.forEach((todo) => {
               if (todo.checked) this.firestoreService.deleteTodo(collectionName, todo.id || '');
+              this.checkAllTodo = false;
+              this.todoAction('selectAll', collectionName);
             });
         }).unsubscribe;
         break;
@@ -67,12 +71,15 @@ export class BoardPageComponent {
                     this.firestoreService.runDragAndDrop(collectionName, moveToCollectionName, res[i]);
                   }
                 }
+                this.checkAllInProgress = false;
+                this.todoAction('selectAll', collectionName);
               })();
             action === 'deleteSelected' &&
               res.forEach((todo) => {
                 if (todo.checked) this.firestoreService.deleteTodo(collectionName, todo.id || '');
+                this.checkAllInProgress = false;
+                this.todoAction('selectAll', collectionName);
               });
-            this.checkAllInProgress = false;
           })
           .unsubscribe();
         break;
@@ -87,17 +94,25 @@ export class BoardPageComponent {
                     this.firestoreService.runDragAndDrop(collectionName, moveToCollectionName, res[i]);
                   }
                 }
+                this.checkAllDone = false;
+                this.todoAction('selectAll', collectionName);
               })();
             action === 'deleteSelected' &&
               res.forEach((todo) => {
                 if (todo.checked) this.firestoreService.deleteTodo(collectionName, todo.id || '');
+                this.checkAllDone = false;
+                this.todoAction('selectAll', collectionName);
               });
-            this.checkAllDone = false;
           })
           .unsubscribe();
         break;
     }
-    this.checkAllTodo = false;
+  }
+
+  unselectAllCheck(collectionName: CollectionNameType) {
+    collectionName === 'todo' && (this.checkAllTodo = false);
+    collectionName === 'inProgress' && (this.checkAllInProgress = false);
+    collectionName === 'done' && (this.checkAllDone = false);
   }
 
   changeFilterOrder(collectionName: CollectionNameType): void {
