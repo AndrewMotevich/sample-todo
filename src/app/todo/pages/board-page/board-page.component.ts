@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { CollectionNameType } from 'src/app/shared/models/colection-name.model';
 import { FilterInfoObject, FilterType } from '../../models/filter-todo.model';
 import { ActionsTodoType } from '../../models/action-todo.model';
+import { SortOptionService } from 'src/app/core/services/sort-option.service';
 
 @Component({
   selector: 'app-board-page',
@@ -27,10 +28,11 @@ export class BoardPageComponent {
   public inProgress: Observable<TodoItemType[]> = this.firestoreService.getInProgressCollection();
   public done: Observable<TodoItemType[]> = this.firestoreService.getDoneCollection();
 
-  constructor(private firestoreService: FirestoreService) {
+  constructor(private firestoreService: FirestoreService, public sortOptionService: SortOptionService) {
     this.firestoreService.boardMainInputValue.subscribe((res) => {
       this.inputValue = res;
     });
+    this.sortOptionService.getSortOptions().subscribe((res) => this.changeFilter(res));
   }
 
   todoAction(

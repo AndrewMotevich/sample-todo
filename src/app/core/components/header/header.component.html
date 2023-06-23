@@ -1,4 +1,4 @@
-<nz-page-header nzBackIcon nzTitle="Sample Todo">
+<nz-page-header nzBackIcon [nzTitle]="title">
   <nz-page-header-extra>
     <ul nz-menu nzMode="horizontal">
 
@@ -16,8 +16,16 @@
       <li nz-submenu nzTitle="Options" nzIcon="setting">
         <ul>
           <li nz-menu-item (click)="switchTheme()">Switch theme</li>
+          <ul nz-submenu nzTitle="Sorting">
+            <li nz-menu-item (click)="sortOptionService.setSortOptions('title')">Sort by alphabet</li>
+            <li nz-menu-item (click)="sortOptionService.setSortOptions('date')">Sort by creation date</li>
+          </ul>
         </ul>
       </li>
     </ul>
   </nz-page-header-extra>
 </nz-page-header>
+
+<ng-template #title>
+  <h1><a routerLink="board">Sample Todo</a></h1>
+</ng-template>

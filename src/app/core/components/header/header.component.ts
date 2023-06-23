@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { LoginService } from 'src/app/shared/services/login.service';
 import { ThemeService } from 'src/app/theme.service';
+import { SortOptionService } from '../../services/sort-option.service';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +16,8 @@ export class HeaderComponent {
   constructor(
     private loginService: LoginService,
     private themeService: ThemeService,
-    private firestoreService: FirestoreService
+    private firestoreService: FirestoreService,
+    public sortOptionService: SortOptionService
   ) {}
 
   public getUser(): void {
