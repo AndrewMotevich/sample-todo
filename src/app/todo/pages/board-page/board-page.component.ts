@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { TodoItemType } from '../../models/todo-item.model';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { CollectionNameType } from 'src/app/shared/models/colection-name.model';
 import { FilterInfoObject, FilterType } from '../../models/filter-todo.model';
 import { ActionsTodoType } from '../../models/action-todo.model';
@@ -24,7 +24,7 @@ export class BoardPageComponent {
   public sortAllInProgress: FilterInfoObject = { filter: 'title', order: 'ascend' };
   public sortAllDone: FilterInfoObject = { filter: 'title', order: 'ascend' };
 
-  public todo: Observable<TodoItemType[]> = this.firestoreService.getTodoCollection();
+  public todo: BehaviorSubject<TodoItemType[]> = this.firestoreService.getTodoCollection();
   public inProgress: Observable<TodoItemType[]> = this.firestoreService.getInProgressCollection();
   public done: Observable<TodoItemType[]> = this.firestoreService.getDoneCollection();
 
@@ -43,7 +43,10 @@ export class BoardPageComponent {
     switch (collectionName) {
       case 'todo':
         this.todo.subscribe((res) => {
-          action === 'selectAll' && res.forEach((todo) => (todo.selected = this.checkAllTodo));
+          action === 'selectAll' &&
+            res.forEach((todo) => {
+              todo.selected = this.checkAllTodo;
+            });
           action === 'moveSelected' &&
             (() => {
               for (let i = 0; i < res.length; i++) {
@@ -108,6 +111,13 @@ export class BoardPageComponent {
           })
           .unsubscribe();
         break;
+    }
+  }
+
+  checkTodo(collectionName: CollectionNameType, item: TodoItemType) {
+    if (collectionName === 'done') this.firestoreService.runDragAndDrop(collectionName, 'todo', item);
+    else {
+      this.firestoreService.runDragAndDrop(collectionName, 'done', item);
     }
   }
 

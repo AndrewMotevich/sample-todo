@@ -11,6 +11,7 @@ import { CollectionNameType } from 'src/app/shared/models/colection-name.model';
 })
 export class TodoItemComponent {
   @Input() todoItem!: TodoItemType;
+  @Input() collectionArray!: TodoItemType[];
   @Input() collectionName!: CollectionNameType;
 
   constructor(private firestoreService: FirestoreService) {}

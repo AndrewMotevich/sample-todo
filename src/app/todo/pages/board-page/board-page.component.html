@@ -34,7 +34,7 @@
     </h2>
     <ng-container *ngFor="let item of todo | async | sortTodo:sortAllTodo.order:sortAllTodo.filter; let i = index">
       <app-todo-item collectionName="todo" cdkDrag [title]="item.title" [todoItem]="item">
-        <label nz-checkbox [(ngModel)]="item.checked" (nzCheckedChange)="unselectAllCheck('todo')"></label>
+        <label nz-checkbox [(ngModel)]="item.checked" (nzCheckedChange)="checkTodo('todo', item)"></label>
       </app-todo-item>
     </ng-container>
   </div>
@@ -62,7 +62,7 @@
     <ng-container
       *ngFor="let item of inProgress | async | sortTodo:sortAllInProgress.order:sortAllInProgress.filter; let i = index">
       <app-todo-item collectionName="inProgress" cdkDrag [title]="item.title" [todoItem]="item">
-        <label nz-checkbox [(ngModel)]="item.checked" (nzCheckedChange)="unselectAllCheck('inProgress')"></label>
+        <label nz-checkbox [(ngModel)]="item.checked" (nzCheckedChange)="checkTodo('inProgress', item)"></label>
       </app-todo-item>
     </ng-container>
   </div>
@@ -89,7 +89,7 @@
     </h2>
     <ng-container *ngFor="let item of done | async | sortTodo:sortAllDone.order:sortAllDone.filter; let i = index">
       <app-todo-item collectionName="done" cdkDrag [title]="item.title" [todoItem]="item">
-        <label nz-checkbox [(ngModel)]="item.checked" (nzCheckedChange)="unselectAllCheck('done')"></label>
+        <label nz-checkbox [(ngModel)]="item.checked" (nzCheckedChange)="checkTodo('done', item)"></label>
       </app-todo-item>
     </ng-container>
   </div>

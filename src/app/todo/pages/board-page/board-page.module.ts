@@ -23,6 +23,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ColorDatePipe } from '../../pipes/color-date.pipe';
 import { SortTodoPipe } from '../../pipes/sort-todo.pipe';
 import { TodoItemColorDirective } from '../../directives/todo-item-color.directive';
+import { SelectTodoItemDirective } from '../../directives/select-todo-item.directive';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { TodoItemColorDirective } from '../../directives/todo-item-color.directi
     ColorDatePipe,
     SortTodoPipe,
     TodoItemColorDirective,
+    SelectTodoItemDirective,
   ],
   imports: [
     CommonModule,
