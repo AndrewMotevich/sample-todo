@@ -17,13 +17,13 @@ export class SelectAllTodoDirective implements OnChanges {
       case 'todo':
         if (this.appSelectAll) {
           document.querySelectorAll('nz-card').forEach((elem) => {
-            if (elem.attributes.getNamedItem('ng-reflect-app-todo-item-color')?.value === this.collectionName) {
+            if (elem.classList.contains(this.collectionName)) {
               elem.classList.add('outline');
             }
           });
         } else {
           document.querySelectorAll('nz-card').forEach((elem) => {
-            if (elem.attributes.getNamedItem('ng-reflect-app-todo-item-color')?.value === this.collectionName) {
+            if (elem.classList.contains(this.collectionName)) {
               elem.classList.remove('outline');
             }
           });
@@ -32,13 +32,13 @@ export class SelectAllTodoDirective implements OnChanges {
       case 'inProgress':
         if (this.appSelectAll) {
           document.querySelectorAll('nz-card').forEach((elem) => {
-            if (elem.attributes.getNamedItem('ng-reflect-app-todo-item-color')?.value === this.collectionName) {
+            if (elem.classList.contains(this.collectionName)) {
               elem.classList.add('outline');
             }
           });
         } else {
           document.querySelectorAll('nz-card').forEach((elem) => {
-            if (elem.attributes.getNamedItem('ng-reflect-app-todo-item-color')?.value === this.collectionName) {
+            if (elem.classList.contains(this.collectionName)) {
               elem.classList.remove('outline');
             }
           });
@@ -47,13 +47,13 @@ export class SelectAllTodoDirective implements OnChanges {
       case 'done':
         if (this.appSelectAll) {
           document.querySelectorAll('nz-card').forEach((elem) => {
-            if (elem.attributes.getNamedItem('ng-reflect-app-todo-item-color')?.value === this.collectionName) {
+            if (elem.classList.contains(this.collectionName)) {
               elem.classList.add('outline');
             }
           });
         } else {
           document.querySelectorAll('nz-card').forEach((elem) => {
-            if (elem.attributes.getNamedItem('ng-reflect-app-todo-item-color')?.value === this.collectionName) {
+            if (elem.classList.contains(this.collectionName)) {
               elem.classList.remove('outline');
             }
           });

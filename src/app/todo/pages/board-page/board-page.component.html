@@ -52,8 +52,8 @@
         </button>
       </span>
       <div>
-        <label nz-checkbox [appSelectAll]="checkAllInProgress" collectionName="todo" [(ngModel)]="checkAllInProgress"
-          (nzCheckedChange)="todoAction('selectAll','inProgress')">Select
+        <label nz-checkbox [appSelectAll]="checkAllInProgress" collectionName="inProgress"
+          [(ngModel)]="checkAllInProgress" (nzCheckedChange)="todoAction('selectAll','inProgress')">Select
           all</label>
         <button nz-button nzType="text" nzShape="circle" nz-dropdown [nzDropdownMenu]="inProgressMenu">
           <span nz-icon nzType="menu"></span>
