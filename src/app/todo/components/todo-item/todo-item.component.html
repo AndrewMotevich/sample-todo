@@ -1,7 +1,5 @@
 <div class="todo-card">
-  <nz-card [ngClass]="{'todo': collectionName === 'todo',
-    'inProgress': collectionName === 'inProgress',
-    'done': collectionName === 'done'}" [nzHoverable]="true" [nzTitle]="cardTitle" [nzExtra]="deleteIcon"
+  <nz-card [appTodoItemColor]="collectionName" [nzHoverable]="true" [nzTitle]="cardTitle" [nzExtra]="deleteIcon"
     (click)="modal.showModal()">
     <p>{{todoItem.description}}</p>
   </nz-card>

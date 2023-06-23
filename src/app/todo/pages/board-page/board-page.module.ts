@@ -22,6 +22,7 @@ import { TodoDetailsComponent } from '../../components/todo-details/todo-details
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ColorDatePipe } from '../../pipes/color-date.pipe';
 import { SortTodoPipe } from '../../pipes/sort-todo.pipe';
+import { TodoItemColorDirective } from '../../directives/todo-item-color.directive';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { SortTodoPipe } from '../../pipes/sort-todo.pipe';
     TodoDetailsComponent,
     ColorDatePipe,
     SortTodoPipe,
+    TodoItemColorDirective,
   ],
   imports: [
     CommonModule,
