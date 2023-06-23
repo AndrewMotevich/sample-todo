@@ -43,11 +43,11 @@ export class BoardPageComponent {
     switch (collectionName) {
       case 'todo':
         this.todo.subscribe((res) => {
-          action === 'selectAll' && res.forEach((todo) => (todo.checked = this.checkAllTodo));
+          action === 'selectAll' && res.forEach((todo) => (todo.selected = this.checkAllTodo));
           action === 'moveSelected' &&
             (() => {
               for (let i = 0; i < res.length; i++) {
-                if (res[i].checked) {
+                if (res[i].selected) {
                   this.firestoreService.runDragAndDrop(collectionName, moveToCollectionName, res[i]);
                 }
               }
@@ -56,7 +56,7 @@ export class BoardPageComponent {
             })();
           action === 'deleteSelected' &&
             res.forEach((todo) => {
-              if (todo.checked) this.firestoreService.deleteTodo(collectionName, todo.id || '');
+              if (todo.selected) this.firestoreService.deleteTodo(collectionName, todo.id || '');
               this.checkAllTodo = false;
               this.todoAction('selectAll', collectionName);
             });
@@ -65,11 +65,11 @@ export class BoardPageComponent {
       case 'inProgress':
         this.inProgress
           .subscribe((res) => {
-            action === 'selectAll' && res.forEach((todo) => (todo.checked = this.checkAllInProgress));
+            action === 'selectAll' && res.forEach((todo) => (todo.selected = this.checkAllInProgress));
             action === 'moveSelected' &&
               (() => {
                 for (let i = 0; i < res.length; i++) {
-                  if (res[i].checked) {
+                  if (res[i].selected) {
                     this.firestoreService.runDragAndDrop(collectionName, moveToCollectionName, res[i]);
                   }
                 }
@@ -78,7 +78,7 @@ export class BoardPageComponent {
               })();
             action === 'deleteSelected' &&
               res.forEach((todo) => {
-                if (todo.checked) this.firestoreService.deleteTodo(collectionName, todo.id || '');
+                if (todo.selected) this.firestoreService.deleteTodo(collectionName, todo.id || '');
                 this.checkAllInProgress = false;
                 this.todoAction('selectAll', collectionName);
               });
@@ -88,11 +88,11 @@ export class BoardPageComponent {
       case 'done':
         this.done
           .subscribe((res) => {
-            action === 'selectAll' && res.forEach((todo) => (todo.checked = this.checkAllDone));
+            action === 'selectAll' && res.forEach((todo) => (todo.selected = this.checkAllDone));
             action === 'moveSelected' &&
               (() => {
                 for (let i = 0; i < res.length; i++) {
-                  if (res[i].checked) {
+                  if (res[i].selected) {
                     this.firestoreService.runDragAndDrop(collectionName, moveToCollectionName, res[i]);
                   }
                 }
@@ -101,7 +101,7 @@ export class BoardPageComponent {
               })();
             action === 'deleteSelected' &&
               res.forEach((todo) => {
-                if (todo.checked) this.firestoreService.deleteTodo(collectionName, todo.id || '');
+                if (todo.selected) this.firestoreService.deleteTodo(collectionName, todo.id || '');
                 this.checkAllDone = false;
                 this.todoAction('selectAll', collectionName);
               });

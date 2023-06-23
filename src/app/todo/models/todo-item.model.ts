@@ -5,4 +5,5 @@ export type TodoItemType = {
   start: number;
   end: number | null;
   checked?: boolean;
+  selected?: boolean;
 };

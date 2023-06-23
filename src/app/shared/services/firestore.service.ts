@@ -18,9 +18,15 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { CollectionNameType } from '../models/colection-name.model';
 
 const startTodos = {
-  todo: { title: 'New TODO', description: 'Add new todo', start: Date.now(), end: null },
-  inProgress: { title: 'Features', description: 'Check all features of this app', start: Date.now(), end: null },
-  done: { title: 'Sing Up', description: 'Sign Up to this app', start: Date.now(), end: Date.now() },
+  todo: { title: 'New TODO', description: 'Add new todo', start: Date.now(), end: null, checked: false },
+  inProgress: {
+    title: 'Features',
+    description: 'Check all features of this app',
+    start: Date.now(),
+    end: null,
+    checked: false,
+  },
+  done: { title: 'Sing Up', description: 'Sign Up to this app', start: Date.now(), end: Date.now(), checked: true },
 };
 
 @Injectable({
@@ -49,7 +55,7 @@ export class FirestoreService {
             this.userName.next(res.data() as Pick<UserType, 'firstName' | 'lastName'>);
           });
           return this.todoObserver.next(
-            res.map((elem) => ({ ...(elem.data() as TodoItemType), id: elem.id, checked: false }))
+            res.map((elem) => ({ ...(elem.data() as TodoItemType), id: elem.id, selected: false }))
           );
         },
         (err) => {
@@ -60,7 +66,7 @@ export class FirestoreService {
       collectionSnapshots(collectionGroup(this.firestore, `inProgress:${this.userEmail}`)).subscribe(
         (res) => {
           return this.inProgressObserver.next(
-            res.map((elem) => ({ ...(elem.data() as TodoItemType), id: elem.id, checked: false }))
+            res.map((elem) => ({ ...(elem.data() as TodoItemType), id: elem.id, selected: false }))
           );
         },
         (err) => {
@@ -71,7 +77,7 @@ export class FirestoreService {
       collectionSnapshots(collectionGroup(this.firestore, `done:${this.userEmail}`)).subscribe(
         (res) => {
           return this.doneObserver.next(
-            res.map((elem) => ({ ...(elem.data() as TodoItemType), id: elem.id, checked: false }))
+            res.map((elem) => ({ ...(elem.data() as TodoItemType), id: elem.id, checked: true, selected: false }))
           );
         },
         (err) => {
@@ -153,8 +159,11 @@ export class FirestoreService {
     const dragItem = item;
     if (item.end && (currentContainerId === 'todo' || currentContainerId === 'inProgress')) {
       dragItem.end = null;
+      dragItem.checked = false;
+      dragItem.selected = false;
     } else if (currentContainerId === 'done') {
       dragItem.end = Date.now();
+      dragItem.checked = true;
     }
     return Promise.all([
       deleteDoc(

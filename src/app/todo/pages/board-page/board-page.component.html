@@ -98,24 +98,24 @@
 
 <nz-dropdown-menu #todoMenu="nzDropdownMenu">
   <ul nz-menu nzSelectable>
-    <li nz-menu-item (click)="todoAction('moveSelected','todo', 'inProgress')">Selected to InProgress</li>
-    <li nz-menu-item (click)="todoAction('moveSelected','todo', 'done')">Selected to Done</li>
+    <li nz-menu-item (click)="todoAction('moveSelected','todo', 'inProgress')">Move selected to In Progress</li>
+    <li nz-menu-item (click)="todoAction('moveSelected','todo', 'done')">Move selected to Done</li>
     <li nz-menu-item (click)="todoAction('deleteSelected','todo')">Delete selected</li>
   </ul>
 </nz-dropdown-menu>
 
 <nz-dropdown-menu #inProgressMenu="nzDropdownMenu">
   <ul nz-menu nzSelectable>
-    <li nz-menu-item (click)="todoAction('moveSelected','inProgress', 'todo')">Selected to Todo</li>
-    <li nz-menu-item (click)="todoAction('moveSelected','inProgress', 'done')">Selected to Done</li>
+    <li nz-menu-item (click)="todoAction('moveSelected','inProgress', 'todo')">Move selected to Todo</li>
+    <li nz-menu-item (click)="todoAction('moveSelected','inProgress', 'done')">Move selected to Done</li>
     <li nz-menu-item (click)="todoAction('deleteSelected','inProgress')">Delete selected</li>
   </ul>
 </nz-dropdown-menu>
 
 <nz-dropdown-menu #doneMenu="nzDropdownMenu">
   <ul nz-menu nzSelectable>
-    <li nz-menu-item (click)="todoAction('moveSelected','done', 'todo')">Selected to Todo</li>
-    <li nz-menu-item (click)="todoAction('moveSelected','done', 'inProgress')">Selected to InProgress</li>
+    <li nz-menu-item (click)="todoAction('moveSelected','done', 'todo')">Move selected to Todo</li>
+    <li nz-menu-item (click)="todoAction('moveSelected','done', 'inProgress')">Move selected to In Progress</li>
     <li nz-menu-item (click)="todoAction('deleteSelected','done')">Delete selected</li>
   </ul>
 </nz-dropdown-menu>
