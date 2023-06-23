@@ -42,16 +42,37 @@ export class BoardPageComponent {
       case 'todo':
         this.todo.subscribe((res) => {
           action === 'selectAll' && res.forEach((todo) => (todo.checked = this.checkAllTodo));
-          action === 'moveSelected' && console.log('move', moveToCollectionName);
-          action === 'deleteSelected' && console.log('delete');
+          action === 'moveSelected' &&
+            (() => {
+              for (let i = 0; i < res.length; i++) {
+                if (res[i].checked) {
+                  this.firestoreService.runDragAndDrop(collectionName, moveToCollectionName, res[i]);
+                }
+              }
+            })();
+          action === 'deleteSelected' &&
+            res.forEach((todo) => {
+              if (todo.checked) this.firestoreService.deleteTodo(collectionName, todo.id || '');
+            });
         }).unsubscribe;
         break;
       case 'inProgress':
         this.inProgress
           .subscribe((res) => {
             action === 'selectAll' && res.forEach((todo) => (todo.checked = this.checkAllInProgress));
-            action === 'moveSelected' && console.log('move', moveToCollectionName);
-            action === 'deleteSelected' && console.log('delete');
+            action === 'moveSelected' &&
+              (() => {
+                for (let i = 0; i < res.length; i++) {
+                  if (res[i].checked) {
+                    this.firestoreService.runDragAndDrop(collectionName, moveToCollectionName, res[i]);
+                  }
+                }
+              })();
+            action === 'deleteSelected' &&
+              res.forEach((todo) => {
+                if (todo.checked) this.firestoreService.deleteTodo(collectionName, todo.id || '');
+              });
+            this.checkAllInProgress = false;
           })
           .unsubscribe();
         break;
@@ -59,12 +80,24 @@ export class BoardPageComponent {
         this.done
           .subscribe((res) => {
             action === 'selectAll' && res.forEach((todo) => (todo.checked = this.checkAllDone));
-            action === 'moveSelected' && console.log('move', moveToCollectionName);
-            action === 'deleteSelected' && console.log('delete');
+            action === 'moveSelected' &&
+              (() => {
+                for (let i = 0; i < res.length; i++) {
+                  if (res[i].checked) {
+                    this.firestoreService.runDragAndDrop(collectionName, moveToCollectionName, res[i]);
+                  }
+                }
+              })();
+            action === 'deleteSelected' &&
+              res.forEach((todo) => {
+                if (todo.checked) this.firestoreService.deleteTodo(collectionName, todo.id || '');
+              });
+            this.checkAllDone = false;
           })
           .unsubscribe();
         break;
     }
+    this.checkAllTodo = false;
   }
 
   changeFilterOrder(collectionName: CollectionNameType): void {
