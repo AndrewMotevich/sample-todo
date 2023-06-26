@@ -25,6 +25,7 @@ import { SortTodoPipe } from '../../pipes/sort-todo.pipe';
 import { TodoItemColorDirective } from '../../directives/todo-item-color.directive';
 import { SelectTodoItemDirective } from '../../directives/select-todo-item.directive';
 import { SelectAllTodoDirective } from '../../directives/select-all-todo.directive';
+import { BoardInputComponent } from '../../components/board-input/board-input.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { SelectAllTodoDirective } from '../../directives/select-all-todo.directi
     TodoItemColorDirective,
     SelectTodoItemDirective,
     SelectAllTodoDirective,
+    BoardInputComponent,
   ],
   imports: [
     CommonModule,

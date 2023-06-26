@@ -15,7 +15,6 @@ import { SortOptionService } from 'src/app/core/services/sort-option.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardPageComponent {
-  public inputValue!: string | null;
   public checkAllTodo = false;
   public checkAllInProgress = false;
   public checkAllDone = false;
@@ -29,9 +28,6 @@ export class BoardPageComponent {
   public done: Observable<TodoItemType[]> = this.firestoreService.getDoneCollection();
 
   constructor(private firestoreService: FirestoreService, public sortOptionService: SortOptionService) {
-    this.firestoreService.boardMainInputValue.subscribe((res) => {
-      this.inputValue = res;
-    });
     this.sortOptionService.getSortOptions().subscribe((res) => this.changeFilter(res));
   }
 
