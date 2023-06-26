@@ -1,0 +1,26 @@
+<div cdkDropList id="todo" #todoList="cdkDropList" [cdkDropListData]="todo | async"
+  [cdkDropListConnectedTo]="[doneList, inProgressList]" class="board-colons-todo" (cdkDropListDropped)="drop($event)">
+  <h2>
+    <span>
+      Todo
+      <button nz-button nzType="text" nzShape="circle" (click)="changeFilterOrder('todo')">
+        <span nz-icon [nzType]="(sortAllTodo.order === 'ascend') ? 'sort-ascending' : 'sort-descending'"
+          nzTheme="outline"></span>
+      </button>
+    </span>
+    <div>
+      <label nz-checkbox [appSelectAll]="checkAllTodo" collectionName="todo" [(ngModel)]="checkAllTodo"
+        (nzCheckedChange)="todoAction('selectAll','todo')">Select
+        all</label>
+      <button nz-button nzType="text" nzShape="circle" nz-dropdown [nzDropdownMenu]="todoMenu">
+        <span nz-icon nzType="menu"></span>
+      </button>
+    </div>
+  </h2>
+  <ng-container *ngFor="let item of todo | async | sortTodo:sortAllTodo.order:sortAllTodo.filter; let i = index">
+    <app-todo-item collectionName="todo" cdkDrag [title]="item.title" [todoItem]="item">
+      <label nz-checkbox [(ngModel)]="item.checked" (nzCheckedChange)="checkTodo('todo', item)"></label>
+    </app-todo-item>
+  </ng-container>
+</div>
+<nz-divider></nz-divider>
