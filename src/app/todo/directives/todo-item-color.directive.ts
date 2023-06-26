@@ -5,30 +5,23 @@ import { CollectionNameType } from 'src/app/shared/models/colection-name.model';
   selector: '[appTodoItemColor]',
 })
 export class TodoItemColorDirective implements OnInit {
-  @Input() appTodoItemColor: CollectionNameType = 'todo';
-
-  private todo = 'rgba(0, 0, 255, 0.1)';
-  private inProgress = 'rgba(255, 255, 0, 0.1)';
-  private done = 'rgba(0, 255, 0, 0.1)';
+  @Input() appTodoItemColor!: CollectionNameType;
 
   constructor(private elem: ElementRef) {}
+
   ngOnInit(): void {
     this.changeColor();
   }
 
   changeColor() {
-    if (this.appTodoItemColor) {
-      switch (this.appTodoItemColor) {
-        case 'done':
-          this.elem.nativeElement.style.background = this.todo;
-          break;
-        case 'inProgress':
-          this.elem.nativeElement.style.background = this.inProgress;
-          break;
-        case 'todo':
-          this.elem.nativeElement.style.background = this.done;
-          break;
-      }
+    if (!this.appTodoItemColor) {
+      return;
+    } else if (this.appTodoItemColor === 'todo') {
+      this.elem.nativeElement.style.background = 'rgba(0, 0, 255, 0.1)';
+    } else if (this.appTodoItemColor === 'inProgress') {
+      this.elem.nativeElement.style.background = 'rgba(255, 255, 0, 0.1)';
+    } else if (this.appTodoItemColor === 'done') {
+      this.elem.nativeElement.style.background = 'rgba(0, 255, 0, 0.1)';
     }
   }
 }
