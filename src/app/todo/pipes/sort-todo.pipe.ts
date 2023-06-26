@@ -11,58 +11,16 @@ export class SortTodoPipe implements PipeTransform {
       return [];
     }
     if (filter === 'date') {
-      return sortByDate(value, order);
+      return this.sort(value, order, 'start');
     }
-    return sortByTitle(value, order);
+    return this.sort(value, order);
   }
-}
 
-function sortByTitle(value: TodoItemType[], order: FilterOrderType) {
-  switch (order) {
-    case 'ascend':
-      return value.sort((a, b) => {
-        if (a.title < b.title) {
-          return -1;
-        }
-        if (a.title > b.title) {
-          return 1;
-        }
-        return 0;
-      });
-    case 'descend':
-      return value.sort((a, b) => {
-        if (a.title > b.title) {
-          return -1;
-        }
-        if (a.title < b.title) {
-          return 1;
-        }
-        return 0;
-      });
-  }
-}
-
-function sortByDate(value: TodoItemType[], order: FilterOrderType) {
-  switch (order) {
-    case 'ascend':
-      return value.sort((a, b) => {
-        if (a.start < b.start) {
-          return -1;
-        }
-        if (a.start > b.start) {
-          return 1;
-        }
-        return 0;
-      });
-    case 'descend':
-      return value.sort((a, b) => {
-        if (a.start > b.start) {
-          return -1;
-        }
-        if (a.start < b.start) {
-          return 1;
-        }
-        return 0;
-      });
+  sort(value: TodoItemType[], order: FilterOrderType, filter: keyof Pick<TodoItemType, 'title' | 'start'> = 'title') {
+    if (order === 'ascend') {
+      return value.sort((a, b) => a[filter].toString().localeCompare(b[filter].toString()));
+    } else {
+      return value.sort((a, b) => -1 * a[filter].toString().localeCompare(b[filter].toString()));
+    }
   }
 }
