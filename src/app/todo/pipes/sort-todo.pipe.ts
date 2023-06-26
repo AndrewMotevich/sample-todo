@@ -4,7 +4,6 @@ import { FilterOrderType, FilterType } from '../models/filter-todo.model';
 
 @Pipe({
   name: 'sortTodo',
-  pure: false,
 })
 export class SortTodoPipe implements PipeTransform {
   transform(value: TodoItemType[] | null, order: FilterOrderType, filter: FilterType = 'title'): TodoItemType[] {
