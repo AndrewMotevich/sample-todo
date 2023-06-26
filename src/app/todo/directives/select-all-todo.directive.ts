@@ -13,52 +13,18 @@ export class SelectAllTodoDirective implements OnChanges {
   }
 
   selectItem() {
-    switch (this.collectionName) {
-      case 'todo':
-        if (this.appSelectAll) {
-          document.querySelectorAll('nz-card').forEach((elem) => {
-            if (elem.classList.contains(this.collectionName)) {
-              elem.classList.add('outline');
-            }
-          });
-        } else {
-          document.querySelectorAll('nz-card').forEach((elem) => {
-            if (elem.classList.contains(this.collectionName)) {
-              elem.classList.remove('outline');
-            }
-          });
+    if (this.appSelectAll) {
+      document.querySelectorAll('nz-card').forEach((elem) => {
+        if (elem.classList.contains(this.collectionName)) {
+          elem.classList.add('outline');
         }
-        break;
-      case 'inProgress':
-        if (this.appSelectAll) {
-          document.querySelectorAll('nz-card').forEach((elem) => {
-            if (elem.classList.contains(this.collectionName)) {
-              elem.classList.add('outline');
-            }
-          });
-        } else {
-          document.querySelectorAll('nz-card').forEach((elem) => {
-            if (elem.classList.contains(this.collectionName)) {
-              elem.classList.remove('outline');
-            }
-          });
+      });
+    } else {
+      document.querySelectorAll('nz-card').forEach((elem) => {
+        if (elem.classList.contains(this.collectionName)) {
+          elem.classList.remove('outline');
         }
-        break;
-      case 'done':
-        if (this.appSelectAll) {
-          document.querySelectorAll('nz-card').forEach((elem) => {
-            if (elem.classList.contains(this.collectionName)) {
-              elem.classList.add('outline');
-            }
-          });
-        } else {
-          document.querySelectorAll('nz-card').forEach((elem) => {
-            if (elem.classList.contains(this.collectionName)) {
-              elem.classList.remove('outline');
-            }
-          });
-        }
-        break;
+      });
     }
   }
 }
