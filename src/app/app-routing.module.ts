@@ -1,4 +1,4 @@
-import { NgModule, inject } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { NotFoundPageComponent } from './todo/pages/not-found-page/not-found-page.component';
 import { IsLoggedInFunctionGuard, MainPageRedirect } from './auth/guards/login-guard.guard';
