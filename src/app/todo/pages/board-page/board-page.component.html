@@ -13,7 +13,7 @@
       </span>
       <div>
         <label nz-checkbox [appSelectAll]="checkAllTodo" collectionName="todo" [(ngModel)]="checkAllTodo"
-          (nzCheckedChange)="todoAction('selectAll','todo')">Select
+          (nzCheckedChange)="doActionWithTodo(todo, checkAllTodo,'selectAll','todo')">Select
           all</label>
         <button nz-button nzType="text" nzShape="circle" nz-dropdown [nzDropdownMenu]="todoMenu">
           <span nz-icon nzType="menu"></span>
@@ -40,7 +40,8 @@
       </span>
       <div>
         <label nz-checkbox [appSelectAll]="checkAllInProgress" collectionName="inProgress"
-          [(ngModel)]="checkAllInProgress" (nzCheckedChange)="todoAction('selectAll','inProgress')">Select
+          [(ngModel)]="checkAllInProgress"
+          (nzCheckedChange)="doActionWithTodo(inProgress, checkAllInProgress,'selectAll','inProgress')">Select
           all</label>
         <button nz-button nzType="text" nzShape="circle" nz-dropdown [nzDropdownMenu]="inProgressMenu">
           <span nz-icon nzType="menu"></span>
@@ -69,7 +70,7 @@
       </span>
       <div>
         <label nz-checkbox [appSelectAll]="checkAllDone" collectionName="done" [(ngModel)]="checkAllDone"
-          (nzCheckedChange)="todoAction('selectAll','done')">Select
+          (nzCheckedChange)="doActionWithTodo(done, checkAllDone,'selectAll','done')">Select
           all</label>
         <button nz-button nzType="text" nzShape="circle" nz-dropdown [nzDropdownMenu]="doneMenu">
           <span nz-icon nzType="menu"></span>
@@ -87,24 +88,36 @@
 
 <nz-dropdown-menu #todoMenu="nzDropdownMenu">
   <ul nz-menu nzSelectable>
-    <li nz-menu-item (click)="todoAction('moveSelected','todo', 'inProgress')">Move selected to In Progress</li>
-    <li nz-menu-item (click)="todoAction('moveSelected','todo', 'done')">Move selected to Done</li>
-    <li nz-menu-item (click)="todoAction('deleteSelected','todo')">Delete selected</li>
+    <li nz-menu-item (click)="doActionWithTodo(todo, checkAllTodo,'moveSelected','todo', 'inProgress')">Move selected to
+      In
+      Progress</li>
+    <li nz-menu-item (click)="doActionWithTodo(todo, checkAllTodo,'moveSelected','todo', 'done')">Move selected to Done
+    </li>
+    <li nz-menu-item (click)="doActionWithTodo(todo, checkAllTodo,'deleteSelected','todo')">Delete selected</li>
   </ul>
 </nz-dropdown-menu>
 
 <nz-dropdown-menu #inProgressMenu="nzDropdownMenu">
   <ul nz-menu nzSelectable>
-    <li nz-menu-item (click)="todoAction('moveSelected','inProgress', 'todo')">Move selected to Todo</li>
-    <li nz-menu-item (click)="todoAction('moveSelected','inProgress', 'done')">Move selected to Done</li>
-    <li nz-menu-item (click)="todoAction('deleteSelected','inProgress')">Delete selected</li>
+    <li nz-menu-item (click)="doActionWithTodo(inProgress, checkAllInProgress, 'moveSelected','inProgress', 'todo')">
+      Move
+      selected to Todo</li>
+    <li nz-menu-item (click)="doActionWithTodo(inProgress, checkAllInProgress, 'moveSelected','inProgress', 'done')">
+      Move
+      selected to Done</li>
+    <li nz-menu-item (click)="doActionWithTodo(inProgress, checkAllInProgress, 'deleteSelected','inProgress')">Delete
+      selected
+    </li>
   </ul>
 </nz-dropdown-menu>
 
 <nz-dropdown-menu #doneMenu="nzDropdownMenu">
   <ul nz-menu nzSelectable>
-    <li nz-menu-item (click)="todoAction('moveSelected','done', 'todo')">Move selected to Todo</li>
-    <li nz-menu-item (click)="todoAction('moveSelected','done', 'inProgress')">Move selected to In Progress</li>
-    <li nz-menu-item (click)="todoAction('deleteSelected','done')">Delete selected</li>
+    <li nz-menu-item (click)="doActionWithTodo(done, checkAllDone, 'moveSelected','done', 'todo')">Move selected to Todo
+    </li>
+    <li nz-menu-item (click)="doActionWithTodo(done, checkAllDone, 'moveSelected','done', 'inProgress')">Move selected
+      to In
+      Progress</li>
+    <li nz-menu-item (click)="doActionWithTodo(done, checkAllDone, 'deleteSelected','done')">Delete selected</li>
   </ul>
 </nz-dropdown-menu>
