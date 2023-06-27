@@ -3,7 +3,7 @@ import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { TodoItemType } from '../../models/todo-item.model';
 import { BehaviorSubject } from 'rxjs';
-import { CollectionNameType } from 'src/app/shared/models/colection-name.model';
+import { CollectionName } from 'src/app/shared/models/colection-name.model';
 import { FilterInfoObject, FilterType } from '../../models/filter-todo.model';
 import { ActionsTodoType } from '../../models/action-todo.model';
 import { SortOptionService } from 'src/app/core/services/sort-option.service';
@@ -15,6 +15,8 @@ import { SortOptionService } from 'src/app/core/services/sort-option.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardPageComponent {
+  public collectionName = CollectionName;
+
   public checkAllTodo = false;
   public checkAllInProgress = false;
   public checkAllDone = false;
@@ -35,8 +37,8 @@ export class BoardPageComponent {
     collection: BehaviorSubject<TodoItemType[]>,
     checkAll: boolean,
     action: ActionsTodoType,
-    collectionName: CollectionNameType,
-    moveToCollectionName: CollectionNameType = 'todo'
+    collectionName: CollectionName,
+    moveToCollectionName: CollectionName = CollectionName.todo
   ) {
     collection.subscribe((res) => {
       action === 'selectAll' &&
@@ -62,15 +64,16 @@ export class BoardPageComponent {
     }).unsubscribe;
   }
 
-  checkTodo(collectionName: CollectionNameType, item: TodoItemType) {
-    if (collectionName === 'done') this.firestoreService.runDragAndDrop(collectionName, 'todo', item);
+  checkTodo(collectionName: CollectionName, item: TodoItemType) {
+    if (collectionName.toString() === 'done')
+      this.firestoreService.runDragAndDrop(collectionName, CollectionName.todo, item);
     else {
-      this.firestoreService.runDragAndDrop(collectionName, 'done', item);
+      this.firestoreService.runDragAndDrop(collectionName, CollectionName.done, item);
     }
   }
 
-  changeFilterOrder(collectionName: CollectionNameType): void {
-    switch (collectionName) {
+  changeFilterOrder(collectionName: CollectionName): void {
+    switch (collectionName.toString()) {
       case 'done':
         if (this.sortAllDone.order === 'ascend') this.sortAllDone.order = 'descend';
         else this.sortAllDone.order = 'ascend';
@@ -98,11 +101,16 @@ export class BoardPageComponent {
       return;
     }
     const item = event.previousContainer.data[event.previousIndex];
-    this.firestoreService.runDragAndDrop(
-      event.previousContainer.id as CollectionNameType,
-      event.container.id as CollectionNameType,
-      item
-    );
+    const previousContainerId = getCollectionName(event.previousContainer.id);
+    const currentContainerId = getCollectionName(event.container.id);
+    this.firestoreService.runDragAndDrop(previousContainerId, currentContainerId, item);
     transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
   }
+}
+
+function getCollectionName(query: string) {
+  if (query === 'todo') return CollectionName.todo;
+  if (query === 'inProgress') return CollectionName.inProgress;
+  if (query === 'done') return CollectionName.done;
+  return CollectionName.todo;
 }

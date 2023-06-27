@@ -1,1 +1,5 @@
-export type CollectionNameType = 'todo' | 'inProgress' | 'done';
+export enum CollectionName {
+  todo = 'todo',
+  inProgress = 'inProgress',
+  done = 'done',
+}

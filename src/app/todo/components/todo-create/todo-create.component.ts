@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalWindowComponent } from 'src/app/shared/components/modal-window/modal-window.component';
+import { CollectionName } from 'src/app/shared/models/colection-name.model';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 
 @Component({
@@ -25,7 +26,7 @@ export class TodoCreateComponent {
 
   public submitForm(): void {
     if (this.createTodoForm.valid) {
-      this.firestoreService.addTodo('todo', {
+      this.firestoreService.addTodo(CollectionName.todo, {
         title: this.title,
         description: this.createTodoForm.controls.description.value,
         start: Date.now(),

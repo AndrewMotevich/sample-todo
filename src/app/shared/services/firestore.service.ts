@@ -15,7 +15,7 @@ import { IUser } from 'src/app/auth/models/user.model';
 import { BehaviorSubject } from 'rxjs';
 import { TodoItemType } from 'src/app/todo/models/todo-item.model';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { CollectionNameType } from '../models/colection-name.model';
+import { CollectionName } from '../models/colection-name.model';
 
 const startTodos = {
   todo: {
@@ -50,7 +50,7 @@ const startTodos = {
 export class FirestoreService {
   private userEmail!: string;
   private firestore = inject(Firestore);
-  // observables
+
   public boardMainInputValue = new BehaviorSubject<string | null>(null);
   private todoObserver = new BehaviorSubject<TodoItemType[]>([]);
   private inProgressObserver = new BehaviorSubject<TodoItemType[]>([]);
@@ -63,7 +63,7 @@ export class FirestoreService {
   constructor(private loginService: LoginService, private notification: NzNotificationService) {
     this.loginService.userEmail.subscribe(() => {
       this.userEmail = this.loginService.getUser()?.email || '';
-      // subscribe on todoCollection
+
       collectionSnapshots(collectionGroup(this.firestore, `todo:${this.userEmail}`)).subscribe(
         (res) => {
           getDoc(doc(this.firestore, 'users', this.userEmail || 'admin@gmail.com')).then((res) => {
@@ -77,7 +77,7 @@ export class FirestoreService {
           this.notification.create('error', 'Todo Collection Observer', err.message);
         }
       );
-      // subscribe on inProgressCollection
+
       collectionSnapshots(collectionGroup(this.firestore, `inProgress:${this.userEmail}`)).subscribe(
         (res) => {
           return this.inProgressObserver.next(
@@ -88,7 +88,7 @@ export class FirestoreService {
           this.notification.create('error', 'In Progress Collection Observer', err.message);
         }
       );
-      // subscribe on doneCollection
+
       collectionSnapshots(collectionGroup(this.firestore, `done:${this.userEmail}`)).subscribe(
         (res) => {
           return this.doneObserver.next(
@@ -114,11 +114,14 @@ export class FirestoreService {
     return this.doneObserver;
   }
 
-  public editTodo(collectionName: CollectionNameType, newTodo: TodoItemType) {
+  public editTodo(collectionName: CollectionName, newTodo: TodoItemType) {
     return deleteDoc(
-      doc(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}/`, newTodo.id || '')
+      doc(this.firestore, `users/${this.userEmail}/${collectionName.toString()}:${this.userEmail}/`, newTodo.id || '')
     ).then(() =>
-      addDoc(collection(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}`), newTodo).then(
+      addDoc(
+        collection(this.firestore, `users/${this.userEmail}/${collectionName.toString()}:${this.userEmail}`),
+        newTodo
+      ).then(
         () => {
           this.notification.create('success', 'Edit operation', `Todo was successfully edited!`);
         },
@@ -129,9 +132,9 @@ export class FirestoreService {
     );
   }
 
-  public addTodo(collectionName: CollectionNameType, newTodo: TodoItemType) {
+  public addTodo(collectionName: CollectionName, newTodo: TodoItemType) {
     return addDoc(
-      collection(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}`),
+      collection(this.firestore, `users/${this.userEmail}/${collectionName.toString()}:${this.userEmail}`),
       newTodo
     ).then(
       () => {
@@ -143,8 +146,10 @@ export class FirestoreService {
     );
   }
 
-  public deleteTodo(collectionName: CollectionNameType, id: string) {
-    return deleteDoc(doc(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}/`, id)).then(
+  public deleteTodo(collectionName: CollectionName, id: string) {
+    return deleteDoc(
+      doc(this.firestore, `users/${this.userEmail}/${collectionName.toString()}:${this.userEmail}/`, id)
+    ).then(
       () => {
         this.notification.create('success', 'Delete operation', `Todo was successfully deleted!`);
       },
@@ -166,26 +171,29 @@ export class FirestoreService {
     }
   }
 
-  public runDragAndDrop(
-    previousContainerId: CollectionNameType,
-    currentContainerId: CollectionNameType,
-    item: TodoItemType
-  ) {
+  public runDragAndDrop(previousContainerId: CollectionName, currentContainerId: CollectionName, item: TodoItemType) {
     const dragItem = item;
-    if (item.end && (currentContainerId === 'todo' || currentContainerId === 'inProgress')) {
+    if (item.end && (currentContainerId === CollectionName.todo || currentContainerId === CollectionName.inProgress)) {
       dragItem.end = null;
       dragItem.checked = false;
       dragItem.selected = false;
-    } else if (currentContainerId === 'done') {
+    } else if (currentContainerId === CollectionName.done) {
       dragItem.end = Date.now();
       dragItem.checked = true;
       dragItem.selected = false;
     }
     return Promise.all([
       deleteDoc(
-        doc(this.firestore, `users/${this.userEmail}/${previousContainerId}:${this.userEmail}/`, dragItem.id || '')
+        doc(
+          this.firestore,
+          `users/${this.userEmail}/${previousContainerId.toString()}:${this.userEmail}/`,
+          dragItem.id || ''
+        )
       ),
-      addDoc(collection(this.firestore, `users/${this.userEmail}/${currentContainerId}:${this.userEmail}`), dragItem),
+      addDoc(
+        collection(this.firestore, `users/${this.userEmail}/${currentContainerId.toString()}:${this.userEmail}`),
+        dragItem
+      ),
     ]);
   }
 

@@ -15,7 +15,6 @@ export class ModalWindowComponent {
   @Input() title = 'Modal window';
 
   public isVisible = false;
-  public isOkLoading = false;
 
   constructor(private detectionStrategy: ChangeDetectorRef) {}
 

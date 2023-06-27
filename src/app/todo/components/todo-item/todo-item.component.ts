@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TodoItemType } from '../../models/todo-item.model';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
-import { CollectionNameType } from 'src/app/shared/models/colection-name.model';
+import { CollectionName } from 'src/app/shared/models/colection-name.model';
 
 @Component({
   selector: 'app-todo-item',
@@ -11,7 +11,7 @@ import { CollectionNameType } from 'src/app/shared/models/colection-name.model';
 })
 export class TodoItemComponent {
   @Input() todoItem!: TodoItemType;
-  @Input() collectionName!: CollectionNameType;
+  @Input() collectionName!: CollectionName;
 
   constructor(private firestoreService: FirestoreService) {}
 
