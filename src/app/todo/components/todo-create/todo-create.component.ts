@@ -25,7 +25,9 @@ export class TodoCreateComponent {
   }
 
   public submitForm(): void {
-    if (this.createTodoForm.valid) {
+    if (!this.createTodoForm.valid) {
+      this.showErrorTips(this.createTodoForm.controls);
+    } else {
       this.firestoreService.addTodo(CollectionName.todo, {
         title: this.title,
         description: this.createTodoForm.controls.description.value,
@@ -34,13 +36,15 @@ export class TodoCreateComponent {
       });
       this.modal.handleCancel();
       this.firestoreService.boardMainInputValue.next(null);
-    } else {
-      Object.values(this.createTodoForm.controls).forEach((control) => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
     }
+  }
+
+  private showErrorTips(controls: { [key: string]: FormControl<unknown> }): void {
+    Object.values(controls).forEach((control) => {
+      control.markAsDirty();
+      if (control.invalid) {
+        control.updateValueAndValidity({ onlySelf: true });
+      }
+    });
   }
 }
