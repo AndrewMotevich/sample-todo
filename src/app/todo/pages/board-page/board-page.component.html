@@ -6,7 +6,7 @@
     <h2>
       <span>
         Todo
-        <button nz-button nzType="text" nzShape="circle" (click)="changeFilterOrder(collectionName.todo)">
+        <button nz-button nzType="text" nzShape="circle" (click)="changeFilterOrder(sortAllTodo)">
           <span nz-icon [nzType]="(sortAllTodo.order === 'ascend') ? 'sort-ascending' : 'sort-descending'"
             nzTheme="outline"></span>
         </button>
@@ -34,7 +34,7 @@
     <h2>
       <span>
         In Progress
-        <button nz-button nzType="text" nzShape="circle" (click)="changeFilterOrder(collectionName.inProgress)">
+        <button nz-button nzType="text" nzShape="circle" (click)="changeFilterOrder(sortAllInProgress)">
           <span nz-icon [nzType]="(sortAllInProgress.order === 'ascend') ? 'sort-ascending' : 'sort-descending'"
             nzTheme="outline"></span>
         </button>
@@ -65,7 +65,7 @@
     <h2>
       <span>
         Done
-        <button nz-button nzType="text" nzShape="circle" (click)="changeFilterOrder(collectionName.done)">
+        <button nz-button nzType="text" nzShape="circle" (click)="changeFilterOrder(sortAllDone)">
           <span nz-icon [nzType]="(sortAllDone.order === 'ascend') ? 'sort-ascending' : 'sort-descending'"
             nzTheme="outline"></span>
         </button>

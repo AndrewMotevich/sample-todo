@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { FilterType } from 'src/app/todo/models/filter-todo.model';
+import { Filter } from 'src/app/todo/models/filter-todo.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SortOptionService {
-  private sortOption = new BehaviorSubject<FilterType>('title');
+  private sortOption = new BehaviorSubject<Filter>(Filter.title);
 
-  setSortOptions(filter: FilterType) {
+  setSortOptions(filter: Filter) {
     this.sortOption.next(filter);
   }
 
-  getSortOptions(): Observable<FilterType> {
+  getSortOptions(): Observable<Filter> {
     return this.sortOption;
   }
 }

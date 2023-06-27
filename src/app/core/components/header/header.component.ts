@@ -7,7 +7,7 @@ import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from 'src/app/app-routing.module';
-import { FilterType } from 'src/app/todo/models/filter-todo.model';
+import { Filter } from 'src/app/todo/models/filter-todo.model';
 import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
@@ -22,7 +22,8 @@ export class HeaderComponent {
   currentUrl = 'Authentication';
   userName = 'User';
   userNameObservable = this.firestoreService.getUserName();
-  sortFilter: FilterType = 'title';
+  sortFilter: Filter = Filter.title;
+  filter = Filter;
 
   constructor(
     private loginService: LoginService,

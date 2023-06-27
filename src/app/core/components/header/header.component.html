@@ -18,10 +18,12 @@
         <ul>
           <li nz-menu-item (click)="switchTheme()">Switch theme</li>
           <ul nz-submenu nzTitle="Sorting">
-            <li nz-menu-item [nzSelected]="sortFilter === 'title'" (click)="sortOptionService.setSortOptions('title')">
+            <li nz-menu-item [nzSelected]="sortFilter === 'title'"
+              (click)="sortOptionService.setSortOptions(filter.title)">
               Sort by alphabet
             </li>
-            <li nz-menu-item [nzSelected]="sortFilter === 'date'" (click)="sortOptionService.setSortOptions('date')">
+            <li nz-menu-item [nzSelected]="sortFilter === 'date'"
+              (click)="sortOptionService.setSortOptions(filter.date)">
               Sort by creation
               date</li>
           </ul>

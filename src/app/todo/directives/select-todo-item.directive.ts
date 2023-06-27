@@ -1,5 +1,5 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
-import { TodoItemType } from '../models/todo-item.model';
+import { ITodoItem } from '../models/todo-item.model';
 
 @Directive({
   selector: '[appSelectTodoItem]',
@@ -8,7 +8,7 @@ export class SelectTodoItemDirective {
   @HostListener('click') onClick() {
     this.selectItem();
   }
-  @Input() appSelectTodoItem!: TodoItemType;
+  @Input() appSelectTodoItem!: ITodoItem;
 
   constructor(private elem: ElementRef) {}
 

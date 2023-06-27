@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { TodoItemType } from '../../models/todo-item.model';
+import { ITodoItem } from '../../models/todo-item.model';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { CollectionName } from 'src/app/shared/models/colection-name.model';
 
@@ -10,7 +10,7 @@ import { CollectionName } from 'src/app/shared/models/colection-name.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoDetailsComponent {
-  @Input() todo!: TodoItemType;
+  @Input() todo!: ITodoItem;
   @Input() collectionName!: CollectionName;
 
   constructor(private firestoreService: FirestoreService) {}

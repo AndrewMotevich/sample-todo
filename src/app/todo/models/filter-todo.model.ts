@@ -1,8 +1,14 @@
-export type FilterType = 'title' | 'date';
+export enum Filter {
+  title = 'title',
+  date = 'date',
+}
 
-export type FilterOrderType = 'ascend' | 'descend';
+export enum FilterOrder {
+  ascend = 'ascend',
+  descend = 'descend',
+}
 
-export type FilterInfoObject = {
-  order: FilterOrderType;
-  filter: FilterType;
-};
+export interface IFilterInfoObject {
+  order: FilterOrder;
+  filter: Filter;
+}

@@ -1,4 +1,4 @@
-export type TodoItemType = {
+export interface ITodoItem {
   id?: string;
   title: string;
   description: string;
@@ -6,4 +6,4 @@ export type TodoItemType = {
   end: number | null;
   checked?: boolean;
   selected?: boolean;
-};
+}
