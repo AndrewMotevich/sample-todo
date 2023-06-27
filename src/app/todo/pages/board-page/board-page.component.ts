@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ChangeDetectorRef } from '@angular/core';
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { ITodoItem } from '../../models/todo-item.model';
 import { BehaviorSubject } from 'rxjs';
 import { CollectionName } from 'src/app/shared/models/colection-name.model';
 import { IFilterInfoObject, Filter, FilterOrder } from '../../models/filter-todo.model';
-import { ActionsTodoType } from '../../models/action-todo.model';
+import { ActionsTodo } from '../../models/action-todo.model';
 import { SortOptionService } from 'src/app/core/services/sort-option.service';
 
 @Component({
@@ -16,6 +16,7 @@ import { SortOptionService } from 'src/app/core/services/sort-option.service';
 })
 export class BoardPageComponent {
   public collectionName = CollectionName;
+  public action = ActionsTodo;
 
   public checkAllTodo = false;
   public checkAllInProgress = false;
@@ -29,39 +30,41 @@ export class BoardPageComponent {
   public inProgress: BehaviorSubject<ITodoItem[]> = this.firestoreService.getInProgressCollection();
   public done: BehaviorSubject<ITodoItem[]> = this.firestoreService.getDoneCollection();
 
-  constructor(private firestoreService: FirestoreService, public sortOptionService: SortOptionService) {
+  constructor(
+    private changeDetection: ChangeDetectorRef,
+    private firestoreService: FirestoreService,
+    public sortOptionService: SortOptionService
+  ) {
     this.sortOptionService.getSortOptions().subscribe((res) => this.changeFilter(res));
   }
 
   public doActionWithTodo(
     collection: BehaviorSubject<ITodoItem[]>,
     checkAll: boolean,
-    action: ActionsTodoType,
+    action: ActionsTodo,
     collectionName: CollectionName,
     moveToCollectionName: CollectionName = CollectionName.todo
   ) {
-    collection.subscribe((res) => {
-      action === 'selectAll' &&
-        res.forEach((todo) => {
-          todo.selected = checkAll;
-        });
-      action === 'moveSelected' &&
-        (() => {
-          for (let i = 0; i < res.length; i++) {
-            if (res[i].selected) {
-              this.firestoreService.runDragAndDrop(collectionName, moveToCollectionName, res[i]);
+    collection
+      .subscribe((res) => {
+        action === 'selectAll' &&
+          res.forEach((todo) => {
+            todo.selected = checkAll;
+          });
+        action === 'moveSelected' &&
+          (() => {
+            for (let i = 0; i < res.length; i++) {
+              if (res[i].selected) {
+                this.firestoreService.runDragAndDrop(collectionName, moveToCollectionName, res[i]);
+              }
             }
-          }
-          checkAll = false;
-          this.doActionWithTodo(collection, checkAll, 'selectAll', collectionName);
-        })();
-      action === 'deleteSelected' &&
-        res.forEach((todo) => {
-          if (todo.selected) this.firestoreService.deleteTodo(collectionName, todo.id || '');
-          checkAll = false;
-          this.doActionWithTodo(collection, checkAll, 'selectAll', collectionName);
-        });
-    }).unsubscribe;
+          })();
+        action === 'deleteSelected' &&
+          res.forEach((todo) => {
+            if (todo.selected) this.firestoreService.deleteTodo(collectionName, todo.id || '');
+          });
+      })
+      .unsubscribe();
   }
 
   public checkTodo(collectionName: CollectionName, item: ITodoItem) {

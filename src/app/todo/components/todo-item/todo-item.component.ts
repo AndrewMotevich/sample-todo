@@ -12,6 +12,7 @@ import { CollectionName } from 'src/app/shared/models/colection-name.model';
 export class TodoItemComponent {
   @Input() todoItem!: ITodoItem;
   @Input() collectionName!: CollectionName;
+  @Input() checkAll!: boolean;
 
   constructor(private firestoreService: FirestoreService) {}
 

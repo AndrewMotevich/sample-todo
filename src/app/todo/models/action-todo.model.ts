@@ -1,1 +1,5 @@
-export type ActionsTodoType = 'selectAll' | 'moveSelected' | 'deleteSelected';
+export enum ActionsTodo {
+  selectAll = 'selectAll',
+  moveSelected = 'moveSelected',
+  deleteSelected = 'deleteSelected',
+}
