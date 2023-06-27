@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
-import { LoginService } from 'src/app/shared/services/login.service';
+import { LoginService } from 'src/app/auth/services/login.service';
 import { ThemeService } from 'src/app/theme.service';
 import { SortOptionService } from '../../services/sort-option.service';
 

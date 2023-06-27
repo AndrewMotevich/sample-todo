@@ -1,6 +1,6 @@
-export type UserType = {
+export interface IUser {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
-};
+}

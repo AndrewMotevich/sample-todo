@@ -11,24 +11,17 @@
     </nz-form-item>
 
     <nz-form-item>
-      <nz-form-control nzErrorTip="Please input your Password!">
+      <nz-form-control [nzErrorTip]="errorTipsTemplate">
         <nz-input-group nzPrefixIcon="lock">
           <input type="password" nz-input formControlName="password" placeholder="Password" />
         </nz-input-group>
       </nz-form-control>
+      <ng-template #errorTipsTemplate let-control>
+        <ng-container *ngIf="control.hasError('required')">Please enter your password</ng-container>
+        <ng-container *ngIf="control.hasError('minlength')">Min length is 8</ng-container>
+      </ng-template>
     </nz-form-item>
 
-    <div class="row">
-      <div>
-        <label nz-checkbox formControlName="remember">
-          <span>Remember me</span>
-        </label>
-      </div>
-      <div>
-        <a href="mailto:motevich@gmail.com">Forgot password</a>
-      </div>
-    </div>
-
-    <button nz-button nzBlock class="margin" [nzType]="'primary'" [nzLoading]="isOkLoading">Log in</button>
+    <button nz-button nzBlock class="margin" [nzType]="'primary'" [nzLoading]="isLoading">Log in</button>
   </form>
 </app-modal-window>

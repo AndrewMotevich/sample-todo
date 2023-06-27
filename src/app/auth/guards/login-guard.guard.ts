@@ -1,20 +1,8 @@
 import { inject } from '@angular/core';
-import { LoginService } from 'src/app/shared/services/login.service';
+import { LoginService } from 'src/app/auth/services/login.service';
 
-export const IsLoggedInFunctionGuard = () => {
+export const isLoggedInFunctionGuard = () => {
   const loginService = inject(LoginService);
-  if (loginService.getUser()) {
-    return true;
-  } else {
-    return false;
-  }
-};
 
-export const MainPageRedirect = () => {
-  const loginService = inject(LoginService);
-  if (loginService.getUser()) {
-    return false;
-  } else {
-    return true;
-  }
+  return loginService.isLoggedIn;
 };

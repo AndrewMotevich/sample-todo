@@ -10,8 +10,8 @@ import {
   setDoc,
   collectionGroup,
 } from '@angular/fire/firestore';
-import { LoginService } from './login.service';
-import { UserType } from 'src/app/auth/models/user.model';
+import { LoginService } from '../../auth/services/login.service';
+import { IUser } from 'src/app/auth/models/user.model';
 import { BehaviorSubject } from 'rxjs';
 import { TodoItemType } from 'src/app/todo/models/todo-item.model';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
@@ -55,7 +55,7 @@ export class FirestoreService {
   private todoObserver = new BehaviorSubject<TodoItemType[]>([]);
   private inProgressObserver = new BehaviorSubject<TodoItemType[]>([]);
   private doneObserver = new BehaviorSubject<TodoItemType[]>([]);
-  private userName = new BehaviorSubject<Pick<UserType, 'firstName' | 'lastName'>>({
+  private userName = new BehaviorSubject<Pick<IUser, 'firstName' | 'lastName'>>({
     firstName: 'User',
     lastName: 'User',
   });
@@ -67,7 +67,7 @@ export class FirestoreService {
       collectionSnapshots(collectionGroup(this.firestore, `todo:${this.userEmail}`)).subscribe(
         (res) => {
           getDoc(doc(this.firestore, 'users', this.userEmail || 'admin@gmail.com')).then((res) => {
-            this.userName.next(res.data() as Pick<UserType, 'firstName' | 'lastName'>);
+            this.userName.next(res.data() as Pick<IUser, 'firstName' | 'lastName'>);
           });
           return this.todoObserver.next(
             res.map((elem) => ({ ...(elem.data() as TodoItemType), id: elem.id, selected: false }))
@@ -154,7 +154,7 @@ export class FirestoreService {
     );
   }
 
-  public setStartUserCollection(user: UserType): void {
+  public setStartUserCollection(user: IUser): void {
     if (this.loginService.getUser()) {
       const { firstName, lastName, email } = user;
       setDoc(doc(this.firestore, 'users', email), { firstName, lastName });
