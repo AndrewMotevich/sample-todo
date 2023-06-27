@@ -10,14 +10,14 @@ export class SortTodoPipe implements PipeTransform {
     if (value === null) {
       return [];
     }
-    if (filter.toString() === 'date') {
+    if (filter === 'date') {
       return this.sort(value, order, 'start');
     }
     return this.sort(value, order);
   }
 
   sort(value: ITodoItem[], order: FilterOrder, filter: keyof Pick<ITodoItem, 'title' | 'start'> = 'title') {
-    if (order.toString() === 'ascend') {
+    if (order === 'ascend') {
       return value.sort((a, b) => a[filter].toString().localeCompare(b[filter].toString()));
     } else {
       return value.sort((a, b) => -1 * a[filter].toString().localeCompare(b[filter].toString()));

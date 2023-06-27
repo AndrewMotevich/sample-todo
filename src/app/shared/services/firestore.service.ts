@@ -49,18 +49,14 @@ export class FirestoreService {
     observer: BehaviorSubject<ITodoItem[]>,
     checked = false
   ) {
-    collectionSnapshots(collectionGroup(this.firestore, `${collectionName.toString()}:${this.userEmail}`)).subscribe(
+    collectionSnapshots(collectionGroup(this.firestore, `${collectionName}:${this.userEmail}`)).subscribe(
       (res) => {
         return observer.next(
           res.map((elem) => ({ ...(elem.data() as ITodoItem), id: elem.id, checked: checked, selected: false }))
         );
       },
       (err) => {
-        this.notification.create(
-          'error',
-          `${collectionName.toString().toLocaleUpperCase()} Collection Observer`,
-          err.message
-        );
+        this.notification.create('error', `${collectionName.toLocaleUpperCase()} Collection Observer`, err.message);
       }
     );
   }
@@ -79,12 +75,9 @@ export class FirestoreService {
 
   public editTodo(collectionName: CollectionName, newTodo: ITodoItem) {
     return deleteDoc(
-      doc(this.firestore, `users/${this.userEmail}/${collectionName.toString()}:${this.userEmail}/`, newTodo.id || '')
+      doc(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}/`, newTodo.id || '')
     ).then(() =>
-      addDoc(
-        collection(this.firestore, `users/${this.userEmail}/${collectionName.toString()}:${this.userEmail}`),
-        newTodo
-      )
+      addDoc(collection(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}`), newTodo)
         .then(() => {
           this.notification.create('success', 'Edit operation', `Todo was successfully edited!`);
         })
@@ -95,10 +88,7 @@ export class FirestoreService {
   }
 
   public addTodo(collectionName: CollectionName, newTodo: ITodoItem) {
-    return addDoc(
-      collection(this.firestore, `users/${this.userEmail}/${collectionName.toString()}:${this.userEmail}`),
-      newTodo
-    )
+    return addDoc(collection(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}`), newTodo)
       .then(() => {
         this.notification.create('success', 'Create operation', `Todo was successfully created!`);
       })
@@ -108,7 +98,7 @@ export class FirestoreService {
   }
 
   public deleteTodo(collectionName: CollectionName, id: string) {
-    return deleteDoc(doc(this.firestore, `users/${this.userEmail}/${collectionName.toString()}:${this.userEmail}/`, id))
+    return deleteDoc(doc(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}/`, id))
       .then(() => {
         this.notification.create('success', 'Delete operation', `Todo was successfully deleted!`);
       })
@@ -142,16 +132,9 @@ export class FirestoreService {
     }
     return Promise.all([
       deleteDoc(
-        doc(
-          this.firestore,
-          `users/${this.userEmail}/${previousContainerId.toString()}:${this.userEmail}/`,
-          dragItem.id || ''
-        )
+        doc(this.firestore, `users/${this.userEmail}/${previousContainerId}:${this.userEmail}/`, dragItem.id || '')
       ),
-      addDoc(
-        collection(this.firestore, `users/${this.userEmail}/${currentContainerId.toString()}:${this.userEmail}`),
-        dragItem
-      ),
+      addDoc(collection(this.firestore, `users/${this.userEmail}/${currentContainerId}:${this.userEmail}`), dragItem),
     ]);
   }
 

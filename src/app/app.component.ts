@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { ThemeService } from './theme.service';
 
 @Component({
@@ -7,8 +7,6 @@ import { ThemeService } from './theme.service';
   styleUrls: ['./app.component.less'],
 })
 export class AppComponent {
-  @Input() title = 'Simple todo';
-
   constructor(public themeService: ThemeService) {}
 
   toggleTheme(): void {
