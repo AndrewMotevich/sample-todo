@@ -2,23 +2,28 @@
   <nz-page-header-extra>
     <ul nz-menu nzMode="horizontal">
 
-      <li nz-submenu [nzTitle]="(userName$ | async)?.firstName || 'User'" nzIcon="user">
+      <li nz-submenu [nzTitle]="userName" nzIcon="user">
         <ul>
-          <li nz-menu-item routerLink="board">Todo Board</li>
-          <li nz-menu-item (click)="signOut()">signOut</li>
+          <li nz-menu-item [nzMatchRouterExact]="true" *ngIf="!isLogin()" routerLink="">LogIn</li>
+          <li nz-menu-item [nzMatchRouterExact]="true" *ngIf="isLogin()" routerLink="board">Todo Board</li>
+          <li nz-menu-item [nzMatchRouterExact]="true" routerLink="about">
+            About app
+          </li>
+          <li nz-menu-item *ngIf="isLogin()" (click)="signOut()">signOut</li>
         </ul>
       </li>
 
-      <li nz-menu-item routerLink="about">
-        About
-      </li>
 
       <li nz-submenu nzTitle="Options" nzIcon="setting">
         <ul>
           <li nz-menu-item (click)="switchTheme()">Switch theme</li>
           <ul nz-submenu nzTitle="Sorting">
-            <li nz-menu-item (click)="sortOptionService.setSortOptions('title')">Sort by alphabet</li>
-            <li nz-menu-item (click)="sortOptionService.setSortOptions('date')">Sort by creation date</li>
+            <li nz-menu-item [nzSelected]="sortFilter === 'title'" (click)="sortOptionService.setSortOptions('title')">
+              Sort by alphabet
+            </li>
+            <li nz-menu-item [nzSelected]="sortFilter === 'date'" (click)="sortOptionService.setSortOptions('date')">
+              Sort by creation
+              date</li>
           </ul>
         </ul>
       </li>
@@ -27,5 +32,8 @@
 </nz-page-header>
 
 <ng-template #title>
-  <h1><a routerLink="board">Sample Todo</a></h1>
+  <div>
+    <h1><a routerLink="board">Sample Todo</a></h1>
+    <p>{{currentUrl}}</p>
+  </div>
 </ng-template>

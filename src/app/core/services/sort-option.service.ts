@@ -6,13 +6,13 @@ import { FilterType } from 'src/app/todo/models/filter-todo.model';
   providedIn: 'root',
 })
 export class SortOptionService {
-  private _sortOption = new BehaviorSubject<FilterType>('title');
+  private sortOption = new BehaviorSubject<FilterType>('title');
 
   setSortOptions(filter: FilterType) {
-    this._sortOption.next(filter);
+    this.sortOption.next(filter);
   }
 
   getSortOptions(): Observable<FilterType> {
-    return this._sortOption;
+    return this.sortOption;
   }
 }
