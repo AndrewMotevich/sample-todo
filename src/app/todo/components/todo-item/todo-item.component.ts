@@ -19,4 +19,12 @@ export class TodoItemComponent {
     event.stopPropagation();
     this.firestoreService.deleteTodo(this.collectionName, id);
   }
+
+  public selectItem() {
+    if (this.todoItem.selected) {
+      this.todoItem.selected = false;
+    } else {
+      this.todoItem.selected = true;
+    }
+  }
 }

@@ -1,6 +1,6 @@
 <div class="todo-card">
-  <nz-card [class]="collectionName" [appSelectTodoItem]="todoItem" [appTodoItemColor]="collectionName"
-    [nzHoverable]="true" [nzTitle]="cardTitle" [nzExtra]="extraButtons">
+  <nz-card [ngClass]="{'outline' : todoItem.selected}" [appTodoItemColor]="collectionName" [nzHoverable]="true"
+    [nzTitle]="cardTitle" [nzExtra]="extraButtons" (click)="selectItem()">
     <p>{{todoItem.description}}</p>
   </nz-card>
   <div [class]="'card-footer '+ (todoItem.start | colorDate)"></div>

@@ -23,7 +23,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ColorDatePipe } from '../../pipes/color-date.pipe';
 import { SortTodoPipe } from '../../pipes/sort-todo.pipe';
 import { TodoItemColorDirective } from '../../directives/todo-item-color.directive';
-import { SelectTodoItemDirective } from '../../directives/select-todo-item.directive';
 import { SelectAllTodoDirective } from '../../directives/select-all-todo.directive';
 import { BoardInputComponent } from '../../components/board-input/board-input.component';
 
@@ -36,7 +35,6 @@ import { BoardInputComponent } from '../../components/board-input/board-input.co
     ColorDatePipe,
     SortTodoPipe,
     TodoItemColorDirective,
-    SelectTodoItemDirective,
     SelectAllTodoDirective,
     BoardInputComponent,
   ],
