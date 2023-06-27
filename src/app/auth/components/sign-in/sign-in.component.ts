@@ -5,6 +5,7 @@ import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { IUser } from '../../models/user.model';
 import { ModalWindowComponent } from 'src/app/shared/components/modal-window/modal-window.component';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { showErrorTips } from '../../utils/utils';
 
 @Component({
   selector: 'app-sign-in',
@@ -39,21 +40,12 @@ export class SignInComponent {
 
   public submitForm(): void {
     if (!this.registerForm.valid) {
-      this.showErrorTips(this.registerForm.controls);
+      showErrorTips(this.registerForm.controls);
     } else {
       this.collectUserData();
       const { email, password } = this.user;
       this.signUp(email, password);
     }
-  }
-
-  private showErrorTips(controls: { [key: string]: FormControl<unknown> }): void {
-    Object.values(controls).forEach((control) => {
-      control.markAsDirty();
-      if (control.invalid) {
-        control.updateValueAndValidity({ onlySelf: true });
-      }
-    });
   }
 
   private collectUserData(): void {

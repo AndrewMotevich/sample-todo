@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { ITodoItem } from '../../models/todo-item.model';
@@ -7,6 +7,7 @@ import { CollectionName } from 'src/app/shared/models/colection-name.model';
 import { IFilterInfoObject, Filter, FilterOrder } from '../../models/filter-todo.model';
 import { ActionsTodo } from '../../models/action-todo.model';
 import { SortOptionService } from 'src/app/core/services/sort-option.service';
+import { getCollectionNameFromString, unselectAll } from '../../utils/utils';
 
 @Component({
   selector: 'app-board-page',
@@ -30,11 +31,7 @@ export class BoardPageComponent {
   public inProgress: BehaviorSubject<ITodoItem[]> = this.firestoreService.getInProgressCollection();
   public done: BehaviorSubject<ITodoItem[]> = this.firestoreService.getDoneCollection();
 
-  constructor(
-    private changeDetection: ChangeDetectorRef,
-    private firestoreService: FirestoreService,
-    public sortOptionService: SortOptionService
-  ) {
+  constructor(private firestoreService: FirestoreService, public sortOptionService: SortOptionService) {
     this.sortOptionService.getSortOptions().subscribe((res) => this.changeFilter(res));
   }
 
@@ -58,11 +55,15 @@ export class BoardPageComponent {
                 this.firestoreService.runDragAndDrop(collectionName, moveToCollectionName, res[i]);
               }
             }
+            unselectAll(collectionName, this);
           })();
         action === 'deleteSelected' &&
-          res.forEach((todo) => {
-            if (todo.selected) this.firestoreService.deleteTodo(collectionName, todo.id || '');
-          });
+          (() => {
+            res.forEach((todo) => {
+              if (todo.selected) this.firestoreService.deleteTodo(collectionName, todo.id || '');
+            });
+            unselectAll(collectionName, this);
+          })();
       })
       .unsubscribe();
   }
@@ -92,16 +93,9 @@ export class BoardPageComponent {
       return;
     }
     const item = event.previousContainer.data[event.previousIndex];
-    const previousContainerId = this.getCollectionNameFromString(event.previousContainer.id);
-    const currentContainerId = this.getCollectionNameFromString(event.container.id);
+    const previousContainerId = getCollectionNameFromString(event.previousContainer.id);
+    const currentContainerId = getCollectionNameFromString(event.container.id);
     this.firestoreService.runDragAndDrop(previousContainerId, currentContainerId, item);
     transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
-  }
-
-  private getCollectionNameFromString(query: string) {
-    if (query === 'todo') return CollectionName.todo;
-    if (query === 'inProgress') return CollectionName.inProgress;
-    if (query === 'done') return CollectionName.done;
-    return CollectionName.todo;
   }
 }

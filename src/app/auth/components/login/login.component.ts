@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { ModalWindowComponent } from 'src/app/shared/components/modal-window/modal-window.component';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { showErrorTips } from '../../utils/utils';
 
 @Component({
   selector: 'app-login',
@@ -30,21 +31,12 @@ export class LoginComponent {
 
   public submitForm(): void {
     if (!this.loginForm.valid) {
-      this.showErrorTips(this.loginForm.controls);
+      showErrorTips(this.loginForm.controls);
     } else {
       const email = this.loginForm.controls.email.value;
       const password = this.loginForm.controls.password.value;
       this.signIn(email, password);
     }
-  }
-
-  private showErrorTips(controls: { [key: string]: FormControl<unknown> }): void {
-    Object.values(controls).forEach((control) => {
-      control.markAsDirty();
-      if (control.invalid) {
-        control.updateValueAndValidity({ onlySelf: true });
-      }
-    });
   }
 
   public signIn(email: string, password: string): void {

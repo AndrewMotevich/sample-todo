@@ -3,6 +3,7 @@ import { ITodoItem } from '../../models/todo-item.model';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { CollectionName } from 'src/app/shared/models/colection-name.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { showErrorTips } from 'src/app/auth/utils/utils';
 
 @Component({
   selector: 'app-todo-details',
@@ -31,7 +32,7 @@ export class TodoDetailsComponent implements AfterContentInit {
 
   editTodo() {
     if (!this.editForm.valid) {
-      this.showErrorTips(this.editForm.controls);
+      showErrorTips(this.editForm.controls);
     } else {
       this.firestoreService.editTodo(this.collectionName, {
         ...this.todo,
@@ -43,14 +44,5 @@ export class TodoDetailsComponent implements AfterContentInit {
 
   deleteTodo() {
     this.firestoreService.deleteTodo(this.collectionName, this.todo.id || '');
-  }
-
-  private showErrorTips(controls: { [key: string]: FormControl<unknown> }): void {
-    Object.values(controls).forEach((control) => {
-      control.markAsDirty();
-      if (control.invalid) {
-        control.updateValueAndValidity({ onlySelf: true });
-      }
-    });
   }
 }
