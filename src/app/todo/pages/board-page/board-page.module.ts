@@ -24,6 +24,7 @@ import { ColorDatePipe } from '../../pipes/color-date.pipe';
 import { SortTodoPipe } from '../../pipes/sort-todo.pipe';
 import { TodoItemColorDirective } from '../../directives/todo-item-color.directive';
 import { BoardInputComponent } from '../../components/board-input/board-input.component';
+import { TodoActionMenuComponent } from '../../components/todo-action-menu/todo-action-menu.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { BoardInputComponent } from '../../components/board-input/board-input.co
     SortTodoPipe,
     TodoItemColorDirective,
     BoardInputComponent,
+    TodoActionMenuComponent,
   ],
   imports: [
     CommonModule,
