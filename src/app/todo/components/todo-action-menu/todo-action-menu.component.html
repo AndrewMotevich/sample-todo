@@ -1,16 +1,7 @@
-<!-- <nz-dropdown-menu #doneMenu="nzDropdownMenu">
-  <ul nz-menu nzSelectable>
-    <li nz-menu-item
-      (click)="doActionWithTodo(done, checkAllDone, action.moveSelected,collectionName.done, collectionName.todo)">Move
-      selected to Todo
-    </li>
-    <li nz-menu-item
-      (click)="doActionWithTodo(done, checkAllDone, action.moveSelected,collectionName.done, collectionName.inProgress)">
-      Move
-      selected
-      to In
-      Progress</li>
-    <li nz-menu-item (click)="doActionWithTodo(done, checkAllDone, action.deleteSelected,collectionName.done)">Delete
-      selected</li>
-  </ul>
-</nz-dropdown-menu> -->
+<ul nz-menu nzSelectable>
+  <li nz-menu-item (click)="todoAction(action.moveSelected, moveToCollectionOne)">Move selected to
+    {{moveToCollectionOne}}</li>
+  <li nz-menu-item (click)="todoAction(action.moveSelected, moveToCollectionTwo)">Move selected to
+    {{moveToCollectionTwo}}</li>
+  <li nz-menu-item (click)="todoAction(action.deleteSelected, moveToCollectionOne)">Delete selected</li>
+</ul>

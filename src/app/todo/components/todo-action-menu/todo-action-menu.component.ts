@@ -1,11 +1,51 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { TodoActionService } from '../../services/todo-action.service';
+import { ITodoItem } from '../../models/todo-item.model';
+import { BehaviorSubject } from 'rxjs';
+import { ActionsTodo } from '../../models/action-todo.model';
+import { CollectionName } from 'src/app/shared/models/colection-name.model';
 
 @Component({
   selector: 'app-todo-action-menu',
   templateUrl: './todo-action-menu.component.html',
   styleUrls: ['./todo-action-menu.component.less'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TodoActionMenuComponent {
+export class TodoActionMenuComponent implements OnInit {
+  @Input() collection!: BehaviorSubject<ITodoItem[]>;
+  @Input() checkAll!: boolean;
+  @Input() collectionName!: CollectionName;
+  @Input() context = { checkAllTodo: false, checkAllInProgress: false, checkAllDone: false };
 
+  public action = ActionsTodo;
+  public moveToCollectionOne!: CollectionName;
+  public moveToCollectionTwo!: CollectionName;
+
+  constructor(private todoActionService: TodoActionService) {}
+
+  ngOnInit(): void {
+    if (this.collectionName === 'todo') {
+      this.moveToCollectionOne = CollectionName.inProgress;
+      this.moveToCollectionTwo = CollectionName.done;
+    }
+    if (this.collectionName === 'inProgress') {
+      this.moveToCollectionOne = CollectionName.todo;
+      this.moveToCollectionTwo = CollectionName.done;
+    }
+    if (this.collectionName === 'done') {
+      this.moveToCollectionOne = CollectionName.todo;
+      this.moveToCollectionTwo = CollectionName.inProgress;
+    }
+  }
+
+  public todoAction(action: ActionsTodo, moveToCollection: CollectionName) {
+    this.todoActionService.doActionWithTodo(
+      this.collection,
+      this.checkAll,
+      action,
+      this.collectionName,
+      moveToCollection,
+      this.context
+    );
+  }
 }

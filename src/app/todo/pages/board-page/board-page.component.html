@@ -96,60 +96,16 @@
 </div>
 
 <nz-dropdown-menu #todoMenu="nzDropdownMenu">
-  <ul nz-menu nzSelectable>
-    <li nz-menu-item
-      (click)="todoActionService.doActionWithTodo(todo, checkAllTodo, action.moveSelected, collectionName.todo, collectionName.inProgress, context)">
-      Move
-      selected to
-      In
-      Progress</li>
-    <li nz-menu-item
-      (click)="todoActionService.doActionWithTodo(todo, checkAllTodo, action.moveSelected,collectionName.todo, collectionName.done, context)">
-      Move
-      selected to Done
-    </li>
-    <li nz-menu-item
-      (click)="todoActionService.doActionWithTodo(todo, checkAllTodo, action.deleteSelected, collectionName.todo, collectionName.todo, context)">
-      Delete
-      selected
-    </li>
-  </ul>
+  <app-todo-action-menu [collection]="todo" [checkAll]="checkAllTodo" [collectionName]="collectionName.todo"
+    [context]="context"></app-todo-action-menu>
 </nz-dropdown-menu>
 
 <nz-dropdown-menu #inProgressMenu="nzDropdownMenu">
-  <ul nz-menu nzSelectable>
-    <li nz-menu-item
-      (click)="todoActionService.doActionWithTodo(inProgress, checkAllInProgress, action.moveSelected, collectionName.inProgress, collectionName.todo, context)">
-      Move
-      selected to Todo</li>
-    <li nz-menu-item
-      (click)="todoActionService.doActionWithTodo(inProgress, checkAllInProgress, action.moveSelected,collectionName.inProgress, collectionName.done, context)">
-      Move
-      selected to Done</li>
-    <li nz-menu-item
-      (click)="todoActionService.doActionWithTodo(inProgress, checkAllInProgress, action.deleteSelected,collectionName.inProgress, collectionName.todo, context)">
-      Delete
-      selected
-    </li>
-  </ul>
+  <app-todo-action-menu [collection]="inProgress" [checkAll]="checkAllInProgress"
+    [collectionName]="collectionName.inProgress" [context]="context"></app-todo-action-menu>
 </nz-dropdown-menu>
 
 <nz-dropdown-menu #doneMenu="nzDropdownMenu">
-  <ul nz-menu nzSelectable>
-    <li nz-menu-item
-      (click)="todoActionService.doActionWithTodo(done, checkAllDone, action.moveSelected,collectionName.done, collectionName.todo, context)">
-      Move
-      selected to Todo
-    </li>
-    <li nz-menu-item
-      (click)="todoActionService.doActionWithTodo(done, checkAllDone, action.moveSelected,collectionName.done, collectionName.inProgress, context)">
-      Move
-      selected
-      to In
-      Progress</li>
-    <li nz-menu-item
-      (click)="todoActionService.doActionWithTodo(done, checkAllDone, action.deleteSelected,collectionName.done, collectionName.todo, context)">
-      Delete
-      selected</li>
-  </ul>
+  <app-todo-action-menu [collection]="done" [checkAll]="checkAllDone" [collectionName]="collectionName.done"
+    [context]="context"></app-todo-action-menu>
 </nz-dropdown-menu>
