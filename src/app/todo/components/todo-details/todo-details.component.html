@@ -1,6 +1,6 @@
 <form nz-form [formGroup]="editForm" (ngSubmit)="editTodo()">
 
-  <h4>Title:</h4>
+  <h4>{{"BOARD.LABELS.TITLE" | translate}}:</h4>
   <nz-form-item>
     <nz-form-control nzErrorTip="Please input title!">
       <nz-input-group>
@@ -9,7 +9,7 @@
     </nz-form-control>
   </nz-form-item>
 
-  <h4>Description:</h4>
+  <h4>{{"BOARD.LABELS.DESCRIPTION" | translate}}:</h4>
   <nz-form-item>
     <nz-form-control nzErrorTip="Max length 255!">
       <nz-textarea-count [nzMaxCharacterCount]="255">
@@ -18,10 +18,10 @@
     </nz-form-control>
   </nz-form-item>
 
-  <h4>Creation date:</h4>
+  <h4>{{"BOARD.LABELS.CREATION-DATE" | translate}}:</h4>
   <p>{{todo.start | date:"short"}}</p>
   <ng-template [ngIf]="todo.end !== null">
-    <h4>Completion date:</h4>
+    <h4>{{"BOARD.LABELS.COMPLETION-DATE" | translate}}:</h4>
     <p>{{todo.end | date:"short"}}</p>
   </ng-template>
 

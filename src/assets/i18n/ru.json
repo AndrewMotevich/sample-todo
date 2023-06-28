@@ -1,0 +1,57 @@
+{
+  "HEADER": {
+    "TITLE": {
+      "AUTH": "Аутентификация",
+      "BOARD": "Доска с todo",
+      "ABOUT": "Инфо"
+    },
+    "OPTIONS": {
+      "USER": {
+        "NAME": "Пользователь",
+        "LOGIN": "Войти",
+        "BOARD": "Доска с todo",
+        "ABOUT": "Инфо",
+        "SIGN-OUT": "Выйти"
+      },
+      "LANGUAGE": {
+        "LOCALIZATION": "Язык",
+        "EN": "EN",
+        "RU": "RU"
+      },
+      "SORT": {
+        "SORTING": "Сортировка",
+        "ALPHABET": "по алфавиту",
+        "CREATION": "по дате создания"
+      },
+      "THEME": "Переключить тему",
+      "TITLE": "Настройки"
+    }
+  },
+  "BOARD": {
+    "BUTTONS": {
+      "SELECT-ALL": "Выбрать все",
+      "EDIT": "Редактировать",
+      "ADD": "Добавить",
+      "CREATE": "Создать todo"
+    },
+    "LABELS": {
+      "ADD": "Добавить новую Todo",
+      "TITLE": "Заголовок",
+      "DESCRIPTION": "Описание",
+      "CREATION-DATE": "Дата создания",
+      "COMPLETION-DATE": "Дата выполнения"
+    }
+  },
+  "ACTION-MENU": {
+    "MOVE": "Переместить выделенное в",
+    "DELETE": "Удалить выделенное"
+  },
+  "BUTTONS": {
+    "LOGIN": "Войти",
+    "SIGN-UP": "Зарегестрироваться"
+  },
+  "AUTH": {
+    "TITLE": "Добро пожаловать!",
+    "PARAGRAPH": "Попробуйте Sample-todo"
+  }
+}

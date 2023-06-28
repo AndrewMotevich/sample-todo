@@ -1,4 +1,4 @@
-<button nz-button nzType="primary" (click)="modal.showModal()">Login</button>
+<button nz-button nzType="primary" (click)="modal.showModal()">{{'BUTTONS.LOGIN' | translate}}</button>
 
 <app-modal-window title="Login" #modal>
   <form nz-form [formGroup]="loginForm" (ngSubmit)="submitForm()">
@@ -22,6 +22,6 @@
       </ng-template>
     </nz-form-item>
 
-    <button nz-button nzBlock class="margin" [nzType]="'primary'" [nzLoading]="isLoading">Log in</button>
+    <button nz-button nzBlock class="margin" [nzType]="'primary'" [nzLoading]="isLoading">{{'BUTTONS.LOGIN' | translate}}</button>
   </form>
 </app-modal-window>

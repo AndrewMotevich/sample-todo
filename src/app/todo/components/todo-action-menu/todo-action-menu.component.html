@@ -1,7 +1,8 @@
 <ul nz-menu nzSelectable>
-  <li nz-menu-item (click)="todoAction(action.moveSelected, moveToCollectionOne)">Move selected to
+  <li nz-menu-item (click)="todoAction(action.moveSelected, moveToCollectionOne)">{{"ACTION-MENU.MOVE" | translate}}
     {{moveToCollectionOne}}</li>
-  <li nz-menu-item (click)="todoAction(action.moveSelected, moveToCollectionTwo)">Move selected to
+  <li nz-menu-item (click)="todoAction(action.moveSelected, moveToCollectionTwo)">{{"ACTION-MENU.MOVE" | translate}}
     {{moveToCollectionTwo}}</li>
-  <li nz-menu-item (click)="todoAction(action.deleteSelected, moveToCollectionOne)">Delete selected</li>
+  <li nz-menu-item (click)="todoAction(action.deleteSelected, moveToCollectionOne)">{{"ACTION-MENU.DELETE" | translate}}
+  </li>
 </ul>

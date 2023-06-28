@@ -1,4 +1,4 @@
-<button nz-button nzType="primary" (click)="modal.showModal()">Sign Up</button>
+<button nz-button nzType="primary" (click)="modal.showModal()">{{'BUTTONS.SIGN-UP' | translate}}</button>
 
 <app-modal-window title="Sign In" #modal>
   <form nz-form [nzLayout]="'vertical'" [formGroup]="registerForm" (ngSubmit)="submitForm()">
@@ -67,6 +67,6 @@
       </nz-form-control>
     </nz-form-item>
 
-    <button nz-button nzBlock [nzType]="'primary'" [nzLoading]="isLoading">Sign Up</button>
+    <button nz-button nzBlock [nzType]="'primary'" [nzLoading]="isLoading">{{'BUTTONS.SIGN-UP' | translate}}</button>
   </form>
 </app-modal-window>

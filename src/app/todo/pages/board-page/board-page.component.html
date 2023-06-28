@@ -14,8 +14,8 @@
       </span>
       <div>
         <label nz-checkbox [(ngModel)]="checkAllTodo"
-          (nzCheckedChange)="todoActionService.doActionWithTodo(todo, checkAllTodo, action.selectAll, collectionName.todo)">Select
-          all</label>
+          (nzCheckedChange)="todoActionService.doActionWithTodo(todo, checkAllTodo, action.selectAll, collectionName.todo)">{{"BOARD.BUTTONS.SELECT-ALL"
+          | translate}}</label>
         <button nz-button nzType="text" nzShape="circle" nz-dropdown [nzDropdownMenu]="todoMenu">
           <span nz-icon nzType="menu"></span>
         </button>
@@ -45,8 +45,8 @@
       </span>
       <div>
         <label nz-checkbox [(ngModel)]="checkAllInProgress"
-          (nzCheckedChange)="todoActionService.doActionWithTodo(inProgress, checkAllInProgress, action.selectAll,collectionName.inProgress)">Select
-          all</label>
+          (nzCheckedChange)="todoActionService.doActionWithTodo(inProgress, checkAllInProgress, action.selectAll,collectionName.inProgress)">{{"BOARD.BUTTONS.SELECT-ALL"
+          | translate}}</label>
         <button nz-button nzType="text" nzShape="circle" nz-dropdown [nzDropdownMenu]="inProgressMenu">
           <span nz-icon nzType="menu"></span>
         </button>
@@ -77,8 +77,8 @@
       </span>
       <div>
         <label nz-checkbox [(ngModel)]="checkAllDone"
-          (nzCheckedChange)="todoActionService.doActionWithTodo(done, checkAllDone, action.selectAll,collectionName.done)">Select
-          all</label>
+          (nzCheckedChange)="todoActionService.doActionWithTodo(done, checkAllDone, action.selectAll,collectionName.done)">{{"BOARD.BUTTONS.SELECT-ALL"
+          | translate}}</label>
         <button nz-button nzType="text" nzShape="circle" nz-dropdown [nzDropdownMenu]="doneMenu">
           <span nz-icon nzType="menu"></span>
         </button>

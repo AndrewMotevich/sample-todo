@@ -1,0 +1,57 @@
+{
+  "HEADER": {
+    "TITLE": {
+      "AUTH": "Authentication",
+      "BOARD": "Todo's board",
+      "ABOUT": "About app"
+    },
+    "OPTIONS": {
+      "USER": {
+        "NAME": "User",
+        "LOGIN": "Login",
+        "BOARD": "Todo's board",
+        "ABOUT": "About app",
+        "SIGN-OUT": "Sign Out"
+      },
+      "LANGUAGE": {
+        "LOCALIZATION": "Localization",
+        "EN": "EN",
+        "RU": "RU"
+      },
+      "SORT": {
+        "SORTING": "Sorting",
+        "ALPHABET": "Sort by Alphabet",
+        "CREATION": "Sort by Creation date"
+      },
+      "THEME": "Switch theme",
+      "TITLE": "Options"
+    }
+  },
+  "BOARD": {
+    "BUTTONS": {
+      "SELECT-ALL": "select All",
+      "EDIT": "Edit",
+      "ADD": "Add",
+      "CREATE": "Create todo"
+    },
+    "LABELS": {
+      "ADD": "Add new Todo",
+      "TITLE": "Title",
+      "DESCRIPTION": "Description",
+      "CREATION-DATE": "Creation date",
+      "COMPLETION-DATE": "Completion date"
+    }
+  },
+  "ACTION-MENU": {
+    "MOVE": "Move selected to",
+    "DELETE": "Delete selected"
+  },
+  "BUTTONS": {
+    "LOGIN": "Login",
+    "SIGN-UP": "Sign-up"
+  },
+  "AUTH": {
+    "TITLE": "Welcome!",
+    "PARAGRAPH": "Try this Sample todo app"
+  }
+}

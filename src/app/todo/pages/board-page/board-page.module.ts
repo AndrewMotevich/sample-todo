@@ -25,6 +25,7 @@ import { SortTodoPipe } from '../../pipes/sort-todo.pipe';
 import { TodoItemColorDirective } from '../../directives/todo-item-color.directive';
 import { BoardInputComponent } from '../../components/board-input/board-input.component';
 import { TodoActionMenuComponent } from '../../components/todo-action-menu/todo-action-menu.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { TodoActionMenuComponent } from '../../components/todo-action-menu/todo-
     BoardPageRoutingModule,
     ModalWindowComponent,
     DragDropModule,
+    TranslateModule,
   ],
   exports: [BoardPageComponent, TodoItemComponent, ModalWindowComponent, TodoDetailsComponent],
 })
