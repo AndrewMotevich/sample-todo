@@ -17,7 +17,16 @@
 
       <li nz-submenu [nzTitle]="'HEADER.OPTIONS.TITLE'| translate" nzIcon="setting">
         <ul>
-          <li nz-menu-item (click)="switchTheme()">{{"HEADER.OPTIONS.THEME" | translate}}</li>
+          <ul nz-submenu [nzTitle]="'HEADER.OPTIONS.THEME.TITLE'| translate">
+            <li class="menu-item-layout" nz-menu-item>{{darkTheme ? ('HEADER.OPTIONS.THEME.DARK' | translate) :
+              ('HEADER.OPTIONS.THEME.LIGHT' |
+              translate)}} <nz-switch [(ngModel)]="darkTheme" (click)="switchTheme($event)"></nz-switch></li>
+          </ul>
+          <ul nz-submenu [nzTitle]="'HEADER.OPTIONS.DRAG.TITLE'| translate">
+            <li class="menu-item-layout" nz-menu-item>{{darkTheme ? ('HEADER.OPTIONS.DRAG.OFF' | translate) :
+              ('HEADER.OPTIONS.DRAG.ON' |
+              translate)}} <nz-switch [(ngModel)]="canDrag" (click)="switchDragAndDrop()"></nz-switch></li>
+          </ul>
           <ul nz-submenu [nzTitle]="'HEADER.OPTIONS.SORT.SORTING'| translate">
             <li nz-menu-item [nzSelected]="sortFilter === 'title'"
               (click)="sortOptionService.setSortOptions(filter.title)">

@@ -9,6 +9,7 @@ import { ActionsTodo } from '../../models/action-todo.model';
 import { SortOptionService } from 'src/app/todo/services/sort-option.service';
 import { getCollectionNameFromString } from '../../utils/utils';
 import { TodoActionService } from '../../services/todo-action.service';
+import { DragAndDropService } from '../../services/drag-and-drop.service';
 
 @Component({
   selector: 'app-board-page',
@@ -32,9 +33,13 @@ export class BoardPageComponent {
   constructor(
     private firestoreService: FirestoreService,
     public sortOptionService: SortOptionService,
-    public todoActionService: TodoActionService
+    public todoActionService: TodoActionService,
+    public dragAndDropService: DragAndDropService
   ) {
     this.sortOptionService.getSortOptions().subscribe((res) => this.sortOptionService.changeFilter(res));
+    if (document.body.clientWidth < 600) {
+      this.dragAndDropService.disableDrag = true;
+    }
   }
 
   public checkTodo(collectionName: CollectionName, item: ITodoItem) {

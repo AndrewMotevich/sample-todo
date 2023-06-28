@@ -6,6 +6,11 @@
       "ABOUT": "About app"
     },
     "OPTIONS": {
+      "DRAG": {
+        "TITLE": "DragAndDrop",
+        "ON": "On",
+        "OFF": "Off"
+      },
       "USER": {
         "NAME": "User",
         "LOGIN": "Login",
@@ -23,7 +28,11 @@
         "ALPHABET": "Sort by Alphabet",
         "CREATION": "Sort by Creation date"
       },
-      "THEME": "Switch theme",
+      "THEME": {
+        "TITLE": "Switch theme",
+        "DARK": "Dark",
+        "LIGHT": "Light"
+      },
       "TITLE": "Options"
     }
   },

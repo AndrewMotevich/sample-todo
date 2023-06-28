@@ -3,7 +3,6 @@ import {
   Firestore,
   collection,
   doc,
-  getDoc,
   deleteDoc,
   collectionSnapshots,
   addDoc,
