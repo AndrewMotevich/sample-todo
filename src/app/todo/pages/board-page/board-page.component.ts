@@ -30,6 +30,8 @@ export class BoardPageComponent {
   public inProgress: BehaviorSubject<ITodoItem[]> = this.firestoreService.getInProgressCollection();
   public done: BehaviorSubject<ITodoItem[]> = this.firestoreService.getDoneCollection();
 
+  public disableDrag = this.dragAndDropService.getDisableDragObserver();
+
   constructor(
     private firestoreService: FirestoreService,
     public sortOptionService: SortOptionService,
@@ -38,7 +40,7 @@ export class BoardPageComponent {
   ) {
     this.sortOptionService.getSortOptions().subscribe((res) => this.sortOptionService.changeFilter(res));
     if (document.body.clientWidth < 600) {
-      this.dragAndDropService.disableDrag = true;
+      this.disableDrag.next(true);
     }
   }
 

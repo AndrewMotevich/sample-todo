@@ -2,7 +2,7 @@
 
 <div class="board-wrapper">
   <div cdkDropList id="todo" #todoList="cdkDropList" [cdkDropListData]="todo | async "
-    [cdkDropListDisabled]="dragAndDropService.disableDrag" [cdkDropListConnectedTo]="[doneList, inProgressList]"
+    [cdkDropListDisabled]="(disableDrag | async)" [cdkDropListConnectedTo]="[doneList, inProgressList]"
     class="board-colons-todo" (cdkDropListDropped)="drop($event)">
     <h2>
       <span>
@@ -33,7 +33,7 @@
   <nz-divider></nz-divider>
 
   <div cdkDropList id="inProgress" #inProgressList="cdkDropList" [cdkDropListData]="inProgress | async"
-    [cdkDropListDisabled]="dragAndDropService.disableDrag" [cdkDropListConnectedTo]="[doneList, todoList]"
+    [cdkDropListDisabled]="(disableDrag | async)" [cdkDropListConnectedTo]="[doneList, todoList]"
     class="board-colons-inProgress" (cdkDropListDropped)="drop($event)">
     <h2>
       <span>
@@ -66,7 +66,7 @@
   <nz-divider></nz-divider>
 
   <div cdkDropList id="done" #doneList="cdkDropList" [cdkDropListData]="done | async"
-    [cdkDropListDisabled]="dragAndDropService.disableDrag" [cdkDropListConnectedTo]="[todoList, inProgressList]"
+    [cdkDropListDisabled]="(disableDrag | async)" [cdkDropListConnectedTo]="[todoList, inProgressList]"
     class="example-list" class="board-colons-done" (cdkDropListDropped)="drop($event)">
     <h2>
       <span>

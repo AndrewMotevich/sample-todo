@@ -39,6 +39,8 @@ export class HeaderComponent {
   darkTheme = false;
   canDrag = true;
 
+  disableDragObserver = this.dragAndDropService.getDisableDragObserver();
+
   constructor(
     private loginService: LoginService,
     private themeService: ThemeService,
@@ -89,13 +91,8 @@ export class HeaderComponent {
     this.translateService.use(localization);
   }
 
-  public switchDragAndDrop() {
-    if (this.dragAndDropService.disableDrag) {
-      this.canDrag = false;
-      this.dragAndDropService.disableDrag = false;
-    } else {
-      this.canDrag = true;
-      this.dragAndDropService.disableDrag = true;
-    }
+  public switchDragAndDrop(event: Event) {
+    event.stopPropagation();
+    this.disableDragObserver.next(this.canDrag);
   }
 }
