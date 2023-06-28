@@ -4,9 +4,9 @@ import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { ITodoItem } from '../../models/todo-item.model';
 import { BehaviorSubject } from 'rxjs';
 import { CollectionName } from 'src/app/shared/models/colection-name.model';
-import { IFilterInfoObject, Filter, FilterOrder } from '../../models/filter-todo.model';
+import { IFilterInfoObject } from '../../models/filter-todo.model';
 import { ActionsTodo } from '../../models/action-todo.model';
-import { SortOptionService } from 'src/app/core/services/sort-option.service';
+import { SortOptionService } from 'src/app/todo/services/sort-option.service';
 import { getCollectionNameFromString, unselectAll } from '../../utils/utils';
 
 @Component({
@@ -23,16 +23,12 @@ export class BoardPageComponent {
   public checkAllInProgress = false;
   public checkAllDone = false;
 
-  public sortAllTodo: IFilterInfoObject = { filter: Filter.title, order: FilterOrder.ascend };
-  public sortAllInProgress: IFilterInfoObject = { filter: Filter.title, order: FilterOrder.ascend };
-  public sortAllDone: IFilterInfoObject = { filter: Filter.title, order: FilterOrder.ascend };
-
   public todo: BehaviorSubject<ITodoItem[]> = this.firestoreService.getTodoCollection();
   public inProgress: BehaviorSubject<ITodoItem[]> = this.firestoreService.getInProgressCollection();
   public done: BehaviorSubject<ITodoItem[]> = this.firestoreService.getDoneCollection();
 
   constructor(private firestoreService: FirestoreService, public sortOptionService: SortOptionService) {
-    this.sortOptionService.getSortOptions().subscribe((res) => this.changeFilter(res));
+    this.sortOptionService.getSortOptions().subscribe((res) => this.sortOptionService.changeFilter(res));
   }
 
   public doActionWithTodo(
@@ -77,14 +73,7 @@ export class BoardPageComponent {
   }
 
   public changeFilterOrder(collectionSortOptions: IFilterInfoObject): void {
-    if (collectionSortOptions.order.toString() === 'ascend') collectionSortOptions.order = FilterOrder.descend;
-    else collectionSortOptions.order = FilterOrder.ascend;
-  }
-
-  private changeFilter(filter: Filter): void {
-    this.sortAllDone.filter = filter;
-    this.sortAllInProgress.filter = filter;
-    this.sortAllTodo.filter = filter;
+    this.sortOptionService.changeFilterOrder(collectionSortOptions);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

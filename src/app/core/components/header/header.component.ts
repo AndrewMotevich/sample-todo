@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { LoginService } from 'src/app/auth/services/login.service';
 import { ThemeService } from 'src/app/theme.service';
-import { SortOptionService } from '../../services/sort-option.service';
+import { SortOptionService } from '../../../todo/services/sort-option.service';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { CommonModule } from '@angular/common';

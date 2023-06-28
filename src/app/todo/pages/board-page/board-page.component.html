@@ -6,8 +6,9 @@
     <h2>
       <span>
         Todo
-        <button nz-button nzType="text" nzShape="circle" (click)="changeFilterOrder(sortAllTodo)">
-          <span nz-icon [nzType]="(sortAllTodo.order === 'ascend') ? 'sort-ascending' : 'sort-descending'"
+        <button nz-button nzType="text" nzShape="circle" (click)="changeFilterOrder(sortOptionService.sortAllTodo)">
+          <span nz-icon
+            [nzType]="(sortOptionService.sortAllTodo.order === 'ascend') ? 'sort-ascending' : 'sort-descending'"
             nzTheme="outline"></span>
         </button>
       </span>
@@ -20,7 +21,8 @@
         </button>
       </div>
     </h2>
-    <ng-container *ngFor="let item of todo | async | sortTodo:sortAllTodo.order:sortAllTodo.filter; let i = index">
+    <ng-container
+      *ngFor="let item of todo | async | sortTodo:sortOptionService.sortAllTodo.order:sortOptionService.sortAllTodo.filter; let i = index">
       <app-todo-item [checkAll]="checkAllTodo" [collectionName]="collectionName.todo" cdkDrag [title]="item.title"
         [todoItem]="item">
         <label nz-checkbox [(ngModel)]="item.checked" (nzCheckedChange)="checkTodo(collectionName.todo, item)"></label>
@@ -34,8 +36,10 @@
     <h2>
       <span>
         In Progress
-        <button nz-button nzType="text" nzShape="circle" (click)="changeFilterOrder(sortAllInProgress)">
-          <span nz-icon [nzType]="(sortAllInProgress.order === 'ascend') ? 'sort-ascending' : 'sort-descending'"
+        <button nz-button nzType="text" nzShape="circle"
+          (click)="changeFilterOrder(sortOptionService.sortAllInProgress)">
+          <span nz-icon
+            [nzType]="(sortOptionService.sortAllInProgress.order === 'ascend') ? 'sort-ascending' : 'sort-descending'"
             nzTheme="outline"></span>
         </button>
       </span>
@@ -49,7 +53,7 @@
       </div>
     </h2>
     <ng-container
-      *ngFor="let item of inProgress | async | sortTodo:sortAllInProgress.order:sortAllInProgress.filter; let i = index">
+      *ngFor="let item of inProgress | async | sortTodo:sortOptionService.sortAllInProgress.order:sortOptionService.sortAllInProgress.filter; let i = index">
       <app-todo-item [checkAll]="checkAllInProgress" [collectionName]="collectionName.inProgress" cdkDrag
         [title]="item.title" [todoItem]="item">
         <label nz-checkbox [(ngModel)]="item.checked"
@@ -65,8 +69,9 @@
     <h2>
       <span>
         Done
-        <button nz-button nzType="text" nzShape="circle" (click)="changeFilterOrder(sortAllDone)">
-          <span nz-icon [nzType]="(sortAllDone.order === 'ascend') ? 'sort-ascending' : 'sort-descending'"
+        <button nz-button nzType="text" nzShape="circle" (click)="changeFilterOrder(sortOptionService.sortAllDone)">
+          <span nz-icon
+            [nzType]="(sortOptionService.sortAllDone.order === 'ascend') ? 'sort-ascending' : 'sort-descending'"
             nzTheme="outline"></span>
         </button>
       </span>
@@ -79,7 +84,8 @@
         </button>
       </div>
     </h2>
-    <ng-container *ngFor="let item of done | async | sortTodo:sortAllDone.order:sortAllDone.filter; let i = index">
+    <ng-container
+      *ngFor="let item of done | async | sortTodo:sortOptionService.sortAllDone.order:sortOptionService.sortAllDone.filter; let i = index">
       <app-todo-item [checkAll]="checkAllDone" [collectionName]="collectionName.done" cdkDrag [title]="item.title"
         [todoItem]="item">
         <label nz-checkbox [(ngModel)]="item.checked" (nzCheckedChange)="checkTodo(collectionName.done, item)"></label>
