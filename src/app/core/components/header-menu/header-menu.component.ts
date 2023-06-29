@@ -12,24 +12,26 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from 'src/app/app-routing.module';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
-  selector: 'app-desktop-menu',
+  selector: 'app-header-menu',
   standalone: true,
   imports: [
     CommonModule,
     NzPageHeaderModule,
     NzMenuModule,
     NzSwitchModule,
+    NzIconModule,
     AppRoutingModule,
     TranslateModule,
     FormsModule,
   ],
   templateUrl: './desktop-menu.component.html',
-  styleUrls: ['./desktop-menu.component.less'],
+  styleUrls: ['./header-menu.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DesktopMenuComponent {
+export class HeaderMenuComponent {
   currentUrl = 'Authentication';
   userName = 'OPTIONS.USER.NAME';
   currentLocalization = 'en';
@@ -89,3 +91,22 @@ export class DesktopMenuComponent {
     this.disableDragObserver.next(this.canDrag);
   }
 }
+
+@Component({
+  selector: 'app-mobile-menu',
+  standalone: true,
+  imports: [
+    CommonModule,
+    NzPageHeaderModule,
+    NzMenuModule,
+    NzSwitchModule,
+    NzIconModule,
+    AppRoutingModule,
+    TranslateModule,
+    FormsModule,
+  ],
+  templateUrl: './mobile-menu.component.html',
+  styleUrls: ['./header-menu.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class MobileMenuComponent extends HeaderMenuComponent {}

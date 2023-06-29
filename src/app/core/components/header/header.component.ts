@@ -7,8 +7,7 @@ import { AppRoutingModule } from 'src/app/app-routing.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { NavigationEnd, Router } from '@angular/router';
-import { DesktopMenuComponent } from '../desktop-menu/desktop-menu.component';
-import { MobileMenuComponent } from '../mobile-menu/mobile-menu.component';
+import { HeaderMenuComponent, MobileMenuComponent } from '../header-menu/header-menu.component';
 
 @Component({
   selector: 'app-header',
@@ -23,7 +22,7 @@ import { MobileMenuComponent } from '../mobile-menu/mobile-menu.component';
     AppRoutingModule,
     TranslateModule,
     FormsModule,
-    DesktopMenuComponent,
+    HeaderMenuComponent,
     MobileMenuComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
