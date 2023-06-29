@@ -1,18 +1,14 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
-import { FirestoreService } from 'src/app/shared/services/firestore.service';
-import { LoginService } from 'src/app/auth/services/login.service';
-import { ThemeService } from 'src/app/theme.service';
-import { SortOptionService } from '../../../todo/services/sort-option.service';
+import { ChangeDetectionStrategy, Component, ChangeDetectorRef } from '@angular/core';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from 'src/app/app-routing.module';
-import { Filter } from 'src/app/todo/models/filter-todo.model';
-import { NavigationEnd, Router } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
-import { DragAndDropService } from 'src/app/todo/services/drag-and-drop.service';
+import { NavigationEnd, Router } from '@angular/router';
+import { DesktopMenuComponent } from '../desktop-menu/desktop-menu.component';
+import { MobileMenuComponent } from '../mobile-menu/mobile-menu.component';
 
 @Component({
   selector: 'app-header',
@@ -27,36 +23,16 @@ import { DragAndDropService } from 'src/app/todo/services/drag-and-drop.service'
     AppRoutingModule,
     TranslateModule,
     FormsModule,
+    DesktopMenuComponent,
+    MobileMenuComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
   currentUrl = 'Authentication';
-  userName = 'OPTIONS.USER.NAME';
-  userNameObservable = this.firestoreService.getUserName();
-  sortFilter: Filter = Filter.title;
-  filter = Filter;
-  darkTheme = false;
-  canDrag = true;
+  isMobile = false;
 
-  disableDragObserver = this.dragAndDropService.getDisableDragObserver();
-
-  constructor(
-    private loginService: LoginService,
-    private themeService: ThemeService,
-    private firestoreService: FirestoreService,
-    private router: Router,
-    private changeDetection: ChangeDetectorRef,
-    private translateService: TranslateService,
-    private dragAndDropService: DragAndDropService,
-    public sortOptionService: SortOptionService
-  ) {
-    this.sortOptionService.getSortOptions().subscribe((res) => {
-      this.sortFilter = res;
-    });
-    this.userNameObservable.subscribe((res) => {
-      this.userName = res.firstName;
-    });
+  constructor(private changeDetection: ChangeDetectorRef, private router: Router) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         event.url === '/' && (this.currentUrl = 'HEADER.TITLE.AUTH');
@@ -65,34 +41,8 @@ export class HeaderComponent {
         this.changeDetection.detectChanges();
       }
     });
-  }
-
-  public isLogin() {
-    return this.loginService.isLoggedIn;
-  }
-
-  public getUser(): void {
-    this.loginService.getUser();
-  }
-
-  public signOut(): void {
-    this.loginService.signOut();
-  }
-
-  public switchTheme(event: Event): void {
-    event.stopPropagation();
-    if (this.themeService.currentTheme === 'dark') {
-      this.darkTheme = true;
-    } else this.darkTheme = false;
-    this.themeService.toggleTheme();
-  }
-
-  public switchLocalization(localization: string) {
-    this.translateService.use(localization);
-  }
-
-  public switchDragAndDrop(event: Event) {
-    event.stopPropagation();
-    this.disableDragObserver.next(this.canDrag);
+    if (document.body.clientWidth < 600) {
+      this.isMobile = true;
+    }
   }
 }
