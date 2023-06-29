@@ -2,10 +2,16 @@
   "HEADER": {
     "TITLE": {
       "AUTH": "Аутентификация",
-      "BOARD": "Доска с todo",
-      "ABOUT": "Инфо"
+      "BOARD": "Доска с заданиями",
+      "ABOUT": "Инфо",
+      "NAVIGATION": "Навигация"
     },
     "OPTIONS": {
+      "VIEW": {
+        "TITLE": "Вид доски",
+        "ON": "Вкл",
+        "OFF": "Выкл"
+      },
       "DRAG": {
         "TITLE": "Перетаскивание",
         "ON": "Вкл",
@@ -14,7 +20,7 @@
       "USER": {
         "NAME": "Пользователь",
         "LOGIN": "Войти",
-        "BOARD": "Доска с todo",
+        "BOARD": "Доска",
         "ABOUT": "Инфо",
         "SIGN-OUT": "Выйти"
       },
@@ -37,14 +43,19 @@
     }
   },
   "BOARD": {
+    "TITLES": {
+      "TODO": "Сделать",
+      "IN-PROGRESS": "В процессе",
+      "DONE": "Выполнено"
+    },
     "BUTTONS": {
       "SELECT-ALL": "Выбрать все",
       "EDIT": "Редактировать",
       "ADD": "Добавить",
-      "CREATE": "Создать todo"
+      "CREATE": "Создать задачу"
     },
     "LABELS": {
-      "ADD": "Добавить новую Todo",
+      "ADD": "Добавить новую задачу",
       "TITLE": "Заголовок",
       "DESCRIPTION": "Описание",
       "CREATION-DATE": "Дата создания",
@@ -61,6 +72,29 @@
   },
   "AUTH": {
     "TITLE": "Добро пожаловать!",
-    "PARAGRAPH": "Попробуйте Sample-todo"
+    "PARAGRAPH": "Попробуйте Sample-todo",
+    "LOGIN": {
+      "TITLE": "Войти",
+      "EMAIL": "Почта",
+      "PASSWORD": "Пароль"
+    },
+    "SIGN-UP": {
+      "TITLE": "Форма регистрация",
+      "EMAIL": "Почта",
+      "PASSWORD": "Пароль",
+      "FIRST-NAME": "Имя",
+      "LAST-NAME": "Фамилия",
+      "CONFIRM-PASS": "Подтвердите пороль"
+    },
+    "MESSAGES": {
+      "REQUIRED": "Пожалуйста введите свой {{value}}",
+      "MIN-LENGTH": "Минимальная длина {{value}}",
+      "NOT-EQUAL": "Пароли не одинаковы",
+      "AGREEMENT": {
+        "TITLE": "Я ознакомлен с",
+        "CONTENT": "условиями",
+        "ERROR": "Вы должны прочесть и подтвердить"
+      }
+    }
   }
 }

@@ -3,9 +3,15 @@
     "TITLE": {
       "AUTH": "Authentication",
       "BOARD": "Todo's board",
-      "ABOUT": "About app"
+      "ABOUT": "About app",
+      "NAVIGATION": "Navigation"
     },
     "OPTIONS": {
+      "VIEW": {
+        "TITLE": "Board View",
+        "ON": "On",
+        "OFF": "Off"
+      },
       "DRAG": {
         "TITLE": "DragAndDrop",
         "ON": "On",
@@ -37,6 +43,11 @@
     }
   },
   "BOARD": {
+    "TITLES": {
+      "TODO": "Todo",
+      "IN-PROGRESS": "In progress",
+      "DONE": "Done"
+    },
     "BUTTONS": {
       "SELECT-ALL": "select All",
       "EDIT": "Edit",
@@ -61,6 +72,29 @@
   },
   "AUTH": {
     "TITLE": "Welcome!",
-    "PARAGRAPH": "Try this Sample todo app"
+    "PARAGRAPH": "Try this Sample todo app",
+    "LOGIN": {
+      "TITLE": "Login",
+      "EMAIL": "Email",
+      "PASSWORD": "Password"
+    },
+    "SIGN-UP": {
+      "TITLE": "Sign-up",
+      "EMAIL": "Email",
+      "PASSWORD": "Password",
+      "FIRST-NAME": "First name",
+      "LAST-NAME": "Last name",
+      "CONFIRM-PASS": "Confirm password"
+    },
+    "MESSAGES": {
+      "REQUIRED": "Please enter your {{value}}!",
+      "MIN-LENGTH": "Min length is {{value}}!",
+      "NOT-EQUAL": "Passwords aren't equal",
+      "AGREEMENT": {
+        "TITLE": "I have read",
+        "CONTENT": "agreement",
+        "ERROR": "You should read and agree"
+      }
+    }
   }
 }

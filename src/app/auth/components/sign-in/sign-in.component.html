@@ -1,67 +1,76 @@
 <button nz-button nzType="primary" (click)="modal.showModal()">{{'BUTTONS.SIGN-UP' | translate}}</button>
 
-<app-modal-window title="Sign In" #modal>
+<app-modal-window [title]="'AUTH.SIGN-UP.TITLE' | translate" #modal>
   <form nz-form [nzLayout]="'vertical'" [formGroup]="registerForm" (ngSubmit)="submitForm()">
     <nz-form-item>
-      <nz-form-label>First name</nz-form-label>
-      <nz-form-control nzErrorTip="Please input your first name!">
+      <nz-form-label>{{'AUTH.SIGN-UP.FIRST-NAME' | translate}}</nz-form-label>
+      <nz-form-control [nzErrorTip]="'AUTH.MESSAGES.REQUIRED' | translate: {value:
+        'first Name'}">
         <nz-input-group>
-          <input type="text" nz-input formControlName="firstName" placeholder="First Name" />
+          <input type="text" nz-input formControlName="firstName"
+            [placeholder]="'AUTH.SIGN-UP.FIRST-NAME' | translate" />
         </nz-input-group>
       </nz-form-control>
     </nz-form-item>
 
     <nz-form-item>
-      <nz-form-label>Last Name</nz-form-label>
-      <nz-form-control nzErrorTip="Please input your last name!">
+      <nz-form-label>{{'AUTH.SIGN-UP.LAST-NAME' | translate}}</nz-form-label>
+      <nz-form-control [nzErrorTip]="'AUTH.MESSAGES.REQUIRED' | translate: {value:
+        'last name'}">
         <nz-input-group>
-          <input type="text" nz-input formControlName="lastName" placeholder="Last Name" />
+          <input type="text" nz-input formControlName="lastName" [placeholder]="'AUTH.SIGN-UP.LAST-NAME' | translate" />
         </nz-input-group>
       </nz-form-control>
     </nz-form-item>
 
     <nz-form-item>
-      <nz-form-label>Email</nz-form-label>
-      <nz-form-control nzErrorTip="Please input your email!">
+      <nz-form-label>{{'AUTH.SIGN-UP.EMAIL' | translate}}</nz-form-label>
+      <nz-form-control [nzErrorTip]="'AUTH.MESSAGES.REQUIRED' | translate: {value:
+        'email'}">
         <nz-input-group nzPrefixIcon="user">
-          <input type="text" nz-input formControlName="email" placeholder="Email" />
+          <input type="text" nz-input formControlName="email" [placeholder]="'AUTH.SIGN-UP.EMAIL' | translate" />
         </nz-input-group>
       </nz-form-control>
     </nz-form-item>
 
     <nz-form-item>
-      <nz-form-label>Password</nz-form-label>
+      <nz-form-label>{{'AUTH.SIGN-UP.PASSWORD' | translate}}</nz-form-label>
       <nz-form-control [nzErrorTip]="errorTipsTemplate">
         <nz-input-group nzPrefixIcon="lock">
-          <input type="password" nz-input formControlName="password" placeholder="Password" />
+          <input type="password" nz-input formControlName="password"
+            [placeholder]="'AUTH.SIGN-UP.PASSWORD' | translate" />
         </nz-input-group>
       </nz-form-control>
       <ng-template #errorTipsTemplate let-control>
-        <ng-container *ngIf="control.hasError('required')">Please enter your password</ng-container>
+        <ng-container *ngIf="control.hasError('required')">{{('AUTH.MESSAGES.REQUIRED' | translate: {value:
+          'password'})}}</ng-container>
         <ng-container *ngIf="control.hasError('minlength')">Min length is 8</ng-container>
       </ng-template>
     </nz-form-item>
 
     <nz-form-item>
-      <nz-form-label>Confirm password</nz-form-label>
+      <nz-form-label>{{'AUTH.SIGN-UP.CONFIRM-PASS' | translate}}</nz-form-label>
       <nz-form-control [nzErrorTip]="errorTipsConfirmPassword">
         <nz-input-group nzPrefixIcon="lock">
-          <input type="password" nz-input formControlName="confirmPassword" placeholder="Password" />
+          <input type="password" nz-input formControlName="confirmPassword"
+            [placeholder]="'AUTH.SIGN-UP.CONFIRM-PASS' | translate" />
         </nz-input-group>
       </nz-form-control>
       <ng-template #errorTipsConfirmPassword let-control>
-        <ng-container *ngIf="control.hasError('required')">Please confirm your password</ng-container>
-        <ng-container *ngIf="control.hasError('notEqualPasswords')">Passwords aren't equal</ng-container>
+        <ng-container *ngIf="control.hasError('required')">{{('AUTH.MESSAGES.REQUIRED' | translate: {value:
+          'confirm password'})}}</ng-container>
+        <ng-container *ngIf="control.hasError('notEqualPasswords')">{{('AUTH.MESSAGES.NOT-EQUAL' |
+          translate)}}</ng-container>
       </ng-template>
     </nz-form-item>
 
 
     <nz-form-item>
-      <nz-form-control nzErrorTip="You should agree!">
+      <nz-form-control [nzErrorTip]="'AUTH.MESSAGES.AGREEMENT.ERROR' | translate">
         <label nz-checkbox formControlName="agree">
           <span>
-            I have read the
-            <a>agreement</a>
+            {{('AUTH.MESSAGES.AGREEMENT.TITLE' | translate)}}
+            <a>{{('AUTH.MESSAGES.AGREEMENT.CONTENT' | translate)}}</a>
           </span>
         </label>
       </nz-form-control>

@@ -7,7 +7,7 @@
     class="board-colons-todo drop-list-container" (cdkDropListDropped)="drop($event)">
     <h2>
       <span>
-        Todo
+        {{"BOARD.TITLES.TODO" | translate}}
         <button nz-button nzType="text" nzShape="circle" (click)="changeFilterOrder(sortOptionService.sortAllTodo)">
           <span nz-icon
             [nzType]="(sortOptionService.sortAllTodo.order === 'ascend') ? 'sort-ascending' : 'sort-descending'"
@@ -38,7 +38,7 @@
     class="board-colons-inProgress drop-list-container" (cdkDropListDropped)="drop($event)">
     <h2>
       <span>
-        In Progress
+        {{"BOARD.TITLES.IN-PROGRESS" | translate}}
         <button nz-button nzType="text" nzShape="circle"
           (click)="changeFilterOrder(sortOptionService.sortAllInProgress)">
           <span nz-icon
@@ -71,7 +71,7 @@
     class="board-colons-done drop-list-container" (cdkDropListDropped)="drop($event)">
     <h2>
       <span>
-        Done
+        {{"BOARD.TITLES.DONE" | translate}}
         <button nz-button nzType="text" nzShape="circle" (click)="changeFilterOrder(sortOptionService.sortAllDone)">
           <span nz-icon
             [nzType]="(sortOptionService.sortAllDone.order === 'ascend') ? 'sort-ascending' : 'sort-descending'"

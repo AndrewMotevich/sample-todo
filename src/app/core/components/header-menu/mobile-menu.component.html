@@ -4,7 +4,7 @@
 
   <li nz-submenu nzPlacement="bottomRight" [nzTitle]="userIcon">
     <ul>
-      <li nz-menu-group nzTitle="Navigation">
+      <li nz-menu-group [nzTitle]="('HEADER.TITLE.NAVIGATION' | translate)">
         <ul>
           <li nz-menu-item [nzMatchRouterExact]="true" *ngIf="isLogin()" routerLink="board">
             {{"HEADER.OPTIONS.USER.BOARD" | translate}}</li>
@@ -12,11 +12,13 @@
           </li>
         </ul>
       </li>
-      <li nz-menu-group nzTitle="Authentication">
+      <li nz-menu-group [nzTitle]="('HEADER.TITLE.AUTH' | translate)">
         <ul>
-          <li nz-menu-item [nzMatchRouterExact]="true" *ngIf="!isLogin()" routerLink="">{{"HEADER.OPTIONS.USER.LOGIN" |
-            translate}}</li>
-          <li nz-menu-item *ngIf="isLogin()" (click)="signOut()">{{"HEADER.OPTIONS.USER.SIGN-OUT" | translate}}</li>
+          <li nz-menu-item class="menu-item-layout" [nzMatchRouterExact]="true" *ngIf="!isLogin()" routerLink="">
+            {{"HEADER.OPTIONS.USER.LOGIN" |
+            translate}} <span nz-icon nzType="logout" nzTheme="outline"></span></li>
+          <li nz-menu-item class="menu-item-layout" *ngIf="isLogin()" (click)="signOut()">
+            {{"HEADER.OPTIONS.USER.SIGN-OUT" | translate}} <span nz-icon nzType="logout" nzTheme="outline"></span></li>
         </ul>
       </li>
     </ul>
@@ -24,7 +26,7 @@
 
   <li nz-submenu nzPlacement="bottomRight" [nzTitle]="settingsIcon">
     <ul>
-      <li nz-menu-group nzTitle="Theme">
+      <li nz-menu-group [nzTitle]="('HEADER.OPTIONS.THEME.TITLE' | translate)">
         <ul>
           <li class="menu-item-layout" nz-menu-item>{{darkTheme ? ('HEADER.OPTIONS.THEME.DARK' | translate) :
             ('HEADER.OPTIONS.THEME.LIGHT' |
@@ -33,7 +35,7 @@
       </li>
     </ul>
     <ul>
-      <li nz-menu-group nzTitle="DragAndDrop">
+      <li nz-menu-group [nzTitle]="('HEADER.OPTIONS.DRAG.TITLE' | translate)">
         <ul>
           <li class="menu-item-layout" nz-menu-item>{{!canDrag ? ('HEADER.OPTIONS.DRAG.OFF' | translate) :
             ('HEADER.OPTIONS.DRAG.ON' |
@@ -42,7 +44,7 @@
       </li>
     </ul>
     <ul>
-      <li nz-menu-group nzTitle="Sorting">
+      <li nz-menu-group [nzTitle]="('HEADER.OPTIONS.SORT.SORTING' | translate)">
         <ul>
           <li nz-menu-item [nzSelected]="sortFilter === 'title'"
             (click)="sortOptionService.setSortOptions(filter.title)">
@@ -54,7 +56,7 @@
       </li>
     </ul>
     <ul>
-      <li nz-menu-group nzTitle="Language">
+      <li nz-menu-group [nzTitle]="('HEADER.OPTIONS.LANGUAGE.LOCALIZATION' | translate)">
         <ul>
           <li nz-menu-item [nzSelected]="currentLocalization === 'en'" (click)="switchLocalization('en')">
             {{"HEADER.OPTIONS.LANGUAGE.EN" | translate}}

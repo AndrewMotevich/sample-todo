@@ -3,19 +3,24 @@
   <li nz-submenu nzPlacement="bottomRight"
     [nzTitle]="(userName === 'User') ? ('HEADER.OPTIONS.USER.NAME' | translate) : userName" nzIcon="user">
     <ul>
-      <li nz-menu-group nzTitle="Navigation">
+      <li nz-menu-group [nzTitle]="('HEADER.TITLE.NAVIGATION' | translate)">
         <ul>
           <li nz-menu-item [nzMatchRouterExact]="true" *ngIf="isLogin()" routerLink="board">
-            {{"HEADER.OPTIONS.USER.BOARD" | translate}}</li>
-          <li nz-menu-item [nzMatchRouterExact]="true" routerLink="about">{{"HEADER.OPTIONS.USER.ABOUT" | translate}}
+            <span nz-icon nzType="home"></span> {{"HEADER.OPTIONS.USER.BOARD" | translate}}
+          </li>
+          <li nz-menu-item [nzMatchRouterExact]="true" routerLink="about"><span nz-icon nzType="info-circle"></span>
+            {{"HEADER.OPTIONS.USER.ABOUT" | translate}}
           </li>
         </ul>
       </li>
-      <li nz-menu-group nzTitle="Authentication">
+      <li nz-menu-group [nzTitle]="('HEADER.TITLE.AUTH' | translate)">
         <ul>
-          <li nz-menu-item [nzMatchRouterExact]="true" *ngIf="!isLogin()" routerLink="">{{"HEADER.OPTIONS.USER.LOGIN" |
-            translate}}</li>
-          <li nz-menu-item *ngIf="isLogin()" (click)="signOut()">{{"HEADER.OPTIONS.USER.SIGN-OUT" | translate}}</li>
+          <li nz-menu-item [nzMatchRouterExact]="true" *ngIf="!isLogin()" routerLink="">
+            <span nz-icon nzType="logout"></span> {{"HEADER.OPTIONS.USER.LOGIN" | translate}}
+          </li>
+          <li nz-menu-item *ngIf="isLogin()" (click)="signOut()">
+            <span nz-icon nzType="logout"></span> {{"HEADER.OPTIONS.USER.SIGN-OUT" | translate}}
+          </li>
         </ul>
       </li>
     </ul>
@@ -35,9 +40,9 @@
           translate)}} <nz-switch [(ngModel)]="canDrag" (click)="switchDragAndDrop($event)"></nz-switch></li>
       </ul>
 
-      <ul nz-submenu nzPlacement="bottomCenter" [nzTitle]="'Board View'| translate">
-        <li class="menu-item-layout" nz-menu-item>{{isBoardView ? ('On' | translate) :
-          ('Off' |
+      <ul nz-submenu nzPlacement="bottomCenter" [nzTitle]="'HEADER.OPTIONS.VIEW.TITLE'| translate">
+        <li class="menu-item-layout" nz-menu-item>{{isBoardView ? ('HEADER.OPTIONS.VIEW.ON' | translate) :
+          ('HEADER.OPTIONS.VIEW.OFF' |
           translate)}} <nz-switch [(ngModel)]="isBoardView" (click)="switchBoardView($event)"></nz-switch></li>
       </ul>
 
