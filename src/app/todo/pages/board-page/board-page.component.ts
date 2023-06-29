@@ -10,6 +10,7 @@ import { SortOptionService } from 'src/app/todo/services/sort-option.service';
 import { getCollectionNameFromString } from '../../utils/utils';
 import { TodoActionService } from '../../services/todo-action.service';
 import { DragAndDropService } from '../../services/drag-and-drop.service';
+import { SwitchBoardViewService } from '../../services/switch-board-view.service';
 
 @Component({
   selector: 'app-board-page',
@@ -36,10 +37,12 @@ export class BoardPageComponent {
     private firestoreService: FirestoreService,
     public sortOptionService: SortOptionService,
     public todoActionService: TodoActionService,
-    public dragAndDropService: DragAndDropService
+    public dragAndDropService: DragAndDropService,
+    public switchBoardViewService: SwitchBoardViewService
   ) {
     this.sortOptionService.getSortOptions().subscribe((res) => this.sortOptionService.changeFilter(res));
     if (document.body.clientWidth < 600) {
+      this.switchBoardViewService.getBoardViewObservable().next(false);
       this.disableDrag.next(true);
     }
   }

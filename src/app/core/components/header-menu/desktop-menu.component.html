@@ -34,6 +34,13 @@
           ('HEADER.OPTIONS.DRAG.ON' |
           translate)}} <nz-switch [(ngModel)]="canDrag" (click)="switchDragAndDrop($event)"></nz-switch></li>
       </ul>
+
+      <ul nz-submenu nzPlacement="bottomCenter" [nzTitle]="'Board View'| translate">
+        <li class="menu-item-layout" nz-menu-item>{{isBoardView ? ('On' | translate) :
+          ('Off' |
+          translate)}} <nz-switch [(ngModel)]="isBoardView" (click)="switchBoardView($event)"></nz-switch></li>
+      </ul>
+
       <ul nz-submenu nzPlacement="bottomCenter" [nzTitle]="'HEADER.OPTIONS.SORT.SORTING'| translate">
         <li nz-menu-item [nzSelected]="sortFilter === 'title'" (click)="sortOptionService.setSortOptions(filter.title)">
           {{"HEADER.OPTIONS.SORT.ALPHABET" | translate}}

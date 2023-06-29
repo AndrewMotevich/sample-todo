@@ -13,6 +13,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { SwitchBoardViewService } from 'src/app/todo/services/switch-board-view.service';
 
 @Component({
   selector: 'app-header-menu',
@@ -40,6 +41,7 @@ export class HeaderMenuComponent implements AfterViewInit {
   filter = Filter;
   darkTheme = false;
   canDrag = true;
+  isBoardView = true;
 
   disableDragObserver = this.dragAndDropService.getDisableDragObserver();
 
@@ -50,6 +52,7 @@ export class HeaderMenuComponent implements AfterViewInit {
     private firestoreService: FirestoreService,
     private translateService: TranslateService,
     private dragAndDropService: DragAndDropService,
+    private switchBoardViewService: SwitchBoardViewService,
     public sortOptionService: SortOptionService
   ) {
     this.sortOptionService.getSortOptions().subscribe((res) => {
@@ -94,6 +97,11 @@ export class HeaderMenuComponent implements AfterViewInit {
   public switchDragAndDrop(event: Event) {
     event.stopPropagation();
     this.disableDragObserver.next(this.canDrag);
+  }
+
+  public switchBoardView(event: Event) {
+    event.stopPropagation();
+    this.switchBoardViewService.getBoardViewObservable().next(!this.isBoardView);
   }
 }
 
