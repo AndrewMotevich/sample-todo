@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Filter } from 'src/app/todo/models/filter-todo.model';
 import { LoginService } from 'src/app/auth/services/login.service';
@@ -31,11 +31,11 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   styleUrls: ['./header-menu.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderMenuComponent {
+export class HeaderMenuComponent implements AfterViewInit {
   currentUrl = 'Authentication';
-  userName = 'OPTIONS.USER.NAME';
+  userName = 'User';
   currentLocalization = 'en';
-  userNameObservable = this.firestoreService.getUserName();
+  userNameObservable = this.firestoreService.userName;
   sortFilter: Filter = Filter.title;
   filter = Filter;
   darkTheme = false;
@@ -44,6 +44,7 @@ export class HeaderMenuComponent {
   disableDragObserver = this.dragAndDropService.getDisableDragObserver();
 
   constructor(
+    private changeDetection: ChangeDetectorRef,
     private loginService: LoginService,
     private themeService: ThemeService,
     private firestoreService: FirestoreService,
@@ -54,12 +55,16 @@ export class HeaderMenuComponent {
     this.sortOptionService.getSortOptions().subscribe((res) => {
       this.sortFilter = res;
     });
-    this.userNameObservable.subscribe((res) => {
-      this.userName = res.firstName;
-    });
     if (document.body.clientWidth < 600) {
       this.canDrag = false;
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.userNameObservable.subscribe((res) => {
+      this.userName = res.firstName;
+      this.changeDetection.detectChanges();
+    });
   }
 
   public isLogin() {

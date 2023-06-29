@@ -5,6 +5,7 @@ import {
   doc,
   deleteDoc,
   collectionSnapshots,
+  getDoc,
   addDoc,
   setDoc,
   collectionGroup,
@@ -23,23 +24,25 @@ import { startTodos } from '../models/start-todo-collection';
 export class FirestoreService {
   private userEmail!: string;
   private firestore = inject(Firestore);
+  public userName = new BehaviorSubject<Pick<IUser, 'firstName' | 'lastName'>>({
+    firstName: 'User',
+    lastName: 'User',
+  });
 
   public boardMainInputValue = new BehaviorSubject<string | null>(null);
   private todoObserver = new BehaviorSubject<ITodoItem[]>([]);
   private inProgressObserver = new BehaviorSubject<ITodoItem[]>([]);
   private doneObserver = new BehaviorSubject<ITodoItem[]>([]);
-  private userName = new BehaviorSubject<Pick<IUser, 'firstName' | 'lastName'>>({
-    firstName: 'User',
-    lastName: 'User',
-  });
 
   constructor(private loginService: LoginService, private notification: NzNotificationService) {
-    this.loginService.userEmail.subscribe(() => {
+    this.loginService.userEmail.subscribe((res) => {
       this.userEmail = this.loginService.getUser()?.email || '';
 
       this.subscribeOnCollection(CollectionName.todo, this.todoObserver);
       this.subscribeOnCollection(CollectionName.inProgress, this.inProgressObserver);
       this.subscribeOnCollection(CollectionName.done, this.doneObserver, true);
+
+      this.getUserName(res);
     });
   }
 
@@ -137,7 +140,12 @@ export class FirestoreService {
     ]);
   }
 
-  getUserName() {
-    return this.userName;
+  getUserName(email: string) {
+    if (!email) {
+      return;
+    }
+    getDoc(doc(this.firestore, 'users', this.userEmail)).then((res) =>
+      this.userName.next(res.data() as Pick<IUser, 'firstName' | 'lastName'>)
+    );
   }
 }

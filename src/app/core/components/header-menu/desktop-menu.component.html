@@ -1,6 +1,7 @@
 <ul nz-menu nzMode="horizontal">
 
-  <li nz-submenu nzPlacement="bottomRight" [nzTitle]="userName" nzIcon="user">
+  <li nz-submenu nzPlacement="bottomRight"
+    [nzTitle]="(userName === 'User') ? ('HEADER.OPTIONS.USER.NAME' | translate) : userName" nzIcon="user">
     <ul>
       <li nz-menu-group nzTitle="Navigation">
         <ul>
