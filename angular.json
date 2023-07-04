@@ -10,6 +10,12 @@
           "style": "less",
           "changeDetection": "OnPush",
           "skipTests": true
+        },
+        "@schematics/angular:pipe": {
+          "skipTests": true
+        },
+        "@schematics/angular:service": {
+          "skipTests": true
         }
       },
       "root": "",
@@ -19,6 +25,9 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/path-to-mixin"]
+            },
             "outputPath": "dist/sample-todo",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -34,7 +43,19 @@
                 "output": "/assets/"
               }
             ],
-            "styles": ["src/styles.less", "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"],
+            "styles": [
+              "src/styles.less",
+              {
+                "input": "src/styles/default.less",
+                "bundleName": "default",
+                "inject": false
+              },
+              {
+                "input": "src/styles/dark.less",
+                "bundleName": "dark",
+                "inject": false
+              }
+            ],
             "scripts": []
           },
           "configurations": {
@@ -42,8 +63,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -97,6 +118,13 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+          }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "version": 2,
+            "browserTarget": "sample-todo:build:production"
           }
         }
       }

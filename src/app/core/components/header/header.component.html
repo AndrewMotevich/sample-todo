@@ -1,0 +1,15 @@
+<nz-page-header
+  nzBackIcon
+  [nzTitle]="title">
+  <nz-page-header-extra [ngSwitch]="isMobile">
+    <app-header-menu *ngSwitchCase="false"></app-header-menu>
+    <app-mobile-menu *ngSwitchCase="true"></app-mobile-menu>
+  </nz-page-header-extra>
+</nz-page-header>
+
+<ng-template #title>
+  <div>
+    <h1><a routerLink="board">Sample Todo</a></h1>
+    <p>{{currentUrl | translate}}</p>
+  </div>
+</ng-template>

@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "sample-todo-e62bf": {
+      "hosting": {
+        "sample-todo": [
+          "sample-todo-e62bf"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "sample-todo-e62bf"
+  }
+}

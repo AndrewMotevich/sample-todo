@@ -1,0 +1,61 @@
+<button
+  nz-button
+  nzType="primary"
+  (click)="modal.showModal()">
+  {{'BUTTONS.LOGIN' | translate}}
+</button>
+
+<app-modal-window
+  [title]="'AUTH.LOGIN.TITLE' | translate"
+  #modal>
+  <form
+    nz-form
+    [formGroup]="loginForm"
+    (ngSubmit)="submitForm()">
+    <nz-form-item>
+      <nz-form-control [nzErrorTip]="'AUTH.MESSAGES.REQUIRED' | translate: {value: 'email'}">
+        <nz-input-group nzPrefixIcon="user">
+          <input
+            type="text"
+            nz-input
+            formControlName="email"
+            [placeholder]="'AUTH.LOGIN.EMAIL' | translate">
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control [nzErrorTip]="errorTipsTemplate">
+        <nz-input-group nzPrefixIcon="lock">
+          <input
+            type="password"
+            nz-input
+            formControlName="password"
+            [placeholder]="'AUTH.LOGIN.PASSWORD' | translate">
+        </nz-input-group>
+      </nz-form-control>
+      <ng-template
+        #errorTipsTemplate
+        let-control>
+        <ng-container *ngIf="control.hasError('required')">
+          {{('AUTH.MESSAGES.REQUIRED' | translate: {value:
+          'password'})}}
+        </ng-container>
+        <ng-container *ngIf="control.hasError('minlength')">
+          {{('AUTH.MESSAGES.MIN-LENGTH' | translate: {value:
+          '8'})}}
+        </ng-container>
+      </ng-template>
+    </nz-form-item>
+
+    <button
+      nz-button
+      nzBlock
+      class="margin"
+      [nzType]="'primary'"
+      [nzLoading]="isLoading">
+      {{'BUTTONS.LOGIN' |
+      translate}}
+    </button>
+  </form>
+</app-modal-window>

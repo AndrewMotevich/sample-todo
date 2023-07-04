@@ -1,0 +1,9 @@
+{
+  "hosting": [
+    {
+      "target": "sample-todo",
+      "source": ".",
+      "frameworksBackend": {}
+    }
+  ]
+}

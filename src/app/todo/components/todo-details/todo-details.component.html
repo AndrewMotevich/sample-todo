@@ -1,0 +1,56 @@
+<form
+  nz-form
+  [formGroup]="editForm"
+  (ngSubmit)="editTodo()">
+
+  <h4>{{"BOARD.LABELS.TITLE" | translate}}:</h4>
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Please input title!">
+      <nz-input-group>
+        <input
+          type="text"
+          nz-input
+          formControlName="title">
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <h4>{{"BOARD.LABELS.DESCRIPTION" | translate}}:</h4>
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Max length 255!">
+      <nz-textarea-count [nzMaxCharacterCount]="255">
+        <textarea
+          formControlName="description"
+          nz-input
+          [nzAutosize]="{ minRows: 3, maxRows: 5 }"></textarea>
+      </nz-textarea-count>
+    </nz-form-control>
+  </nz-form-item>
+
+  <h4>{{"BOARD.LABELS.CREATION-DATE" | translate}}:</h4>
+  <p>{{todo.start | date:"short"}}</p>
+  <ng-template [ngIf]="todo.end !== null">
+    <h4>{{"BOARD.LABELS.COMPLETION-DATE" | translate}}:</h4>
+    <p>{{todo.end | date:"short"}}</p>
+  </ng-template>
+
+  <div class="buttons-container">
+    <button
+      nz-button
+      nzBlock
+      class="margin"
+      [nzType]="'primary'">
+      {{"BOARD.BUTTONS.EDIT" | translate}}
+    </button>
+    <button
+      nz-button
+      nzType="link"
+      nzShape="circle"
+      (click)="deleteTodo()">
+      <span
+        nz-icon
+        nzType="delete"
+        nzTheme="outline"></span>
+    </button>
+  </div>
+</form>
