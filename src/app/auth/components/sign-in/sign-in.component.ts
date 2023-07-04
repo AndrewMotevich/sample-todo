@@ -1,11 +1,24 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
-import { FormControl, FormGroup, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+  ValidatorFn,
+} from '@angular/forms';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { IUser } from '../../models/user.model';
 import { ModalWindowComponent } from 'src/app/shared/components/modal-window/modal-window.component';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { showErrorTips } from '../../utils/utils';
+import { markAsDirty } from '../../utils/utils';
 
 @Component({
   selector: 'app-sign-in',
@@ -21,10 +34,22 @@ export class SignInComponent {
 
   public isLoading = false;
   public registerForm = new FormGroup({
-    firstName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    lastName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
-    password: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(8)] }),
+    firstName: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    lastName: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    email: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email],
+    }),
+    password: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(8)],
+    }),
   });
 
   public confirmPassword = new FormControl('', {
@@ -32,7 +57,9 @@ export class SignInComponent {
     validators: [Validators.required, this.passwordConfirmValidator()],
   });
 
-  public agree = new FormControl<boolean>(true, { validators: [Validators.requiredTrue] });
+  public agree = new FormControl<boolean>(true, {
+    validators: [Validators.requiredTrue],
+  });
 
   constructor(
     private changeDetection: ChangeDetectorRef,
@@ -42,7 +69,7 @@ export class SignInComponent {
 
   public submitForm(): void {
     if (!this.registerForm.valid) {
-      showErrorTips(this.registerForm.controls);
+      markAsDirty(this.registerForm.controls);
       return;
     }
     this.collectUserData();
@@ -64,7 +91,11 @@ export class SignInComponent {
         this.isLoading = false;
         this.changeDetection.detectChanges();
         this.modal.handleCancel();
-        this.notification.create('success', 'Registration', 'Successfully register');
+        this.notification.create(
+          'success',
+          'Registration',
+          'Successfully register'
+        );
       })
       .catch((err: Error) => {
         this.notification.create('error', 'Registration', err.message);
@@ -84,7 +115,9 @@ export class SignInComponent {
       const password = this.registerForm.controls.password.value;
       const confirmPassword = this.confirmPassword.value;
 
-      return !(password === confirmPassword) ? { notEqualPasswords: true } : null;
+      return !(password === confirmPassword)
+        ? { notEqualPasswords: true }
+        : null;
     };
   }
 }

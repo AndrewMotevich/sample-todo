@@ -1,6 +1,11 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Filter } from 'src/app/todo/models/filter-todo.model';
+import { Filter } from 'src/app/todo/enum/filter-todo.model';
 import { LoginService } from 'src/app/auth/services/login.service';
 import { ThemeService } from 'src/app/theme.service';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
@@ -55,7 +60,7 @@ export class HeaderMenuComponent implements AfterViewInit {
     private switchBoardViewService: SwitchBoardViewService,
     public sortOptionService: SortOptionService
   ) {
-    this.sortOptionService.getSortOptions().subscribe((res) => {
+    this.sortOptionService.getSortOptions().subscribe(res => {
       this.sortFilter = res;
     });
     if (document.body.clientWidth < 600) {
@@ -64,7 +69,7 @@ export class HeaderMenuComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.userNameObservable.subscribe((res) => {
+    this.userNameObservable.subscribe(res => {
       this.userName = res.firstName;
       this.changeDetection.detectChanges();
     });
@@ -101,7 +106,9 @@ export class HeaderMenuComponent implements AfterViewInit {
 
   public switchBoardView(event: Event) {
     event.stopPropagation();
-    this.switchBoardViewService.getBoardViewObservable().next(!this.isBoardView);
+    this.switchBoardViewService
+      .getBoardViewObservable()
+      .next(!this.isBoardView);
   }
 }
 

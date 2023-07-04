@@ -1,97 +1,169 @@
 <app-board-input></app-board-input>
 
-<div [ngClass]="{
-  'board-wrapper' : (switchBoardViewService.getBoardViewObservable() | async) }" class="board-wrapper">
-  <div cdkDropList id="todo" #todoList="cdkDropList" [cdkDropListData]="todo | async "
-    [cdkDropListDisabled]="(disableDrag | async)" [cdkDropListConnectedTo]="[doneList, inProgressList]"
-    class="board-colons-todo drop-list-container" (cdkDropListDropped)="drop($event)">
+<div
+  [ngClass]="{
+  'board-wrapper' : (switchBoardViewService.getBoardViewObservable() | async) }"
+  class="board-wrapper">
+  <div
+    cdkDropList
+    id="todo"
+    #todoList="cdkDropList"
+    [cdkDropListData]="todo | async"
+    [cdkDropListDisabled]="(disableDrag | async)"
+    [cdkDropListConnectedTo]="[doneList, inProgressList]"
+    class="board-colons-todo drop-list-container"
+    (cdkDropListDropped)="drop($event)">
     <h2>
       <span>
         {{"BOARD.TITLES.TODO" | translate}}
-        <button nz-button nzType="text" nzShape="circle" (click)="changeFilterOrder(sortOptionService.sortAllTodo)">
-          <span nz-icon
+        <button
+          nz-button
+          nzType="text"
+          nzShape="circle"
+          (click)="changeFilterOrder(sortOptionService.sortAllTodo)"><span
+            nz-icon
             [nzType]="(sortOptionService.sortAllTodo.order === 'ascend') ? 'sort-ascending' : 'sort-descending'"
             nzTheme="outline"></span>
         </button>
       </span>
-      <div>
-        <label nz-checkbox [(ngModel)]="checkAllTodo"
-          (nzCheckedChange)="todoActionService.doActionWithTodo(todo, checkAllTodo, action.selectAll, collectionName.todo)">{{"BOARD.BUTTONS.SELECT-ALL"
-          | translate}}</label>
-        <button nz-button nzType="text" nzShape="circle" nz-dropdown [nzDropdownMenu]="todoMenu">
-          <span nz-icon nzType="menu"></span>
+      <div><label
+          nz-checkbox
+          [(ngModel)]="checkAllTodo"
+          (nzCheckedChange)="todoActionService.doActionWithTodo(todo, checkAllTodo, action.selectAll, collectionName.todo)">
+          {{"BOARD.BUTTONS.SELECT-ALL"
+          | translate}}
+        </label><button
+          nz-button
+          nzType="text"
+          nzShape="circle"
+          nz-dropdown
+          [nzDropdownMenu]="todoMenu"><span
+            nz-icon
+            nzType="menu"></span>
         </button>
       </div>
     </h2>
-    <ng-container
-      *ngFor="let item of todo | async | sortTodo:sortOptionService.sortAllTodo.order:sortOptionService.sortAllTodo.filter; let i = index">
-      <app-todo-item [checkAll]="checkAllTodo" [collectionName]="collectionName.todo" cdkDrag [title]="item.title"
+    <ng-container *ngFor="let item of todo | async | sortTodo:sortOptionService.sortAllTodo.order:sortOptionService.sortAllTodo.filter; let i = index">
+      <app-todo-item
+        [checkAll]="checkAllTodo"
+        [collectionName]="collectionName.todo"
+        cdkDrag
+        [title]="item.title"
         [todoItem]="item">
-        <label nz-checkbox [(ngModel)]="item.checked" (nzCheckedChange)="checkTodo(collectionName.todo, item)"></label>
+        <label
+          nz-checkbox
+          [(ngModel)]="item.checked"
+          (nzCheckedChange)="checkTodo(collectionName.todo, item)"></label>
       </app-todo-item>
     </ng-container>
     <nz-divider></nz-divider>
   </div>
 
-  <div cdkDropList id="inProgress" #inProgressList="cdkDropList" [cdkDropListData]="inProgress | async"
-    [cdkDropListDisabled]="(disableDrag | async)" [cdkDropListConnectedTo]="[doneList, todoList]"
-    class="board-colons-inProgress drop-list-container" (cdkDropListDropped)="drop($event)">
+  <div
+    cdkDropList
+    id="inProgress"
+    #inProgressList="cdkDropList"
+    [cdkDropListData]="inProgress | async"
+    [cdkDropListDisabled]="(disableDrag | async)"
+    [cdkDropListConnectedTo]="[doneList, todoList]"
+    class="board-colons-inProgress drop-list-container"
+    (cdkDropListDropped)="drop($event)">
     <h2>
       <span>
         {{"BOARD.TITLES.IN-PROGRESS" | translate}}
-        <button nz-button nzType="text" nzShape="circle"
-          (click)="changeFilterOrder(sortOptionService.sortAllInProgress)">
-          <span nz-icon
+        <button
+          nz-button
+          nzType="text"
+          nzShape="circle"
+          (click)="changeFilterOrder(sortOptionService.sortAllInProgress)"><span
+            nz-icon
             [nzType]="(sortOptionService.sortAllInProgress.order === 'ascend') ? 'sort-ascending' : 'sort-descending'"
             nzTheme="outline"></span>
         </button>
       </span>
-      <div>
-        <label nz-checkbox [(ngModel)]="checkAllInProgress"
-          (nzCheckedChange)="todoActionService.doActionWithTodo(inProgress, checkAllInProgress, action.selectAll,collectionName.inProgress)">{{"BOARD.BUTTONS.SELECT-ALL"
-          | translate}}</label>
-        <button nz-button nzType="text" nzShape="circle" nz-dropdown [nzDropdownMenu]="inProgressMenu">
-          <span nz-icon nzType="menu"></span>
+      <div><label
+          nz-checkbox
+          [(ngModel)]="checkAllInProgress"
+          (nzCheckedChange)="todoActionService.doActionWithTodo(inProgress, checkAllInProgress, action.selectAll,collectionName.inProgress)">
+          {{"BOARD.BUTTONS.SELECT-ALL"
+          | translate}}
+        </label><button
+          nz-button
+          nzType="text"
+          nzShape="circle"
+          nz-dropdown
+          [nzDropdownMenu]="inProgressMenu"><span
+            nz-icon
+            nzType="menu"></span>
         </button>
       </div>
     </h2>
-    <ng-container
-      *ngFor="let item of inProgress | async | sortTodo:sortOptionService.sortAllInProgress.order:sortOptionService.sortAllInProgress.filter; let i = index">
-      <app-todo-item [checkAll]="checkAllInProgress" [collectionName]="collectionName.inProgress" cdkDrag
-        [title]="item.title" [todoItem]="item">
-        <label nz-checkbox [(ngModel)]="item.checked"
+    <ng-container *ngFor="let item of inProgress | async | sortTodo:sortOptionService.sortAllInProgress.order:sortOptionService.sortAllInProgress.filter; let i = index">
+      <app-todo-item
+        [checkAll]="checkAllInProgress"
+        [collectionName]="collectionName.inProgress"
+        cdkDrag
+        [title]="item.title"
+        [todoItem]="item">
+        <label
+          nz-checkbox
+          [(ngModel)]="item.checked"
           (nzCheckedChange)="checkTodo(collectionName.inProgress, item)"></label>
       </app-todo-item>
     </ng-container>
     <nz-divider></nz-divider>
   </div>
 
-  <div cdkDropList id="done" #doneList="cdkDropList" [cdkDropListData]="done | async"
-    [cdkDropListDisabled]="(disableDrag | async)" [cdkDropListConnectedTo]="[todoList, inProgressList]"
-    class="board-colons-done drop-list-container" (cdkDropListDropped)="drop($event)">
+  <div
+    cdkDropList
+    id="done"
+    #doneList="cdkDropList"
+    [cdkDropListData]="done | async"
+    [cdkDropListDisabled]="(disableDrag | async)"
+    [cdkDropListConnectedTo]="[todoList, inProgressList]"
+    class="board-colons-done drop-list-container"
+    (cdkDropListDropped)="drop($event)">
     <h2>
       <span>
         {{"BOARD.TITLES.DONE" | translate}}
-        <button nz-button nzType="text" nzShape="circle" (click)="changeFilterOrder(sortOptionService.sortAllDone)">
-          <span nz-icon
+        <button
+          nz-button
+          nzType="text"
+          nzShape="circle"
+          (click)="changeFilterOrder(sortOptionService.sortAllDone)"><span
+            nz-icon
             [nzType]="(sortOptionService.sortAllDone.order === 'ascend') ? 'sort-ascending' : 'sort-descending'"
             nzTheme="outline"></span>
         </button>
       </span>
-      <div>
-        <label nz-checkbox [(ngModel)]="checkAllDone"
-          (nzCheckedChange)="todoActionService.doActionWithTodo(done, checkAllDone, action.selectAll,collectionName.done)">{{"BOARD.BUTTONS.SELECT-ALL"
-          | translate}}</label>
-        <button nz-button nzType="text" nzShape="circle" nz-dropdown [nzDropdownMenu]="doneMenu">
-          <span nz-icon nzType="menu"></span>
+      <div><label
+          nz-checkbox
+          [(ngModel)]="checkAllDone"
+          (nzCheckedChange)="todoActionService.doActionWithTodo(done, checkAllDone, action.selectAll,collectionName.done)">
+          {{"BOARD.BUTTONS.SELECT-ALL"
+          | translate}}
+        </label><button
+          nz-button
+          nzType="text"
+          nzShape="circle"
+          nz-dropdown
+          [nzDropdownMenu]="doneMenu"><span
+            nz-icon
+            nzType="menu"></span>
         </button>
       </div>
     </h2>
-    <ng-container
-      *ngFor="let item of done | async | sortTodo:sortOptionService.sortAllDone.order:sortOptionService.sortAllDone.filter; let i = index">
-      <app-todo-item [checkAll]="checkAllDone" [collectionName]="collectionName.done" cdkDrag [title]="item.title"
+    <ng-container *ngFor="let item of done | async | sortTodo:sortOptionService.sortAllDone.order:sortOptionService.sortAllDone.filter; let i = index">
+      <app-todo-item
+        [checkAll]="checkAllDone"
+        [collectionName]="collectionName.done"
+        cdkDrag
+        [title]="item.title"
         [todoItem]="item">
-        <label nz-checkbox [(ngModel)]="item.checked" (nzCheckedChange)="checkTodo(collectionName.done, item)"></label>
+        <label
+          nz-checkbox
+          [(ngModel)]="item.checked"
+          (nzCheckedChange)="checkTodo(collectionName.done, item)"></label>
       </app-todo-item>
     </ng-container>
     <nz-divider></nz-divider>
@@ -99,16 +171,25 @@
 </div>
 
 <nz-dropdown-menu #todoMenu="nzDropdownMenu">
-  <app-todo-action-menu [collection]="todo" [checkAll]="checkAllTodo" [collectionName]="collectionName.todo"
+  <app-todo-action-menu
+    [collection]="todo"
+    [checkAll]="checkAllTodo"
+    [collectionName]="collectionName.todo"
     [context]="context"></app-todo-action-menu>
 </nz-dropdown-menu>
 
 <nz-dropdown-menu #inProgressMenu="nzDropdownMenu">
-  <app-todo-action-menu [collection]="inProgress" [checkAll]="checkAllInProgress"
-    [collectionName]="collectionName.inProgress" [context]="context"></app-todo-action-menu>
+  <app-todo-action-menu
+    [collection]="inProgress"
+    [checkAll]="checkAllInProgress"
+    [collectionName]="collectionName.inProgress"
+    [context]="context"></app-todo-action-menu>
 </nz-dropdown-menu>
 
 <nz-dropdown-menu #doneMenu="nzDropdownMenu">
-  <app-todo-action-menu [collection]="done" [checkAll]="checkAllDone" [collectionName]="collectionName.done"
+  <app-todo-action-menu
+    [collection]="done"
+    [checkAll]="checkAllDone"
+    [collectionName]="collectionName.done"
     [context]="context"></app-todo-action-menu>
 </nz-dropdown-menu>

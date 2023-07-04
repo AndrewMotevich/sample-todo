@@ -1,3 +1,7 @@
-<nz-modal [nzFooter]="null" [(nzVisible)]="isVisible" [nzTitle]="title" (nzOnCancel)="handleCancel()">
+<nz-modal
+  [nzFooter]="null"
+  [(nzVisible)]="isVisible"
+  [nzTitle]="title"
+  (nzOnCancel)="handleCancel()">
   <ng-content *nzModalContent></ng-content>
 </nz-modal>

@@ -9,7 +9,10 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./app.component.less'],
 })
 export class AppComponent implements OnInit {
-  constructor(public themeService: ThemeService, private translateService: TranslateService) {}
+  constructor(
+    public themeService: ThemeService,
+    private translateService: TranslateService
+  ) {}
 
   ngOnInit(): void {
     this.translateService.use(environment.defaultLocale);

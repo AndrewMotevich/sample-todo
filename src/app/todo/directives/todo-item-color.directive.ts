@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Input, OnInit } from '@angular/core';
-import { CollectionName } from 'src/app/shared/models/colection-name.model';
+import { CollectionName } from 'src/app/shared/enum/colection-name';
 
 @Directive({
   selector: '[appTodoItemColor]',

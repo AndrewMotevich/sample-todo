@@ -1,7 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalWindowComponent } from 'src/app/shared/components/modal-window/modal-window.component';
-import { CollectionName } from 'src/app/shared/models/colection-name.model';
+import { CollectionName } from 'src/app/shared/enum/colection-name';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 
 @Component({
@@ -15,7 +20,10 @@ export class TodoCreateComponent {
   @Input() title = 'New Todo';
 
   createTodoForm = new FormGroup({
-    description: new FormControl<string>('', { nonNullable: true, validators: [Validators.maxLength(255)] }),
+    description: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.maxLength(255)],
+    }),
   });
 
   constructor(private firestoreService: FirestoreService) {}
@@ -39,8 +47,10 @@ export class TodoCreateComponent {
     }
   }
 
-  private showErrorTips(controls: { [key: string]: FormControl<unknown> }): void {
-    Object.values(controls).forEach((control) => {
+  private showErrorTips(controls: {
+    [key: string]: FormControl<unknown>;
+  }): void {
+    Object.values(controls).forEach(control => {
       control.markAsDirty();
       if (control.invalid) {
         control.updateValueAndValidity({ onlySelf: true });
