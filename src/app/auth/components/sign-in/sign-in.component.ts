@@ -25,12 +25,14 @@ export class SignInComponent {
     lastName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
     password: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(8)] }),
-    confirmPassword: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required, this.passwordConfirmValidator()],
-    }),
-    agree: new FormControl(true, { validators: [Validators.requiredTrue] }),
   });
+
+  public confirmPassword = new FormControl('', {
+    nonNullable: true,
+    validators: [Validators.required, this.passwordConfirmValidator()],
+  });
+
+  public agree = new FormControl<boolean>(true, { validators: [Validators.requiredTrue] });
 
   constructor(
     private changeDetection: ChangeDetectorRef,
@@ -41,20 +43,15 @@ export class SignInComponent {
   public submitForm(): void {
     if (!this.registerForm.valid) {
       showErrorTips(this.registerForm.controls);
-    } else {
-      this.collectUserData();
-      const { email, password } = this.user;
-      this.signUp(email, password);
+      return;
     }
+    this.collectUserData();
+    const { email, password } = this.user;
+    this.signUp(email, password);
   }
 
   private collectUserData(): void {
-    this.user = {
-      firstName: this.registerForm.controls.firstName.value,
-      lastName: this.registerForm.controls.lastName.value,
-      email: this.registerForm.controls.email.value,
-      password: this.registerForm.controls.password.value,
-    };
+    this.user = this.registerForm.getRawValue();
   }
 
   public signUp(email: string, password: string): void {
@@ -85,7 +82,7 @@ export class SignInComponent {
       }
 
       const password = this.registerForm.controls.password.value;
-      const confirmPassword = this.registerForm.controls.confirmPassword.value;
+      const confirmPassword = this.confirmPassword.value;
 
       return !(password === confirmPassword) ? { notEqualPasswords: true } : null;
     };

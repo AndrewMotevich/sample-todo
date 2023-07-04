@@ -32,11 +32,11 @@ export class LoginComponent {
   public submitForm(): void {
     if (!this.loginForm.valid) {
       showErrorTips(this.loginForm.controls);
-    } else {
-      const email = this.loginForm.controls.email.value;
-      const password = this.loginForm.controls.password.value;
-      this.signIn(email, password);
+      return;
     }
+    const email = this.loginForm.controls.email.value;
+    const password = this.loginForm.controls.password.value;
+    this.signIn(email, password);
   }
 
   public signIn(email: string, password: string): void {
