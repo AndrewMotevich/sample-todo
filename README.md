@@ -2,7 +2,7 @@
 
 This is a sample kanban board app where you can create, update, delete tasks / todo's
 
-![image](https://github.com/AndrewMotevich/sample-todo/assets/101500007/ee157cc2-635c-4234-9add-ac53929b5520)
+![image](https://github.com/AndrewMotevich/sample-todo/assets/101500007/456e60f5-b00e-4c4c-a55a-51f6a8cefe01)
 
 
 ## Deployment: [Link](https://sample-todo-e62bf.web.app/)
