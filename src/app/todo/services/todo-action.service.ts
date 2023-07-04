@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { unselectAll } from '../utils/utils';
 import { BehaviorSubject } from 'rxjs';
 import { ITodoItem } from '../models/todo-item.model';
-import { ActionsTodo } from '../models/action-todo.model';
-import { CollectionName } from 'src/app/shared/models/colection-name.model';
+import { ActionsTodo } from '../enum/action-todo.model';
+import { CollectionName } from 'src/app/shared/enum/collection-name';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 
 @Injectable({
@@ -18,27 +18,38 @@ export class TodoActionService {
     action: ActionsTodo,
     collectionName: CollectionName,
     moveToCollectionName: CollectionName = CollectionName.todo,
-    context = { checkAllTodo: false, checkAllInProgress: false, checkAllDone: false }
+    context = {
+      checkAllTodo: false,
+      checkAllInProgress: false,
+      checkAllDone: false,
+    }
   ) {
     collection
-      .subscribe((res) => {
-        action === 'selectAll' &&
-          res.forEach((todo) => {
+      .subscribe(res => {
+        action === ActionsTodo.selectAll &&
+          res.forEach(todo => {
             todo.selected = checkAll;
           });
-        action === 'moveSelected' &&
+
+        action === ActionsTodo.moveSelected &&
           (() => {
-            for (let i = 0; i < res.length; i++) {
-              if (res[i].selected) {
-                this.firestoreService.runDragAndDrop(collectionName, moveToCollectionName, res[i]);
+            for (let index = 0; index < res.length; index++) {
+              if (res[index].selected) {
+                this.firestoreService.runDragAndDrop(
+                  collectionName,
+                  moveToCollectionName,
+                  res[index]
+                );
               }
             }
             unselectAll(collectionName, context);
           })();
-        action === 'deleteSelected' &&
+
+        action === ActionsTodo.deleteSelected &&
           (() => {
-            res.forEach((todo) => {
-              if (todo.selected) this.firestoreService.deleteTodo(collectionName, todo.id || '');
+            res.forEach(todo => {
+              if (todo.selected)
+                this.firestoreService.deleteTodo(collectionName, todo.id || '');
             });
             unselectAll(collectionName, context);
           })();

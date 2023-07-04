@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-enum ThemeType {
+export enum ThemeType {
   dark = 'dark',
   default = 'default',
 }
@@ -42,14 +42,14 @@ export class ThemeService {
     }
     return new Promise<Event>((resolve, reject) => {
       this.loadCss(`${theme}.css`, theme).then(
-        (e) => {
+        e => {
           if (!firstLoad) {
             document.documentElement.classList.add(theme);
           }
           this.removeUnusedTheme(this.reverseTheme(theme));
           resolve(e);
         },
-        (e) => reject(e)
+        e => reject(e)
       );
     });
   }

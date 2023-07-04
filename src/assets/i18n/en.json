@@ -18,7 +18,7 @@
         "OFF": "Off"
       },
       "USER": {
-        "NAME": "User",
+        "NAME": "Login",
         "LOGIN": "Login",
         "BOARD": "Todo's board",
         "ABOUT": "About app",

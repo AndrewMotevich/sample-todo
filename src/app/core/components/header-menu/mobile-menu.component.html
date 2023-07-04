@@ -1,67 +1,147 @@
-<ul nz-menu nzMode="horizontal">
-  <ng-template #userIcon><span nz-icon nzType="user"></span></ng-template>
-  <ng-template #settingsIcon><span nz-icon nzType="setting"></span></ng-template>
+<ul
+  nz-menu
+  nzMode="horizontal">
+  <ng-template #userIcon>
+    <span
+      nz-icon
+      nzType="user"></span>
+  </ng-template>
+  <ng-template #settingsIcon>
+    <span
+      nz-icon
+      nzType="setting"></span>
+  </ng-template>
 
-  <li nz-submenu nzPlacement="bottomRight" [nzTitle]="userIcon">
+  <li
+    nz-submenu
+    nzPlacement="bottomRight"
+    [nzTitle]="userIcon">
+    
     <ul>
-      <li nz-menu-group [nzTitle]="('HEADER.TITLE.NAVIGATION' | translate)">
+      <li
+        nz-menu-group
+        [nzTitle]="('HEADER.TITLE.NAVIGATION' | translate)">
+        
         <ul>
-          <li nz-menu-item [nzMatchRouterExact]="true" *ngIf="isLogin()" routerLink="board">
+          <li
+            nz-menu-item
+            [nzMatchRouterExact]="true"
+            *ngIf="isLogin()"
+            routerLink="board">
             {{"HEADER.OPTIONS.USER.BOARD" | translate}}</li>
-          <li nz-menu-item [nzMatchRouterExact]="true" routerLink="about">{{"HEADER.OPTIONS.USER.ABOUT" | translate}}
+          <li
+            nz-menu-item
+            [nzMatchRouterExact]="true"
+            routerLink="about">{{"HEADER.OPTIONS.USER.ABOUT" | translate}}
           </li>
         </ul>
       </li>
-      <li nz-menu-group [nzTitle]="('HEADER.TITLE.AUTH' | translate)">
+      <li
+        nz-menu-group
+        [nzTitle]="('HEADER.TITLE.AUTH' | translate)">
+        
         <ul>
-          <li nz-menu-item class="menu-item-layout" [nzMatchRouterExact]="true" *ngIf="!isLogin()" routerLink="">
+          <li
+            nz-menu-item
+            class="menu-item-layout"
+            [nzMatchRouterExact]="true"
+            *ngIf="!isLogin()"
+            routerLink>
             {{"HEADER.OPTIONS.USER.LOGIN" |
-            translate}} <span nz-icon nzType="logout" nzTheme="outline"></span></li>
-          <li nz-menu-item class="menu-item-layout" *ngIf="isLogin()" (click)="signOut()">
-            {{"HEADER.OPTIONS.USER.SIGN-OUT" | translate}} <span nz-icon nzType="logout" nzTheme="outline"></span></li>
+            translate}} <span
+              nz-icon
+              nzType="logout"
+              nzTheme="outline"></span></li>
+          <li
+            nz-menu-item
+            class="menu-item-layout"
+            *ngIf="isLogin()"
+            (click)="signOut()">
+            {{"HEADER.OPTIONS.USER.SIGN-OUT" | translate}} <span
+              nz-icon
+              nzType="logout"
+              nzTheme="outline"></span></li>
         </ul>
       </li>
     </ul>
   </li>
 
-  <li nz-submenu nzPlacement="bottomRight" [nzTitle]="settingsIcon">
+  <li
+    nz-submenu
+    nzPlacement="bottomRight"
+    [nzTitle]="settingsIcon">
+    
     <ul>
-      <li nz-menu-group [nzTitle]="('HEADER.OPTIONS.THEME.TITLE' | translate)">
+      <li
+        nz-menu-group
+        [nzTitle]="('HEADER.OPTIONS.THEME.TITLE' | translate)">
+        
         <ul>
-          <li class="menu-item-layout" nz-menu-item>{{darkTheme ? ('HEADER.OPTIONS.THEME.DARK' | translate) :
+          <li
+            class="menu-item-layout"
+            nz-menu-item>{{darkTheme ? ('HEADER.OPTIONS.THEME.DARK' | translate) :
             ('HEADER.OPTIONS.THEME.LIGHT' |
-            translate)}} <nz-switch [(ngModel)]="darkTheme" (click)="switchTheme($event)"></nz-switch></li>
+            translate)}} <nz-switch
+              [(ngModel)]="darkTheme"
+              (click)="switchTheme($event)"></nz-switch></li>
         </ul>
       </li>
     </ul>
+    
     <ul>
-      <li nz-menu-group [nzTitle]="('HEADER.OPTIONS.DRAG.TITLE' | translate)">
+      <li
+        nz-menu-group
+        [nzTitle]="('HEADER.OPTIONS.DRAG.TITLE' | translate)">
+        
         <ul>
-          <li class="menu-item-layout" nz-menu-item>{{!canDrag ? ('HEADER.OPTIONS.DRAG.OFF' | translate) :
+          <li
+            class="menu-item-layout"
+            nz-menu-item>{{!canDrag ? ('HEADER.OPTIONS.DRAG.OFF' | translate) :
             ('HEADER.OPTIONS.DRAG.ON' |
-            translate)}} <nz-switch [(ngModel)]="canDrag" (click)="switchDragAndDrop($event)"></nz-switch></li>
+            translate)}} <nz-switch
+              [(ngModel)]="canDrag"
+              (click)="switchDragAndDrop($event)"></nz-switch></li>
         </ul>
       </li>
     </ul>
+    
     <ul>
-      <li nz-menu-group [nzTitle]="('HEADER.OPTIONS.SORT.SORTING' | translate)">
+      <li
+        nz-menu-group
+        [nzTitle]="('HEADER.OPTIONS.SORT.SORTING' | translate)">
+        
         <ul>
-          <li nz-menu-item [nzSelected]="sortFilter === 'title'"
+          <li
+            nz-menu-item
+            [nzSelected]="sortFilter === 'title'"
             (click)="sortOptionService.setSortOptions(filter.title)">
             {{"HEADER.OPTIONS.SORT.ALPHABET" | translate}}
           </li>
-          <li nz-menu-item [nzSelected]="sortFilter === 'date'" (click)="sortOptionService.setSortOptions(filter.date)">
+          <li
+            nz-menu-item
+            [nzSelected]="sortFilter === 'date'"
+            (click)="sortOptionService.setSortOptions(filter.date)">
             {{"HEADER.OPTIONS.SORT.CREATION" | translate}}</li>
         </ul>
       </li>
     </ul>
+    
     <ul>
-      <li nz-menu-group [nzTitle]="('HEADER.OPTIONS.LANGUAGE.LOCALIZATION' | translate)">
+      <li
+        nz-menu-group
+        [nzTitle]="('HEADER.OPTIONS.LANGUAGE.LOCALIZATION' | translate)">
+        
         <ul>
-          <li nz-menu-item [nzSelected]="currentLocalization === 'en'" (click)="switchLocalization('en')">
+          <li
+            nz-menu-item
+            [nzSelected]="currentLocalization === 'en'"
+            (click)="switchLocalization('en')">
             {{"HEADER.OPTIONS.LANGUAGE.EN" | translate}}
           </li>
-          <li nz-menu-item [nzSelected]="currentLocalization === 'ru'" (click)="switchLocalization('ru')">
+          <li
+            nz-menu-item
+            [nzSelected]="currentLocalization === 'ru'"
+            (click)="switchLocalization('ru')">
             {{"HEADER.OPTIONS.LANGUAGE.RU" | translate}}</li>
         </ul>
       </li>

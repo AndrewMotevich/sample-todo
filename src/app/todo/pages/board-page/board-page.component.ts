@@ -3,9 +3,9 @@ import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { ITodoItem } from '../../models/todo-item.model';
 import { BehaviorSubject } from 'rxjs';
-import { CollectionName } from 'src/app/shared/models/colection-name.model';
-import { IFilterInfoObject } from '../../models/filter-todo.model';
-import { ActionsTodo } from '../../models/action-todo.model';
+import { CollectionName } from 'src/app/shared/enum/collection-name';
+import { IFilterInfoObject } from '../../models/filter-object.model';
+import { ActionsTodo } from '../../enum/action-todo.model';
 import { SortOptionService } from 'src/app/todo/services/sort-option.service';
 import { getCollectionNameFromString } from '../../utils/utils';
 import { TodoActionService } from '../../services/todo-action.service';
@@ -27,31 +27,57 @@ export class BoardPageComponent {
   public checkAllInProgress = false;
   public checkAllDone = false;
 
-  public todo: BehaviorSubject<ITodoItem[]> = this.firestoreService.getTodoCollection();
-  public inProgress: BehaviorSubject<ITodoItem[]> = this.firestoreService.getInProgressCollection();
-  public done: BehaviorSubject<ITodoItem[]> = this.firestoreService.getDoneCollection();
+  public todo: BehaviorSubject<ITodoItem[]> =
+    this.firestoreService.getTodoCollection();
+  public inProgress: BehaviorSubject<ITodoItem[]> =
+    this.firestoreService.getInProgressCollection();
+  public done: BehaviorSubject<ITodoItem[]> =
+    this.firestoreService.getDoneCollection();
 
   public disableDrag = this.dragAndDropService.getDisableDragObserver();
 
   constructor(
     private firestoreService: FirestoreService,
+    private todoActionService: TodoActionService,
     public sortOptionService: SortOptionService,
-    public todoActionService: TodoActionService,
     public dragAndDropService: DragAndDropService,
     public switchBoardViewService: SwitchBoardViewService
   ) {
-    this.sortOptionService.getSortOptions().subscribe((res) => this.sortOptionService.changeFilter(res));
+    this.sortOptionService
+      .getSortOptions()
+      .subscribe(res => this.sortOptionService.changeFilter(res));
     if (document.body.clientWidth < 600) {
       this.switchBoardViewService.getBoardViewObservable().next(false);
       this.disableDrag.next(true);
     }
   }
 
+  public doAction(
+    collection: BehaviorSubject<ITodoItem[]>,
+    checkAll: boolean,
+    collectionName: CollectionName
+  ) {
+    this.todoActionService.doActionWithTodo(
+      collection,
+      checkAll,
+      ActionsTodo.selectAll,
+      collectionName
+    );
+  }
+
   public checkTodo(collectionName: CollectionName, item: ITodoItem) {
     if (collectionName.toString() === 'done')
-      this.firestoreService.runDragAndDrop(collectionName, CollectionName.todo, item);
+      this.firestoreService.runDragAndDrop(
+        collectionName,
+        CollectionName.todo,
+        item
+      );
     else {
-      this.firestoreService.runDragAndDrop(collectionName, CollectionName.done, item);
+      this.firestoreService.runDragAndDrop(
+        collectionName,
+        CollectionName.done,
+        item
+      );
     }
   }
 
@@ -65,9 +91,20 @@ export class BoardPageComponent {
       return;
     }
     const item = event.previousContainer.data[event.previousIndex];
-    const previousContainerId = getCollectionNameFromString(event.previousContainer.id);
+    const previousContainerId = getCollectionNameFromString(
+      event.previousContainer.id
+    );
     const currentContainerId = getCollectionNameFromString(event.container.id);
-    this.firestoreService.runDragAndDrop(previousContainerId, currentContainerId, item);
-    transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+    this.firestoreService.runDragAndDrop(
+      previousContainerId,
+      currentContainerId,
+      item
+    );
+    transferArrayItem(
+      event.previousContainer.data,
+      event.container.data,
+      event.previousIndex,
+      event.currentIndex
+    );
   }
 }

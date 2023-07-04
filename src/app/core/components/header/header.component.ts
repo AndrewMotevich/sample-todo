@@ -1,4 +1,8 @@
-import { ChangeDetectionStrategy, Component, ChangeDetectorRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
@@ -7,7 +11,10 @@ import { AppRoutingModule } from 'src/app/app-routing.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { NavigationEnd, Router } from '@angular/router';
-import { HeaderMenuComponent, MobileMenuComponent } from '../header-menu/header-menu.component';
+import {
+  HeaderMenuComponent,
+  MobileMenuComponent,
+} from '../header-menu/header-menu.component';
 
 @Component({
   selector: 'app-header',
@@ -31,8 +38,11 @@ export class HeaderComponent {
   currentUrl = 'Authentication';
   isMobile = false;
 
-  constructor(private changeDetection: ChangeDetectorRef, private router: Router) {
-    this.router.events.subscribe((event) => {
+  constructor(
+    private changeDetection: ChangeDetectorRef,
+    private router: Router
+  ) {
+    this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         event.url === '/' && (this.currentUrl = 'HEADER.TITLE.AUTH');
         event.url === '/board' && (this.currentUrl = 'HEADER.TITLE.BOARD');

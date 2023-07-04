@@ -1,9 +1,14 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { ModalWindowComponent } from 'src/app/shared/components/modal-window/modal-window.component';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { showErrorTips } from '../../utils/utils';
+import { markAsDirty } from '../../utils/utils';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +21,10 @@ export class LoginComponent {
 
   public isLoading = false;
   public loginForm = new FormGroup({
-    email: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
+    email: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email],
+    }),
     password: new FormControl<string>('', {
       nonNullable: true,
       validators: [Validators.required, Validators.minLength(8)],
@@ -31,12 +39,12 @@ export class LoginComponent {
 
   public submitForm(): void {
     if (!this.loginForm.valid) {
-      showErrorTips(this.loginForm.controls);
-    } else {
-      const email = this.loginForm.controls.email.value;
-      const password = this.loginForm.controls.password.value;
-      this.signIn(email, password);
+      markAsDirty(this.loginForm.controls);
+      return;
     }
+    const email = this.loginForm.controls.email.value;
+    const password = this.loginForm.controls.password.value;
+    this.signIn(email, password);
   }
 
   public signIn(email: string, password: string): void {
@@ -46,7 +54,11 @@ export class LoginComponent {
         this.isLoading = false;
         this.changeDetection.detectChanges();
         this.modal.handleCancel();
-        this.notification.create('success', 'Authentication', 'Successfully logged in');
+        this.notification.create(
+          'success',
+          'Authentication',
+          'Successfully logged in'
+        );
       })
       .catch((err: Error) => {
         this.notification.create('error', 'Authentication', err.message);

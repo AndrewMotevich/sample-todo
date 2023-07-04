@@ -1,4 +1,6 @@
-<nz-page-header nzBackIcon [nzTitle]="title">
+<nz-page-header
+  nzBackIcon
+  [nzTitle]="title">
   <nz-page-header-extra [ngSwitch]="isMobile">
     <app-header-menu *ngSwitchCase="false"></app-header-menu>
     <app-mobile-menu *ngSwitchCase="true"></app-mobile-menu>
