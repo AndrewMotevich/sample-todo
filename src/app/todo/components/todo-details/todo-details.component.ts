@@ -1,9 +1,14 @@
-import { ChangeDetectionStrategy, Component, Input, AfterContentInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  AfterContentInit,
+} from '@angular/core';
 import { ITodoItem } from '../../models/todo-item.model';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
-import { CollectionName } from 'src/app/shared/models/colection-name.model';
+import { CollectionName } from 'src/app/shared/enum/collection-name';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { showErrorTips } from 'src/app/auth/utils/utils';
+import { markAsDirty } from 'src/app/auth/utils/utils';
 
 @Component({
   selector: 'app-todo-details',
@@ -15,8 +20,11 @@ export class TodoDetailsComponent implements AfterContentInit {
   @Input() todo!: ITodoItem;
   @Input() collectionName!: CollectionName;
 
-  editForm = new FormGroup({
-    title: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+  public editForm = new FormGroup({
+    title: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
     description: new FormControl<string>('', {
       nonNullable: true,
       validators: [Validators.maxLength(255)],
@@ -25,14 +33,14 @@ export class TodoDetailsComponent implements AfterContentInit {
 
   constructor(private firestoreService: FirestoreService) {}
 
-  ngAfterContentInit(): void {
+  public ngAfterContentInit(): void {
     this.editForm.controls.title.setValue(this.todo.title);
     this.editForm.controls.description.setValue(this.todo.description);
   }
 
-  editTodo() {
+  public editTodo() {
     if (!this.editForm.valid) {
-      showErrorTips(this.editForm.controls);
+      markAsDirty(this.editForm.controls);
     } else {
       this.firestoreService.editTodo(this.collectionName, {
         ...this.todo,
@@ -42,7 +50,7 @@ export class TodoDetailsComponent implements AfterContentInit {
     }
   }
 
-  deleteTodo() {
+  public deleteTodo() {
     this.firestoreService.deleteTodo(this.collectionName, this.todo.id || '');
   }
 }

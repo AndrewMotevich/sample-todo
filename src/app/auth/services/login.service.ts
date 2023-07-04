@@ -17,10 +17,13 @@ export class LoginService {
   private app = initializeApp(environment.firebase);
   private auth = getAuth(this.app);
 
-  constructor(private router: Router, private notification: NzNotificationService) {
+  constructor(
+    private router: Router,
+    private notification: NzNotificationService
+  ) {
     onAuthStateChanged(
       this.auth,
-      (user) => {
+      user => {
         if (user?.email) {
           this.isLoggedIn = true;
           this.userEmail.next(user.email);
@@ -30,7 +33,7 @@ export class LoginService {
           this.router.navigate(['/']);
         }
       },
-      (err) => {
+      err => {
         this.notification.create('error', 'Auth Observer', err.message);
       }
     );

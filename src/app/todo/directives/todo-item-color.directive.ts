@@ -1,11 +1,17 @@
 import { Directive, ElementRef, Input, OnInit } from '@angular/core';
-import { CollectionName } from 'src/app/shared/models/colection-name.model';
+import { CollectionName } from 'src/app/shared/enum/collection-name';
 
 @Directive({
   selector: '[appTodoItemColor]',
 })
 export class TodoItemColorDirective implements OnInit {
   @Input() appTodoItemColor!: CollectionName;
+
+  private todoCollectionBackground = {
+    todo: 'rgba(0, 0, 255, 0.1)',
+    inProgress: 'rgba(255, 255, 0, 0.1)',
+    done: 'rgba(0, 255, 0, 0.1)',
+  };
 
   constructor(private elem: ElementRef) {}
 
@@ -16,12 +22,8 @@ export class TodoItemColorDirective implements OnInit {
   changeColor() {
     if (!this.appTodoItemColor) {
       return;
-    } else if (this.appTodoItemColor.toString() === 'todo') {
-      this.elem.nativeElement.style.background = 'rgba(0, 0, 255, 0.1)';
-    } else if (this.appTodoItemColor.toString() === 'inProgress') {
-      this.elem.nativeElement.style.background = 'rgba(255, 255, 0, 0.1)';
-    } else if (this.appTodoItemColor.toString() === 'done') {
-      this.elem.nativeElement.style.background = 'rgba(0, 255, 0, 0.1)';
     }
+    this.elem.nativeElement.style.background =
+      this.todoCollectionBackground[this.appTodoItemColor];
   }
 }

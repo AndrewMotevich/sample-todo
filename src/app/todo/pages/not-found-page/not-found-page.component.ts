@@ -1,4 +1,8 @@
-import { ChangeDetectionStrategy, Component, ChangeDetectorRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,7 +12,10 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotFoundPageComponent {
-  constructor(private changeDetection: ChangeDetectorRef, private router: Router) {
+  constructor(
+    private changeDetection: ChangeDetectorRef,
+    private router: Router
+  ) {
     setTimeout(() => {
       this.router.navigate(['/board']);
       this.changeDetection.detectChanges();

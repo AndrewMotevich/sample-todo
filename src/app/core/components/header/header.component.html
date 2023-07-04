@@ -1,43 +1,9 @@
-<nz-page-header nzBackIcon [nzTitle]="title">
-  <nz-page-header-extra>
-    <ul nz-menu nzMode="horizontal">
-
-      <li nz-submenu [nzTitle]="userName" nzIcon="user">
-        <ul>
-          <li nz-menu-item [nzMatchRouterExact]="true" *ngIf="!isLogin()" routerLink="">{{"HEADER.OPTIONS.USER.LOGIN" |
-            translate}}</li>
-          <li nz-menu-item [nzMatchRouterExact]="true" *ngIf="isLogin()" routerLink="board">
-            {{"HEADER.OPTIONS.USER.BOARD" | translate}}</li>
-          <li nz-menu-item [nzMatchRouterExact]="true" routerLink="about">{{"HEADER.OPTIONS.USER.ABOUT" | translate}}
-          </li>
-          <li nz-menu-item *ngIf="isLogin()" (click)="signOut()">{{"HEADER.OPTIONS.USER.SIGN-OUT" | translate}}</li>
-        </ul>
-      </li>
-
-
-      <li nz-submenu [nzTitle]="'HEADER.OPTIONS.TITLE'| translate" nzIcon="setting">
-        <ul>
-          <li nz-menu-item (click)="switchTheme()">{{"HEADER.OPTIONS.THEME" | translate}}</li>
-          <ul nz-submenu [nzTitle]="'HEADER.OPTIONS.SORT.SORTING'| translate">
-            <li nz-menu-item [nzSelected]="sortFilter === 'title'"
-              (click)="sortOptionService.setSortOptions(filter.title)">
-              {{"HEADER.OPTIONS.SORT.ALPHABET" | translate}}
-            </li>
-            <li nz-menu-item [nzSelected]="sortFilter === 'date'"
-              (click)="sortOptionService.setSortOptions(filter.date)">
-              {{"HEADER.OPTIONS.SORT.CREATION" | translate}}</li>
-          </ul>
-
-          <ul nz-submenu [nzTitle]="'HEADER.OPTIONS.LANGUAGE.LOCALIZATION'| translate">
-            <li nz-menu-item (click)="switchLocalization('en')">
-              {{"HEADER.OPTIONS.LANGUAGE.EN" | translate}}
-            </li>
-            <li nz-menu-item (click)="switchLocalization('ru')">
-              {{"HEADER.OPTIONS.LANGUAGE.RU" | translate}}</li>
-          </ul>
-        </ul>
-      </li>
-    </ul>
+<nz-page-header
+  nzBackIcon
+  [nzTitle]="title">
+  <nz-page-header-extra [ngSwitch]="isMobile">
+    <app-header-menu *ngSwitchCase="false"></app-header-menu>
+    <app-mobile-menu *ngSwitchCase="true"></app-mobile-menu>
   </nz-page-header-extra>
 </nz-page-header>
 

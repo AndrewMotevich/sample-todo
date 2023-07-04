@@ -8,6 +8,4 @@ export const environment = {
     messagingSenderId: '106989858822',
     measurementId: 'G-1M3FVR1F90',
   },
-  locales: ['en', 'ru'],
-  defaultLocale: 'en',
 };

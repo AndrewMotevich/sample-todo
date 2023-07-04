@@ -1,17 +1,35 @@
-import { CollectionName } from 'src/app/shared/models/colection-name.model';
+import { CollectionName } from 'src/app/shared/enum/collection-name';
 
 export function unselectAll(
   collectionName: CollectionName,
-  context: { checkAllTodo: boolean; checkAllInProgress: boolean; checkAllDone: boolean }
+  context: {
+    checkAllTodo: boolean;
+    checkAllInProgress: boolean;
+    checkAllDone: boolean;
+  }
 ) {
-  collectionName === 'todo' && (context.checkAllTodo = false);
-  collectionName === 'inProgress' && (context.checkAllInProgress = false);
-  collectionName === 'done' && (context.checkAllDone = false);
+  if (collectionName === CollectionName.todo) {
+    context.checkAllTodo = false;
+  }
+  if (collectionName === CollectionName.inProgress) {
+    context.checkAllInProgress = false;
+  }
+  if (collectionName === CollectionName.done) {
+    context.checkAllDone = false;
+  }
 }
 
 export function getCollectionNameFromString(query: string) {
-  if (query === 'todo') return CollectionName.todo;
-  if (query === 'inProgress') return CollectionName.inProgress;
-  if (query === 'done') return CollectionName.done;
-  return CollectionName.todo;
+  let collectionName = CollectionName.todo;
+
+  if (query === 'todo') {
+    collectionName = CollectionName.todo;
+  }
+  if (query === 'inProgress') {
+    collectionName = CollectionName.inProgress;
+  }
+  if (query === 'done') {
+    collectionName = CollectionName.done;
+  }
+  return collectionName;
 }
