@@ -12,7 +12,7 @@ export class BoardInputComponent {
   public inputValue!: string | null;
 
   constructor(private firestoreService: FirestoreService) {
-    this.firestoreService.boardMainInputValue.subscribe((res) => {
+    this.firestoreService.boardMainInputValue.subscribe(res => {
       this.inputValue = res;
     });
   }

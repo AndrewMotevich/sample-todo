@@ -4,31 +4,36 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
 import { User } from '@angular/fire/auth';
 import { BehaviorSubject } from 'rxjs';
-import { Router } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  private app = initializeApp(environment.firebase);
-  private auth = getAuth(this.app);
+  public isLoggedIn = false;
   public userEmail = new BehaviorSubject<string>('');
 
-  constructor(private router: Router, private notification: NzNotificationService) {
+  private app = initializeApp(environment.firebase);
+  private auth = getAuth(this.app);
+
+  constructor(
+    private router: Router,
+    private notification: NzNotificationService
+  ) {
     onAuthStateChanged(
       this.auth,
-      (user) => {
+      user => {
         if (user?.email) {
-          if (this.router.url === '/') {
-            this.userEmail.next(user?.email || '');
-            this.router.navigate(['/board']);
-          }
-        } else if (user === null) {
+          this.isLoggedIn = true;
+          this.userEmail.next(user.email);
+          this.router.navigate(['board']);
+        } else {
+          this.isLoggedIn = false;
           this.router.navigate(['/']);
         }
       },
-      (err) => {
+      err => {
         this.notification.create('error', 'Auth Observer', err.message);
       }
     );
@@ -39,6 +44,7 @@ export class LoginService {
   }
 
   public signOut(): void {
+    this.isLoggedIn = false;
     signOut(this.auth).catch((err: Error) => {
       this.notification.create('error', 'Sign Out', err.message);
     });

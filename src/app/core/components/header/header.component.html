@@ -1,31 +1,15 @@
-<nz-page-header nzBackIcon [nzTitle]="title">
-  <nz-page-header-extra>
-    <ul nz-menu nzMode="horizontal">
-
-      <li nz-submenu [nzTitle]="(userName$ | async)?.firstName || 'User'" nzIcon="user">
-        <ul>
-          <li nz-menu-item routerLink="board">Todo Board</li>
-          <li nz-menu-item (click)="signOut()">signOut</li>
-        </ul>
-      </li>
-
-      <li nz-menu-item routerLink="about">
-        About
-      </li>
-
-      <li nz-submenu nzTitle="Options" nzIcon="setting">
-        <ul>
-          <li nz-menu-item (click)="switchTheme()">Switch theme</li>
-          <ul nz-submenu nzTitle="Sorting">
-            <li nz-menu-item (click)="sortOptionService.setSortOptions('title')">Sort by alphabet</li>
-            <li nz-menu-item (click)="sortOptionService.setSortOptions('date')">Sort by creation date</li>
-          </ul>
-        </ul>
-      </li>
-    </ul>
+<nz-page-header
+  nzBackIcon
+  [nzTitle]="title">
+  <nz-page-header-extra [ngSwitch]="isMobile">
+    <app-header-menu *ngSwitchCase="false"></app-header-menu>
+    <app-mobile-menu *ngSwitchCase="true"></app-mobile-menu>
   </nz-page-header-extra>
 </nz-page-header>
 
 <ng-template #title>
-  <h1><a routerLink="board">Sample Todo</a></h1>
+  <div>
+    <h1><a routerLink="board">Sample Todo</a></h1>
+    <p>{{currentUrl | translate}}</p>
+  </div>
 </ng-template>

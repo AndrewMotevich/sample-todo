@@ -1,0 +1,142 @@
+<ul
+  nz-menu
+  nzMode="horizontal">
+
+  <li
+    nz-submenu
+    nzPlacement="bottomRight"
+    [nzTitle]="(userName === 'User') ? ('HEADER.OPTIONS.USER.NAME' | translate) : userName"
+    nzIcon="user">
+    
+    <ul>
+      <li
+        nz-menu-group
+        [nzTitle]="('HEADER.TITLE.NAVIGATION' | translate)">
+        
+        <ul>
+          <li
+            nz-menu-item
+            [nzMatchRouterExact]="true"
+            *ngIf="isLogin()"
+            routerLink="board">
+            <span
+              nz-icon
+              nzType="home"></span> {{"HEADER.OPTIONS.USER.BOARD" | translate}}
+          </li>
+          <li
+            nz-menu-item
+            [nzMatchRouterExact]="true"
+            routerLink="about"><span
+              nz-icon
+              nzType="info-circle"></span>
+            {{"HEADER.OPTIONS.USER.ABOUT" | translate}}
+          </li>
+        </ul>
+      </li>
+      <li
+        nz-menu-group
+        [nzTitle]="('HEADER.TITLE.AUTH' | translate)">
+        
+        <ul>
+          <li
+            nz-menu-item
+            [nzMatchRouterExact]="true"
+            *ngIf="!isLogin()"
+            routerLink>
+            <span
+              nz-icon
+              nzType="logout"></span> {{"HEADER.OPTIONS.USER.LOGIN" | translate}}
+          </li>
+          <li
+            nz-menu-item
+            *ngIf="isLogin()"
+            (click)="signOut()">
+            <span
+              nz-icon
+              nzType="logout"></span> {{"HEADER.OPTIONS.USER.SIGN-OUT" | translate}}
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+
+  <li
+    nz-submenu
+    nzPlacement="bottomCenter"
+    [nzTitle]="('HEADER.OPTIONS.TITLE'| translate)"
+    nzIcon="setting">
+    
+    <ul>
+      <ul
+        nz-submenu
+        nzPlacement="bottomCenter"
+        [nzTitle]="'HEADER.OPTIONS.THEME.TITLE'| translate">
+        <li
+          class="menu-item-layout"
+          nz-menu-item>{{darkTheme ? ('HEADER.OPTIONS.THEME.DARK' | translate) :
+          ('HEADER.OPTIONS.THEME.LIGHT' |
+          translate)}} <nz-switch
+            [(ngModel)]="darkTheme"
+            (click)="switchTheme($event)"></nz-switch></li>
+      </ul>
+      <ul
+        nz-submenu
+        nzPlacement="bottomCenter"
+        [nzTitle]="'HEADER.OPTIONS.DRAG.TITLE'| translate">
+        <li
+          class="menu-item-layout"
+          nz-menu-item>{{!canDrag ? ('HEADER.OPTIONS.DRAG.OFF' | translate) :
+          ('HEADER.OPTIONS.DRAG.ON' |
+          translate)}} <nz-switch
+            [(ngModel)]="canDrag"
+            (click)="switchDragAndDrop($event)"></nz-switch></li>
+      </ul>
+
+      <ul
+        nz-submenu
+        nzPlacement="bottomCenter"
+        [nzTitle]="'HEADER.OPTIONS.VIEW.TITLE'| translate">
+        <li
+          class="menu-item-layout"
+          nz-menu-item>{{isBoardView ? ('HEADER.OPTIONS.VIEW.ON' | translate) :
+          ('HEADER.OPTIONS.VIEW.OFF' |
+          translate)}} <nz-switch
+            [(ngModel)]="isBoardView"
+            (click)="switchBoardView($event)"></nz-switch></li>
+      </ul>
+
+      <ul
+        nz-submenu
+        nzPlacement="bottomCenter"
+        [nzTitle]="'HEADER.OPTIONS.SORT.SORTING'| translate">
+        <li
+          nz-menu-item
+          [nzSelected]="sortFilter === 'title'"
+          (click)="sortOptionService.setSortOptions(filter.title)">
+          {{"HEADER.OPTIONS.SORT.ALPHABET" | translate}}
+        </li>
+        <li
+          nz-menu-item
+          [nzSelected]="sortFilter === 'date'"
+          (click)="sortOptionService.setSortOptions(filter.date)">
+          {{"HEADER.OPTIONS.SORT.CREATION" | translate}}</li>
+      </ul>
+
+      <ul
+        nz-submenu
+        [nzTitle]="'HEADER.OPTIONS.LANGUAGE.LOCALIZATION'| translate">
+        <li
+          nz-menu-item
+          [nzSelected]="currentLocalization === 'en'"
+          (click)="switchLocalization('en')">
+          {{"HEADER.OPTIONS.LANGUAGE.EN" | translate}}
+        </li>
+        <li
+          nz-menu-item
+          [nzSelected]="currentLocalization === 'ru'"
+          (click)="switchLocalization('ru')">
+          {{"HEADER.OPTIONS.LANGUAGE.RU" | translate}}</li>
+      </ul>
+    </ul>
+  </li>
+</ul>

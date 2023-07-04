@@ -1,0 +1,100 @@
+{
+  "HEADER": {
+    "TITLE": {
+      "AUTH": "Authentication",
+      "BOARD": "Todo's board",
+      "ABOUT": "About app",
+      "NAVIGATION": "Navigation"
+    },
+    "OPTIONS": {
+      "VIEW": {
+        "TITLE": "Board View",
+        "ON": "On",
+        "OFF": "Off"
+      },
+      "DRAG": {
+        "TITLE": "DragAndDrop",
+        "ON": "On",
+        "OFF": "Off"
+      },
+      "USER": {
+        "NAME": "Login",
+        "LOGIN": "Login",
+        "BOARD": "Todo's board",
+        "ABOUT": "About app",
+        "SIGN-OUT": "Sign Out"
+      },
+      "LANGUAGE": {
+        "LOCALIZATION": "Localization",
+        "EN": "EN",
+        "RU": "RU"
+      },
+      "SORT": {
+        "SORTING": "Sorting",
+        "ALPHABET": "Sort by Alphabet",
+        "CREATION": "Sort by Creation date"
+      },
+      "THEME": {
+        "TITLE": "Switch theme",
+        "DARK": "Dark",
+        "LIGHT": "Light"
+      },
+      "TITLE": "Options"
+    }
+  },
+  "BOARD": {
+    "TITLES": {
+      "TODO": "Todo",
+      "IN-PROGRESS": "In progress",
+      "DONE": "Done"
+    },
+    "BUTTONS": {
+      "SELECT-ALL": "select All",
+      "EDIT": "Edit",
+      "ADD": "Add",
+      "CREATE": "Create todo"
+    },
+    "LABELS": {
+      "ADD": "Add new Todo",
+      "TITLE": "Title",
+      "DESCRIPTION": "Description",
+      "CREATION-DATE": "Creation date",
+      "COMPLETION-DATE": "Completion date"
+    }
+  },
+  "ACTION-MENU": {
+    "MOVE": "Move selected to",
+    "DELETE": "Delete selected"
+  },
+  "BUTTONS": {
+    "LOGIN": "Login",
+    "SIGN-UP": "Sign-up"
+  },
+  "AUTH": {
+    "TITLE": "Welcome!",
+    "PARAGRAPH": "Try this Sample todo app",
+    "LOGIN": {
+      "TITLE": "Login",
+      "EMAIL": "Email",
+      "PASSWORD": "Password"
+    },
+    "SIGN-UP": {
+      "TITLE": "Sign-up",
+      "EMAIL": "Email",
+      "PASSWORD": "Password",
+      "FIRST-NAME": "First name",
+      "LAST-NAME": "Last name",
+      "CONFIRM-PASS": "Confirm password"
+    },
+    "MESSAGES": {
+      "REQUIRED": "Please enter your {{value}}!",
+      "MIN-LENGTH": "Min length is {{value}}!",
+      "NOT-EQUAL": "Passwords aren't equal",
+      "AGREEMENT": {
+        "TITLE": "I have read",
+        "CONTENT": "agreement",
+        "ERROR": "You should read and agree"
+      }
+    }
+  }
+}

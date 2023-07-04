@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { TodoItemType } from '../../models/todo-item.model';
+import { ITodoItem } from '../../models/todo-item.model';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
-import { CollectionNameType } from 'src/app/shared/models/colection-name.model';
+import { CollectionName } from 'src/app/shared/enum/collection-name';
+import { BoardPageComponent } from '../../pages/board-page/board-page.component';
+import { unselectAll } from '../../utils/utils';
 
 @Component({
   selector: 'app-todo-item',
@@ -10,13 +12,26 @@ import { CollectionNameType } from 'src/app/shared/models/colection-name.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoItemComponent {
-  @Input() todoItem!: TodoItemType;
-  @Input() collectionName!: CollectionNameType;
+  @Input() todoItem!: ITodoItem;
+  @Input() collectionName!: CollectionName;
+  @Input() checkAll!: boolean;
 
-  constructor(private firestoreService: FirestoreService) {}
+  constructor(
+    private firestoreService: FirestoreService,
+    private component: BoardPageComponent
+  ) {}
 
   public deleteItem(event: Event, id: string) {
     event.stopPropagation();
     this.firestoreService.deleteTodo(this.collectionName, id);
+  }
+
+  public selectItem() {
+    if (this.todoItem.selected) {
+      this.todoItem.selected = false;
+      unselectAll(this.collectionName, this.component);
+    } else {
+      this.todoItem.selected = true;
+    }
   }
 }

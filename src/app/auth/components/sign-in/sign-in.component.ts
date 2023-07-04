@@ -1,10 +1,24 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+  ValidatorFn,
+} from '@angular/forms';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
-import { UserType } from '../../models/user.model';
+import { IUser } from '../../models/user.model';
 import { ModalWindowComponent } from 'src/app/shared/components/modal-window/modal-window.component';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { markAsDirty } from '../../utils/utils';
 
 @Component({
   selector: 'app-sign-in',
@@ -13,18 +27,38 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignInComponent {
-  @ViewChild('modal', { static: true }) modal!: ModalWindowComponent;
+  @ViewChild('modal') modal!: ModalWindowComponent;
 
   private auth = inject(Auth);
-  private user!: UserType;
+  private user!: IUser;
 
-  public isOkLoading = false;
+  public isLoading = false;
   public registerForm = new FormGroup({
-    firstName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    lastName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
-    password: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(8)] }),
-    agree: new FormControl(true, { validators: [Validators.requiredTrue] }),
+    firstName: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    lastName: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    email: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email],
+    }),
+    password: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(8)],
+    }),
+  });
+
+  public confirmPassword = new FormControl('', {
+    nonNullable: true,
+    validators: [Validators.required, this.passwordConfirmValidator()],
+  });
+
+  public agree = new FormControl<boolean>(true, {
+    validators: [Validators.requiredTrue],
   });
 
   constructor(
@@ -34,51 +68,56 @@ export class SignInComponent {
   ) {}
 
   public submitForm(): void {
-    if (this.registerForm.valid) {
-      this.collectUserData();
-      const { email, password } = this.user;
-      // signIn
-      this.signUp(email, password);
-    } else {
-      Object.values(this.registerForm.controls).forEach((control) => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
+    if (!this.registerForm.valid) {
+      markAsDirty(this.registerForm.controls);
+      return;
     }
+    this.collectUserData();
+    const { email, password } = this.user;
+    this.signUp(email, password);
   }
 
   private collectUserData(): void {
-    if (this.registerForm.valid) {
-      this.user = {
-        firstName: this.registerForm.controls.firstName.value,
-        lastName: this.registerForm.controls.lastName.value,
-        email: this.registerForm.controls.email.value,
-        password: this.registerForm.controls.password.value,
-      };
-    }
+    this.user = this.registerForm.getRawValue();
   }
 
-  // registration
-  signUp(email: string, password: string): void {
-    this.isOkLoading = true;
+  public signUp(email: string, password: string): void {
+    this.isLoading = true;
     createUserWithEmailAndPassword(this.auth, email, password)
       .then(() => {
         return this.firestoreService.setStartUserCollection(this.user);
       })
-      .then(
-        () => {
-          this.isOkLoading = false;
-          this.changeDetection.detectChanges();
-          this.modal.handleCancel();
-          this.notification.create('success', 'Registration', 'Successfully register');
-        },
-        (err: Error) => {
-          this.notification.create('error', 'Registration', err.message);
-          this.isOkLoading = false;
-          this.changeDetection.detectChanges();
-        }
-      );
+      .then(() => {
+        this.isLoading = false;
+        this.changeDetection.detectChanges();
+        this.modal.handleCancel();
+        this.notification.create(
+          'success',
+          'Registration',
+          'Successfully register'
+        );
+      })
+      .catch((err: Error) => {
+        this.notification.create('error', 'Registration', err.message);
+        this.isLoading = false;
+        this.changeDetection.detectChanges();
+      });
+  }
+
+  private passwordConfirmValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+
+      if (!value) {
+        return null;
+      }
+
+      const password = this.registerForm.controls.password.value;
+      const confirmPassword = this.confirmPassword.value;
+
+      return !(password === confirmPassword)
+        ? { notEqualPasswords: true }
+        : null;
+    };
   }
 }

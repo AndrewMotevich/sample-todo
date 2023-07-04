@@ -5,8 +5,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ColorDatePipe implements PipeTransform {
   transform(value: number): string {
-    if (value > Date.now() - 3600000 * 24) return 'green';
-    if (value > Date.now() - 3600000 * 24 * 2) return 'blue';
+    const millisecondsInHour = 3600000;
+
+    if (value > Date.now() - millisecondsInHour * 24) return 'green';
+    else if (value > Date.now() - millisecondsInHour * 48) return 'blue';
     else return 'red';
   }
 }

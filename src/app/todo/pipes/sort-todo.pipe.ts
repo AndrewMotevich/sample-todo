@@ -1,68 +1,38 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { TodoItemType } from '../models/todo-item.model';
-import { FilterOrderType, FilterType } from '../models/filter-todo.model';
+import { ITodoItem } from '../models/todo-item.model';
+import { FilterOrder, Filter } from '../enum/filter-todo.model';
 
 @Pipe({
   name: 'sortTodo',
 })
 export class SortTodoPipe implements PipeTransform {
-  transform(value: TodoItemType[] | null, order: FilterOrderType, filter: FilterType = 'title'): TodoItemType[] {
+  transform(
+    value: ITodoItem[] | null,
+    order: FilterOrder,
+    filter: Filter = Filter.title
+  ): ITodoItem[] {
     if (value === null) {
       return [];
     }
     if (filter === 'date') {
-      return sortByDate(value, order);
+      return this.sort(value, order, 'start');
     }
-    return sortByTitle(value, order);
+    return this.sort(value, order);
   }
-}
 
-function sortByTitle(value: TodoItemType[], order: FilterOrderType) {
-  switch (order) {
-    case 'ascend':
-      return value.sort((a, b) => {
-        if (a.title < b.title) {
-          return -1;
-        }
-        if (a.title > b.title) {
-          return 1;
-        }
-        return 0;
-      });
-    case 'descend':
-      return value.sort((a, b) => {
-        if (a.title > b.title) {
-          return -1;
-        }
-        if (a.title < b.title) {
-          return 1;
-        }
-        return 0;
-      });
-  }
-}
-
-function sortByDate(value: TodoItemType[], order: FilterOrderType) {
-  switch (order) {
-    case 'ascend':
-      return value.sort((a, b) => {
-        if (a.start < b.start) {
-          return -1;
-        }
-        if (a.start > b.start) {
-          return 1;
-        }
-        return 0;
-      });
-    case 'descend':
-      return value.sort((a, b) => {
-        if (a.start > b.start) {
-          return -1;
-        }
-        if (a.start < b.start) {
-          return 1;
-        }
-        return 0;
-      });
+  sort(
+    value: ITodoItem[],
+    order: FilterOrder,
+    filter: keyof Pick<ITodoItem, 'title' | 'start'> = 'title'
+  ) {
+    if (order === 'ascend') {
+      return value.sort((a, b) =>
+        a[filter].toString().localeCompare(b[filter].toString())
+      );
+    } else {
+      return value.sort(
+        (a, b) => -1 * a[filter].toString().localeCompare(b[filter].toString())
+      );
+    }
   }
 }

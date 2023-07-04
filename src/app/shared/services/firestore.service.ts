@@ -3,46 +3,20 @@ import {
   Firestore,
   collection,
   doc,
-  getDoc,
   deleteDoc,
   collectionSnapshots,
+  getDoc,
   addDoc,
   setDoc,
   collectionGroup,
 } from '@angular/fire/firestore';
-import { LoginService } from './login.service';
-import { UserType } from 'src/app/auth/models/user.model';
+import { LoginService } from '../../auth/services/login.service';
+import { IUser } from 'src/app/auth/models/user.model';
 import { BehaviorSubject } from 'rxjs';
-import { TodoItemType } from 'src/app/todo/models/todo-item.model';
+import { ITodoItem } from 'src/app/todo/models/todo-item.model';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { CollectionNameType } from '../models/colection-name.model';
-
-const startTodos = {
-  todo: {
-    title: 'New TODO',
-    description: 'Add new todo',
-    start: Date.now(),
-    end: null,
-    checked: false,
-    selected: false,
-  },
-  inProgress: {
-    title: 'Features',
-    description: 'Check all features of this app',
-    start: Date.now(),
-    end: null,
-    checked: false,
-    selected: false,
-  },
-  done: {
-    title: 'Sing Up',
-    description: 'Sign Up to this app',
-    start: Date.now(),
-    end: Date.now(),
-    checked: true,
-    selected: false,
-  },
-};
+import { CollectionName } from '../enum/collection-name';
+import { startTodos } from '../constants/start-todo-collection';
 
 @Injectable({
   providedIn: 'root',
@@ -50,56 +24,60 @@ const startTodos = {
 export class FirestoreService {
   private userEmail!: string;
   private firestore = inject(Firestore);
-  // observables
-  public boardMainInputValue = new BehaviorSubject<string | null>(null);
-  private todoObserver = new BehaviorSubject<TodoItemType[]>([]);
-  private inProgressObserver = new BehaviorSubject<TodoItemType[]>([]);
-  private doneObserver = new BehaviorSubject<TodoItemType[]>([]);
-  private userName = new BehaviorSubject<Pick<UserType, 'firstName' | 'lastName'>>({
+  public userName = new BehaviorSubject<Pick<IUser, 'firstName' | 'lastName'>>({
     firstName: 'User',
     lastName: 'User',
   });
 
-  constructor(private loginService: LoginService, private notification: NzNotificationService) {
-    this.loginService.userEmail.subscribe(() => {
+  public boardMainInputValue = new BehaviorSubject<string | null>(null);
+  private todoObserver = new BehaviorSubject<ITodoItem[]>([]);
+  private inProgressObserver = new BehaviorSubject<ITodoItem[]>([]);
+  private doneObserver = new BehaviorSubject<ITodoItem[]>([]);
+
+  constructor(
+    private loginService: LoginService,
+    private notification: NzNotificationService
+  ) {
+    this.loginService.userEmail.subscribe(res => {
       this.userEmail = this.loginService.getUser()?.email || '';
-      // subscribe on todoCollection
-      collectionSnapshots(collectionGroup(this.firestore, `todo:${this.userEmail}`)).subscribe(
-        (res) => {
-          getDoc(doc(this.firestore, 'users', this.userEmail || 'admin@gmail.com')).then((res) => {
-            this.userName.next(res.data() as Pick<UserType, 'firstName' | 'lastName'>);
-          });
-          return this.todoObserver.next(
-            res.map((elem) => ({ ...(elem.data() as TodoItemType), id: elem.id, selected: false }))
-          );
-        },
-        (err) => {
-          this.notification.create('error', 'Todo Collection Observer', err.message);
-        }
+
+      this.subscribeOnCollection(CollectionName.todo, this.todoObserver);
+      this.subscribeOnCollection(
+        CollectionName.inProgress,
+        this.inProgressObserver
       );
-      // subscribe on inProgressCollection
-      collectionSnapshots(collectionGroup(this.firestore, `inProgress:${this.userEmail}`)).subscribe(
-        (res) => {
-          return this.inProgressObserver.next(
-            res.map((elem) => ({ ...(elem.data() as TodoItemType), id: elem.id, selected: false }))
-          );
-        },
-        (err) => {
-          this.notification.create('error', 'In Progress Collection Observer', err.message);
-        }
-      );
-      // subscribe on doneCollection
-      collectionSnapshots(collectionGroup(this.firestore, `done:${this.userEmail}`)).subscribe(
-        (res) => {
-          return this.doneObserver.next(
-            res.map((elem) => ({ ...(elem.data() as TodoItemType), id: elem.id, checked: true, selected: false }))
-          );
-        },
-        (err) => {
-          this.notification.create('error', 'Done Collection Observer', err.message);
-        }
-      );
+      this.subscribeOnCollection(CollectionName.done, this.doneObserver, true);
+
+      this.getUserName(res);
     });
+  }
+
+  private subscribeOnCollection(
+    collectionName: CollectionName,
+    observer: BehaviorSubject<ITodoItem[]>,
+    checked = false
+  ) {
+    collectionSnapshots(
+      collectionGroup(this.firestore, `${collectionName}:${this.userEmail}`)
+    ).subscribe(
+      res => {
+        return observer.next(
+          res.map(elem => ({
+            ...(elem.data() as ITodoItem),
+            id: elem.id,
+            checked: checked,
+            selected: false,
+          }))
+        );
+      },
+      err => {
+        this.notification.create(
+          'error',
+          `${collectionName.toLocaleUpperCase()} Collection Observer`,
+          err.message
+        );
+      }
+    );
   }
 
   public getTodoCollection() {
@@ -114,82 +92,142 @@ export class FirestoreService {
     return this.doneObserver;
   }
 
-  public editTodo(collectionName: CollectionNameType, newTodo: TodoItemType) {
+  public editTodo(collectionName: CollectionName, newTodo: ITodoItem) {
     return deleteDoc(
-      doc(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}/`, newTodo.id || '')
-    ).then(() =>
-      addDoc(collection(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}`), newTodo).then(
-        () => {
-          this.notification.create('success', 'Edit operation', `Todo was successfully edited!`);
-        },
-        (err: Error) => {
-          this.notification.create('error', 'Edit operation', err.message);
-        }
+      doc(
+        this.firestore,
+        `users/${this.userEmail}/${collectionName}:${this.userEmail}/`,
+        newTodo.id || ''
       )
+    ).then(() =>
+      addDoc(
+        collection(
+          this.firestore,
+          `users/${this.userEmail}/${collectionName}:${this.userEmail}`
+        ),
+        newTodo
+      )
+        .then(() => {
+          this.notification.create(
+            'success',
+            'Edit operation',
+            `Todo was successfully edited!`
+          );
+        })
+        .catch((err: Error) => {
+          this.notification.create('error', 'Edit operation', err.message);
+        })
     );
   }
 
-  public addTodo(collectionName: CollectionNameType, newTodo: TodoItemType) {
+  public addTodo(collectionName: CollectionName, newTodo: ITodoItem) {
     return addDoc(
-      collection(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}`),
+      collection(
+        this.firestore,
+        `users/${this.userEmail}/${collectionName}:${this.userEmail}`
+      ),
       newTodo
-    ).then(
-      () => {
-        this.notification.create('success', 'Create operation', `Todo was successfully created!`);
-      },
-      (err: Error) => {
+    )
+      .then(() => {
+        this.notification.create(
+          'success',
+          'Create operation',
+          `Todo was successfully created!`
+        );
+      })
+      .catch((err: Error) => {
         this.notification.create('error', 'Create operation', err.message);
-      }
-    );
+      });
   }
 
-  public deleteTodo(collectionName: CollectionNameType, id: string) {
-    return deleteDoc(doc(this.firestore, `users/${this.userEmail}/${collectionName}:${this.userEmail}/`, id)).then(
-      () => {
-        this.notification.create('success', 'Delete operation', `Todo was successfully deleted!`);
-      },
-      (err: Error) => {
+  public deleteTodo(collectionName: CollectionName, id: string) {
+    return deleteDoc(
+      doc(
+        this.firestore,
+        `users/${this.userEmail}/${collectionName}:${this.userEmail}/`,
+        id
+      )
+    )
+      .then(() => {
+        this.notification.create(
+          'success',
+          'Delete operation',
+          `Todo was successfully deleted!`
+        );
+      })
+      .catch((err: Error) => {
         this.notification.create('error', 'Delete operation', err.message);
-      }
-    );
+      });
   }
 
-  public setStartUserCollection(user: UserType): void {
+  public setStartUserCollection(user: IUser): void {
     if (this.loginService.getUser()) {
       const { firstName, lastName, email } = user;
       setDoc(doc(this.firestore, 'users', email), { firstName, lastName });
-      addDoc(collection(this.firestore, `users/${email}/todo:${email}`), startTodos.todo);
-      addDoc(collection(this.firestore, `users/${email}/inProgress:${email}`), startTodos.inProgress);
-      addDoc(collection(this.firestore, `users/${email}/done:${email}`), startTodos.done);
+      addDoc(
+        collection(this.firestore, `users/${email}/todo:${email}`),
+        startTodos.todo
+      );
+      addDoc(
+        collection(this.firestore, `users/${email}/inProgress:${email}`),
+        startTodos.inProgress
+      );
+      addDoc(
+        collection(this.firestore, `users/${email}/done:${email}`),
+        startTodos.done
+      );
     } else {
-      this.notification.create('error', 'Authorization', 'Failed with authorization, try to reload or relogin!');
+      this.notification.create(
+        'error',
+        'Authorization',
+        'Failed with authorization, try to reload or relogin!'
+      );
     }
   }
 
   public runDragAndDrop(
-    previousContainerId: CollectionNameType,
-    currentContainerId: CollectionNameType,
-    item: TodoItemType
+    previousContainerId: CollectionName,
+    currentContainerId: CollectionName,
+    item: ITodoItem
   ) {
     const dragItem = item;
-    if (item.end && (currentContainerId === 'todo' || currentContainerId === 'inProgress')) {
+    if (
+      item.end &&
+      (currentContainerId === CollectionName.todo ||
+        currentContainerId === CollectionName.inProgress)
+    ) {
       dragItem.end = null;
       dragItem.checked = false;
       dragItem.selected = false;
-    } else if (currentContainerId === 'done') {
+    } else if (currentContainerId === CollectionName.done) {
       dragItem.end = Date.now();
       dragItem.checked = true;
       dragItem.selected = false;
     }
     return Promise.all([
       deleteDoc(
-        doc(this.firestore, `users/${this.userEmail}/${previousContainerId}:${this.userEmail}/`, dragItem.id || '')
+        doc(
+          this.firestore,
+          `users/${this.userEmail}/${previousContainerId}:${this.userEmail}/`,
+          dragItem.id || ''
+        )
       ),
-      addDoc(collection(this.firestore, `users/${this.userEmail}/${currentContainerId}:${this.userEmail}`), dragItem),
+      addDoc(
+        collection(
+          this.firestore,
+          `users/${this.userEmail}/${currentContainerId}:${this.userEmail}`
+        ),
+        dragItem
+      ),
     ]);
   }
 
-  getUserName() {
-    return this.userName;
+  getUserName(email: string) {
+    if (!email) {
+      return;
+    }
+    getDoc(doc(this.firestore, 'users', this.userEmail)).then(res =>
+      this.userName.next(res.data() as Pick<IUser, 'firstName' | 'lastName'>)
+    );
   }
 }

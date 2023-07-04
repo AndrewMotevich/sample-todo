@@ -1,8 +1,14 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { ModalWindowComponent } from 'src/app/shared/components/modal-window/modal-window.component';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { markAsDirty } from '../../utils/utils';
 
 @Component({
   selector: 'app-login',
@@ -11,50 +17,53 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
-  @ViewChild('modal', { static: true }) modal!: ModalWindowComponent;
+  @ViewChild('modal') modal!: ModalWindowComponent;
 
-  private auth = inject(Auth);
-
-  public isOkLoading = false;
+  public isLoading = false;
   public loginForm = new FormGroup({
-    email: new FormControl<string>('', [Validators.required, Validators.email]),
-    password: new FormControl<string>('', [Validators.required, Validators.minLength(8)]),
-    remember: new FormControl<boolean>(true, [Validators.required]),
+    email: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email],
+    }),
+    password: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(8)],
+    }),
   });
 
-  constructor(private changeDetection: ChangeDetectorRef, private notification: NzNotificationService) {}
+  constructor(
+    private auth: Auth,
+    private changeDetection: ChangeDetectorRef,
+    private notification: NzNotificationService
+  ) {}
 
-  submitForm(): void {
-    if (this.loginForm.valid) {
-      const email = this.loginForm.controls.email.value;
-      const password = this.loginForm.controls.password.value;
-      // signIn
-      email && password && this.signIn(email, password);
-    } else {
-      Object.values(this.loginForm.controls).forEach((control) => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
+  public submitForm(): void {
+    if (!this.loginForm.valid) {
+      markAsDirty(this.loginForm.controls);
+      return;
     }
+    const email = this.loginForm.controls.email.value;
+    const password = this.loginForm.controls.password.value;
+    this.signIn(email, password);
   }
 
-  // authentication
-  signIn(email: string, password: string): void {
-    this.isOkLoading = true;
-    signInWithEmailAndPassword(this.auth, email, password).then(
-      () => {
-        this.isOkLoading = false;
+  public signIn(email: string, password: string): void {
+    this.isLoading = true;
+    signInWithEmailAndPassword(this.auth, email, password)
+      .then(() => {
+        this.isLoading = false;
         this.changeDetection.detectChanges();
         this.modal.handleCancel();
-        this.notification.create('success', 'Authentication', 'Successfully logged in');
-      },
-      (err: Error) => {
+        this.notification.create(
+          'success',
+          'Authentication',
+          'Successfully logged in'
+        );
+      })
+      .catch((err: Error) => {
         this.notification.create('error', 'Authentication', err.message);
-        this.isOkLoading = false;
+        this.isLoading = false;
         this.changeDetection.detectChanges();
-      }
-    );
+      });
   }
 }
