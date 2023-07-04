@@ -6,8 +6,9 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalWindowComponent } from 'src/app/shared/components/modal-window/modal-window.component';
-import { CollectionName } from 'src/app/shared/enum/colection-name';
+import { CollectionName } from 'src/app/shared/enum/collection-name';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
+import { markAsDirty } from '../../../auth/utils/utils';
 
 @Component({
   selector: 'app-todo-create',
@@ -19,7 +20,7 @@ export class TodoCreateComponent {
   @ViewChild('modal') modal!: ModalWindowComponent;
   @Input() title = 'New Todo';
 
-  createTodoForm = new FormGroup({
+  public createTodoForm = new FormGroup({
     description: new FormControl<string>('', {
       nonNullable: true,
       validators: [Validators.maxLength(255)],
@@ -34,27 +35,16 @@ export class TodoCreateComponent {
 
   public submitForm(): void {
     if (!this.createTodoForm.valid) {
-      this.showErrorTips(this.createTodoForm.controls);
-    } else {
-      this.firestoreService.addTodo(CollectionName.todo, {
-        title: this.title,
-        description: this.createTodoForm.controls.description.value,
-        start: Date.now(),
-        end: null,
-      });
-      this.modal.handleCancel();
-      this.firestoreService.boardMainInputValue.next(null);
+      markAsDirty(this.createTodoForm.controls);
+      return;
     }
-  }
-
-  private showErrorTips(controls: {
-    [key: string]: FormControl<unknown>;
-  }): void {
-    Object.values(controls).forEach(control => {
-      control.markAsDirty();
-      if (control.invalid) {
-        control.updateValueAndValidity({ onlySelf: true });
-      }
+    this.firestoreService.addTodo(CollectionName.todo, {
+      title: this.title,
+      description: this.createTodoForm.controls.description.value,
+      start: Date.now(),
+      end: null,
     });
+    this.modal.handleCancel();
+    this.firestoreService.boardMainInputValue.next(null);
   }
 }

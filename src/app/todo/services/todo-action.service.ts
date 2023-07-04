@@ -3,7 +3,7 @@ import { unselectAll } from '../utils/utils';
 import { BehaviorSubject } from 'rxjs';
 import { ITodoItem } from '../models/todo-item.model';
 import { ActionsTodo } from '../enum/action-todo.model';
-import { CollectionName } from 'src/app/shared/enum/colection-name';
+import { CollectionName } from 'src/app/shared/enum/collection-name';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 
 @Injectable({
@@ -26,24 +26,26 @@ export class TodoActionService {
   ) {
     collection
       .subscribe(res => {
-        action === 'selectAll' &&
+        action === ActionsTodo.selectAll &&
           res.forEach(todo => {
             todo.selected = checkAll;
           });
-        action === 'moveSelected' &&
+
+        action === ActionsTodo.moveSelected &&
           (() => {
-            for (let i = 0; i < res.length; i++) {
-              if (res[i].selected) {
+            for (let index = 0; index < res.length; index++) {
+              if (res[index].selected) {
                 this.firestoreService.runDragAndDrop(
                   collectionName,
                   moveToCollectionName,
-                  res[i]
+                  res[index]
                 );
               }
             }
             unselectAll(collectionName, context);
           })();
-        action === 'deleteSelected' &&
+
+        action === ActionsTodo.deleteSelected &&
           (() => {
             res.forEach(todo => {
               if (todo.selected)

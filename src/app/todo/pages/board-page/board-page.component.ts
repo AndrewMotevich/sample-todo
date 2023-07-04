@@ -3,7 +3,7 @@ import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { ITodoItem } from '../../models/todo-item.model';
 import { BehaviorSubject } from 'rxjs';
-import { CollectionName } from 'src/app/shared/enum/colection-name';
+import { CollectionName } from 'src/app/shared/enum/collection-name';
 import { IFilterInfoObject } from '../../models/filter-object.model';
 import { ActionsTodo } from '../../enum/action-todo.model';
 import { SortOptionService } from 'src/app/todo/services/sort-option.service';
@@ -38,8 +38,8 @@ export class BoardPageComponent {
 
   constructor(
     private firestoreService: FirestoreService,
+    private todoActionService: TodoActionService,
     public sortOptionService: SortOptionService,
-    public todoActionService: TodoActionService,
     public dragAndDropService: DragAndDropService,
     public switchBoardViewService: SwitchBoardViewService
   ) {
@@ -50,6 +50,19 @@ export class BoardPageComponent {
       this.switchBoardViewService.getBoardViewObservable().next(false);
       this.disableDrag.next(true);
     }
+  }
+
+  public doAction(
+    collection: BehaviorSubject<ITodoItem[]>,
+    checkAll: boolean,
+    collectionName: CollectionName
+  ) {
+    this.todoActionService.doActionWithTodo(
+      collection,
+      checkAll,
+      ActionsTodo.selectAll,
+      collectionName
+    );
   }
 
   public checkTodo(collectionName: CollectionName, item: ITodoItem) {

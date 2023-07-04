@@ -7,7 +7,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { Filter } from 'src/app/todo/enum/filter-todo.model';
 import { LoginService } from 'src/app/auth/services/login.service';
-import { ThemeService } from 'src/app/theme.service';
+import { ThemeService, ThemeType } from 'src/app/theme.service';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DragAndDropService } from 'src/app/todo/services/drag-and-drop.service';
@@ -19,6 +19,7 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { SwitchBoardViewService } from 'src/app/todo/services/switch-board-view.service';
+import { DEFAULT_LOCALE } from 'src/environments/locales';
 
 @Component({
   selector: 'app-header-menu',
@@ -39,8 +40,8 @@ import { SwitchBoardViewService } from 'src/app/todo/services/switch-board-view.
 })
 export class HeaderMenuComponent implements AfterViewInit {
   currentUrl = 'Authentication';
-  userName = 'User';
-  currentLocalization = 'en';
+  userName = '';
+  currentLocalization = DEFAULT_LOCALE;
   userNameObservable = this.firestoreService.userName;
   sortFilter: Filter = Filter.title;
   filter = Filter;
@@ -89,7 +90,7 @@ export class HeaderMenuComponent implements AfterViewInit {
 
   public switchTheme(event: Event): void {
     event.stopPropagation();
-    if (this.themeService.currentTheme === 'dark') {
+    if (this.themeService.currentTheme === ThemeType.dark) {
       this.darkTheme = true;
     } else this.darkTheme = false;
     this.themeService.toggleTheme();

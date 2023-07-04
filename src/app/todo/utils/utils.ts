@@ -1,4 +1,4 @@
-import { CollectionName } from 'src/app/shared/enum/colection-name';
+import { CollectionName } from 'src/app/shared/enum/collection-name';
 
 export function unselectAll(
   collectionName: CollectionName,

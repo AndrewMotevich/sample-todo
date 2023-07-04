@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ITodoItem } from '../../models/todo-item.model';
 import { FirestoreService } from 'src/app/shared/services/firestore.service';
-import { CollectionName } from 'src/app/shared/enum/colection-name';
+import { CollectionName } from 'src/app/shared/enum/collection-name';
 import { BoardPageComponent } from '../../pages/board-page/board-page.component';
 import { unselectAll } from '../../utils/utils';
 

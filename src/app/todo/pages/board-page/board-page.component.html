@@ -29,7 +29,7 @@
       <div><label
           nz-checkbox
           [(ngModel)]="checkAllTodo"
-          (nzCheckedChange)="todoActionService.doActionWithTodo(todo, checkAllTodo, action.selectAll, collectionName.todo)">
+          (nzCheckedChange)="doAction(todo, checkAllTodo, collectionName.todo)">
           {{"BOARD.BUTTONS.SELECT-ALL"
           | translate}}
         </label><button
@@ -43,7 +43,7 @@
         </button>
       </div>
     </h2>
-    <ng-container *ngFor="let item of todo | async | sortTodo:sortOptionService.sortAllTodo.order:sortOptionService.sortAllTodo.filter; let i = index">
+    <ng-container *ngFor="let item of todo | async | sortTodo:sortOptionService.sortAllTodo.order:sortOptionService.sortAllTodo.filter">
       <app-todo-item
         [checkAll]="checkAllTodo"
         [collectionName]="collectionName.todo"
@@ -84,7 +84,7 @@
       <div><label
           nz-checkbox
           [(ngModel)]="checkAllInProgress"
-          (nzCheckedChange)="todoActionService.doActionWithTodo(inProgress, checkAllInProgress, action.selectAll,collectionName.inProgress)">
+          (nzCheckedChange)="doAction(inProgress, checkAllInProgress, collectionName.inProgress)">
           {{"BOARD.BUTTONS.SELECT-ALL"
           | translate}}
         </label><button
@@ -98,7 +98,7 @@
         </button>
       </div>
     </h2>
-    <ng-container *ngFor="let item of inProgress | async | sortTodo:sortOptionService.sortAllInProgress.order:sortOptionService.sortAllInProgress.filter; let i = index">
+    <ng-container *ngFor="let item of inProgress | async | sortTodo:sortOptionService.sortAllInProgress.order:sortOptionService.sortAllInProgress.filter">
       <app-todo-item
         [checkAll]="checkAllInProgress"
         [collectionName]="collectionName.inProgress"
@@ -139,7 +139,7 @@
       <div><label
           nz-checkbox
           [(ngModel)]="checkAllDone"
-          (nzCheckedChange)="todoActionService.doActionWithTodo(done, checkAllDone, action.selectAll,collectionName.done)">
+          (nzCheckedChange)="doAction(done, checkAllDone, collectionName.done)">
           {{"BOARD.BUTTONS.SELECT-ALL"
           | translate}}
         </label><button
@@ -153,7 +153,7 @@
         </button>
       </div>
     </h2>
-    <ng-container *ngFor="let item of done | async | sortTodo:sortOptionService.sortAllDone.order:sortOptionService.sortAllDone.filter; let i = index">
+    <ng-container *ngFor="let item of done | async | sortTodo:sortOptionService.sortAllDone.order:sortOptionService.sortAllDone.filter">
       <app-todo-item
         [checkAll]="checkAllDone"
         [collectionName]="collectionName.done"

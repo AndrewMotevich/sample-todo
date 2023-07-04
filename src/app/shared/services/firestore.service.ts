@@ -15,7 +15,7 @@ import { IUser } from 'src/app/auth/models/user.model';
 import { BehaviorSubject } from 'rxjs';
 import { ITodoItem } from 'src/app/todo/models/todo-item.model';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { CollectionName } from '../enum/colection-name';
+import { CollectionName } from '../enum/collection-name';
 import { startTodos } from '../constants/start-todo-collection';
 
 @Injectable({
